@@ -1,5 +1,5 @@
 import fs from 'fs'
-// import slugify from '@sindresorhus/slugify'
+import slugify from '@sindresorhus/slugify'
 import { parse } from 'csv-parse/sync'
 import 'dotenv/config'
 
@@ -37,6 +37,23 @@ const validateRowData = row => {
 }
 
 const getCommaSeparatedList = str => str.split(',').map(s => s.trim())
+
+const getFilterOptions = (prop) => {
+  return [...new Set(
+      events
+        .map(event => event[prop])
+        .flat()
+    )]
+    .filter(o => o)
+    .sort()
+    .map(name => {
+      return {
+        name,
+        value: slugify(name)
+      }
+    })
+  }
+
 
 const rows = await fetch(URL)
   .then(r => r.text())
@@ -86,6 +103,21 @@ const events = rows
 
 try {
   fs.writeFileSync('./src/data/events.json', JSON.stringify(events, null, 2))
+} catch (err) {
+  throw new Error(err)
+}
+
+const filters = {
+  areas: getFilterOptions('area'),
+  campaigns: getFilterOptions('campaign'),
+  sectors: getFilterOptions('sector'),
+  countries: getFilterOptions('country'),
+  regions: getFilterOptions('region'),
+  targets: getFilterOptions('target'),
+}
+
+try {
+  fs.writeFileSync('./src/data/filters.json', JSON.stringify(filters, null, 2))
 } catch (err) {
   throw new Error(err)
 }

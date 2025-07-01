@@ -10,6 +10,7 @@
     "get-data": "node ./src/scripts/get-data.js"
   },
   "dependencies": {
+    "@sindresorhus/slugify": "^2.2.1",
     "astro": "^5.10.1",
     "csv-parse": "^5.6.0",
     "dotenv": "^17.0.0"
