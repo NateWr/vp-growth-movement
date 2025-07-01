@@ -11,7 +11,6 @@ const COL_ID = 'ID'
 const COL_DATE = 'Date \nYYYY-MM-DD'
 const COL_AREA = 'Campaign Area'
 const COL_CAMPAIGN = 'Campaign'
-const COL_SECTOR = 'Sector'
 const COL_HEADLINE = 'Headline'
 const COL_SUMMARY = 'Summary'
 const COL_CITY = 'City'
@@ -36,9 +35,10 @@ const validateRowData = row => {
     }
 }
 
-const getCommaSeparatedList = str => str.split(',').map(s => s.trim())
+const getCommaSeparatedList = str => str.split(',').map(s => s.trim()).filter(s => s)
 
 const getFilterOptions = (prop) => {
+  let i = 0;
   return [...new Set(
       events
         .map(event => event[prop])
@@ -48,11 +48,22 @@ const getFilterOptions = (prop) => {
     .sort()
     .map(name => {
       return {
+        id: i++,
         name,
         value: slugify(name)
       }
     })
   }
+
+const getFilterOptionIds = (names, options) => {
+  const ids = options
+    .filter(o => names.includes(o.name))
+    .map(o => o.id)
+  if (ids.length !== names.length) {
+    throw new Error(`Unable to set one or more option ids for ${names.length}. Options:\n\n${JSON.stringify(options, null, 2)}`)
+  }
+  return ids
+}
 
 
 const rows = await fetch(URL)
@@ -69,7 +80,6 @@ const events = rows
       date: new Date(row[COL_DATE]),
       area: getCommaSeparatedList(row[COL_AREA]),
       campaign: getCommaSeparatedList(row[COL_CAMPAIGN]),
-      sector: row[COL_SECTOR],
       headline: row[COL_HEADLINE],
       summary: row[COL_SUMMARY],
       city: row[COL_CITY],
@@ -101,23 +111,40 @@ const events = rows
     return event
   })
 
+const filters = {
+  area: getFilterOptions('area'),
+  campaign: getFilterOptions('campaign'),
+  country: getFilterOptions('country'),
+  region: getFilterOptions('region'),
+  target: getFilterOptions('target'),
+}
+
+const eventsSlim = events.map(event => {
+  let newEvent = {date: event.date}
+  let props = ['area', 'campaign', 'country', 'region', 'target']
+  props.forEach(prop => {
+      const ids = getFilterOptionIds(event[prop], filters[prop])
+      if (ids.length) {
+        newEvent[prop] = ids
+      }
+    })
+  return newEvent
+})
+
 try {
   fs.writeFileSync('./src/data/events.json', JSON.stringify(events, null, 2))
 } catch (err) {
   throw new Error(err)
 }
 
-const filters = {
-  areas: getFilterOptions('area'),
-  campaigns: getFilterOptions('campaign'),
-  sectors: getFilterOptions('sector'),
-  countries: getFilterOptions('country'),
-  regions: getFilterOptions('region'),
-  targets: getFilterOptions('target'),
+try {
+  fs.writeFileSync('./src/data/filters.json', JSON.stringify(filters, null, 2))
+} catch (err) {
+  throw new Error(err)
 }
 
 try {
-  fs.writeFileSync('./src/data/filters.json', JSON.stringify(filters, null, 2))
+  fs.writeFileSync('./public/data/events-slim.json', JSON.stringify(eventsSlim, null, 2))
 } catch (err) {
   throw new Error(err)
 }
