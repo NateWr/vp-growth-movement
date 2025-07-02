@@ -65,6 +65,7 @@ const getFilterOptionIds = (names, options) => {
   return ids
 }
 
+const formatDate = date => date.toISOString().split('T')[0]
 
 const rows = await fetch(URL)
   .then(r => r.text())
@@ -73,10 +74,12 @@ const rows = await fetch(URL)
     throw new Error(`Unable to fetch spreadsheet data: ${err}`)
   })
 
+let i = 0;
 const events = rows
   .map(row => {
     validateRowData(row)
     return {
+      id: (i++).toString().padStart(15, '0'),
       date: new Date(row[COL_DATE]),
       area: getCommaSeparatedList(row[COL_AREA]),
       campaign: getCommaSeparatedList(row[COL_CAMPAIGN]),
@@ -107,7 +110,6 @@ const events = rows
   })
   .sort((a, b) => a.date.getTime() - b.date.getTime())
   .map(event => {
-    event.date = event.date.toISOString().split('T')[0]
     return event
   })
 
@@ -131,6 +133,39 @@ const eventsSlim = events.map(event => {
   return newEvent
 })
 
+const dateStart = events[0].date
+const dateEnd = events[events.length - 1].date
+const months = []
+i = new Date(dateStart)
+while (i <= dateEnd) {
+  months.push({
+    month: new Date(i),
+    events: events
+      .filter(event => {
+        return event.date.getFullYear() === i.getFullYear()
+          && event.date.getMonth() === i.getMonth()
+      })
+      .map(event => {
+        return {
+          id: event.id,
+          date: formatDate(event.date),
+        }
+      }),
+  })
+  if (i.getMonth() === 11) {
+    i.setFullYear(i.getFullYear() + 1)
+    i.setMonth(0)
+  } else {
+    i.setMonth(i.getMonth() + 1)
+  }
+}
+
+const chartConfig = {
+  dateStart: formatDate(dateStart),
+  dateEnd: formatDate(dateEnd),
+  months,
+}
+
 try {
   fs.writeFileSync('./src/data/events.json', JSON.stringify(events, null, 2))
 } catch (err) {
@@ -145,6 +180,12 @@ try {
 
 try {
   fs.writeFileSync('./public/data/events-slim.json', JSON.stringify(eventsSlim, null, 2))
+} catch (err) {
+  throw new Error(err)
+}
+
+try {
+  fs.writeFileSync('./src/data/chart-config.json', JSON.stringify(chartConfig, null, 2))
 } catch (err) {
   throw new Error(err)
 }
