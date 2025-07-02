@@ -7,4 +7,7 @@
   --color-red: #FF7474;
   --color-red-bright: #FF1E1E;
   --color-red-dark: #4E2929;
+  --color-yellow: #FFCC00;
+
+  --breakpoint-3xl: 1920px;
 }

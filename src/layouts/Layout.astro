@@ -1,12 +1,36 @@
 ---
 import "../css/global.css";
+import Logo from "../images/logo.svg";
+import NavStories from "../images/nav-stories.svg";
+import NavData from "../images/nav-data.svg";
+import NavAbout from "../images/nav-about.svg";
 
 interface Props {
 	title: string;
 	description: string;
+	currentUrl: string,
+	bgColor: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, currentUrl, bgColor } = Astro.props;
+
+const nav = [
+	{
+		url: '/',
+		label: 'Stories',
+		SVGIcon: NavStories,
+	},
+	{
+		url: '/data',
+		label: 'Data',
+		SVGIcon: NavData,
+	},
+	{
+		url: '/about',
+		label: 'About',
+		SVGIcon: NavAbout,
+	},
+]
 ---
 
 <!doctype html>
@@ -18,7 +42,73 @@ const { title, description } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body>
+	<body class={`
+			pt-16
+			bg-${bgColor}
+			3xl:pt-20
+		`}
+	>
+		<header
+			class="
+				fixed
+				top-0
+				w-screen
+				flex
+				justify-between
+				items-center
+				px-4
+				py-2
+				bg-black
+				text-white
+				xl:px-8
+			"
+		>
+			<a
+				href="/"
+				class="
+					inline-block
+					p-2
+					-mx-2
+					focus-visible:outline-2
+					focus-visible:outline-current
+					md:-mx-0
+				"
+			>
+				<Logo class="w-auto h-8 3xl:h-12"/>
+			</a>
+			<div
+				class="
+					flex
+					items-center
+					gap-2
+					-me-3
+					md:-me-0
+				"
+			>
+				{nav.map(({url, label, SVGIcon}) => (
+					<a
+						href={url}
+						title={label}
+						class={`
+							focus-visible:outline-2
+							focus-visible:outline-current
+							${currentUrl === url ? 'text-yellow' : ''}
+						`}
+					>
+						<SVGIcon
+							aria-hidden="true"
+							class={`
+								w-12
+								h-12
+								3xl:w-16
+								3xl:h-16
+							`}
+						/>
+						<span class="sr-only">{label}</span>
+					</a>
+				))}
+			</div>
+		</header>
 		<slot />
 	</body>
 </html>
