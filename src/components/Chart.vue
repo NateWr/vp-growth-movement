@@ -166,7 +166,6 @@ const ticks = computed(() => {
     align-items: center;
     padding: var(--padding-y) var(--padding-x);
     background: var(--color-black);
-    height: calc(100vh - 4rem);
   }
   .chart-ticks {
     position: absolute;
