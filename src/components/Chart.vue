@@ -160,12 +160,13 @@ const ticks = computed(() => {
 <style>
   .chart-wrapper {
     --padding-x: 1rem;
-    --padding-y: 3rem;
     position: relative;
     display: flex;
     align-items: center;
-    padding: var(--padding-y) var(--padding-x);
+    padding-left: var(--padding-x);
+    padding-right: var(--padding-x);
     background: var(--color-black);
+    height: 100%;
   }
   .chart-ticks {
     position: absolute;

@@ -9,7 +9,7 @@
   --color-red-dark: #4E2929;
   --color-yellow: #FFCC00;
 
-  --breakpoint-3xl: 1920px;
+  --breakpoint-3xl: 120rem;
 
   --font-mono: "JetBrains Mono", monospace;
 }
