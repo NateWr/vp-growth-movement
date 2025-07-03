@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type PropType } from 'vue'
+import { computed, type PropType } from 'vue'
 
 const props = defineProps({
   dateStart: {
@@ -18,6 +18,10 @@ const props = defineProps({
     type: Array as PropType<Object[]>,
     default: [],
   },
+  showAllYears: {
+    type: Boolean,
+    default: false,
+  },
   storyCurrent: {
     type: String,
     default: '',
@@ -28,19 +32,16 @@ const props = defineProps({
   },
 })
 
-let rows = 0
-rows = props.months
-  .reduce((max, month) => {
-    return Math.max(month.events.length, max)
-  }, rows)
-
+const rows = computed(() => {
+  let r = 0
+  return props.months
+    .reduce((max, month) => {
+      return Math.max(month.events.length, max)
+    }, r)
+})
 
 const hexWidth = 9
 const hexHeight = 8
-const padding = 32
-const width = (props.months.length * hexWidth) + (padding * 2)
-const height = rows * hexHeight + (padding * 2)
-
 const hexPoints = [
   [3.5, 0],
   [7, 2],
@@ -50,78 +51,153 @@ const hexPoints = [
   [0, 2],
 ]
 
+const width = computed(() => props.months.length * hexWidth)
+const height = computed(() => rows.value * hexHeight)
 
-const hexes = props.months
-  .map((month, col) => {
-    // Get the row number of the top hex
-    // for this month, so that hexes are
-    // centered around the middle row.
-    //
-    // For months with an odd number of events, we add
-    // an event to make their row assignments
-    // consistent with months with even events
-    let eventsCount = month.events.length + month.events.length % 2
-    let topRow = Math.floor((rows - eventsCount) / 2)
+const hexes = computed(() => {
+  return props.months
+    .map((month, col) => {
+      // Get the row number of the top hex
+      // for this month, so that hexes are
+      // centered around the middle row.
+      //
+      // For months with an odd number of events, we add
+      // an event to make their row assignments
+      // consistent with months with even events
+      let eventsCount = month.events.length + month.events.length % 2
+      let topRow = Math.floor((rows.value - eventsCount) / 2)
 
-    return month.events
-      .map((event, e) => {
-        // Y position is consistent for all rows
-        const y = ((topRow + e) * hexHeight)
+      return month.events
+        .map((event, e) => {
+          // Y position is consistent for all rows
+          const y = ((topRow + e) * hexHeight)
 
-        // X position is staggered for every other
-        // row in order to create the hex layout.
-        //
-        // First, offset the x position of every second hex
-        // based on its position in the global grid
-        // coordinate system.
-        //
-        // Then, use this to get the correct x position
-        const xOffsetToggle = (topRow + e) % 2
-        const x = (col * hexWidth) + (xOffsetToggle * (hexWidth / 2))
+          // X position is staggered for every other
+          // row in order to create the hex layout.
+          //
+          // First, offset the x position of every second hex
+          // based on its position in the global grid
+          // coordinate system.
+          //
+          // Then, use this to get the correct x position
+          const xOffsetToggle = (topRow + e) % 2
+          const x = (col * hexWidth) + (xOffsetToggle * (hexWidth / 2))
 
-        return [x, y, event.date, col, topRow + e]
-      })
-  })
-  .flat()
+          return [x, y, event.date, col, topRow + e]
+        })
+    })
+    .flat()
+})
+
+const allTicks = computed(() => {
+  return props.months
+    .map((month, col) => {
+      const date = new Date(month.month)
+      if (date.getMonth()) {
+        return
+      }
+      return {
+        year: date.getFullYear(),
+        x: (col * hexWidth) / width.value,
+        isMajorTick: col % 5 === 0,
+      }
+    })
+    .filter(m => m)
+}, [])
+
+const ticks = computed(() => {
+  if (props.showAllYears) {
+    return allTicks.value
+  }
+  return allTicks.value.filter(t => t.isMajorTick)
+})
 </script>
 
 <template>
-  <div class="chart">
-    <div>Start: {{ dateStart }}</div>
-    <div>End: {{ dateEnd }}</div>
+  <div class="chart-wrapper bg-black" aria-hidden="true">
+    <div class="chart-ticks font-mono">
+      <div
+        v-for="tick in ticks"
+        class="chart-tick"
+        :class="tick?.isMajorTick ? 'chart-tick-major' : ''"
+        :style="`left: ${tick.x * 100}%`"
+      >
+        <div class="chart-tick-line" />
+        <span
+          class="chart-tick-label"
+          :style="`left: ${tick.x}%`"
+        >
+          {{ tick.year }}
+        </span>
+      </div>
+    </div>
     <svg
-      class="chart-svg bg-black"
+      class="chart-hexes"
       :width="width"
       :height="height"
       :viewBox="`0 0 ${width} ${height}`"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g class="chart-hexes" transform="translate(32, 32)">
-        <polygon
-          v-for="hex in hexes"
-          :data-date="hex[2]"
-          :points="
-            hexPoints
-              .map((coords, i) => {
-                return [
-                  coords[0] + hex[0],
-                  coords[1] + hex[1],
-                ].join(',')
-              })
-              .join(' ')
-          "
-        />
-      </g>
+      <polygon
+        v-for="hex in hexes"
+        :data-date="hex[2]"
+        :points="
+          hexPoints
+            .map((coords, i) => {
+              return [
+                coords[0] + hex[0],
+                coords[1] + hex[1],
+              ].join(',')
+            })
+            .join(' ')
+            "
+      />
     </svg>
   </div>
 </template>
 
 <style>
-  .chart {
-    background: darkblue;
+  .chart-wrapper {
+    --padding-x: 1rem;
+    --padding-y: 3rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: var(--padding-y) var(--padding-x);
+    background: var(--color-black);
+    height: calc(100vh - 4rem);
   }
-  .chart-svg {
+  .chart-ticks {
+    position: absolute;
+    left: var(--padding-x);
+    right: var(--padding-x);
+    top: 50%;
+    bottom: 0;
+    color: var(--color-white);
+    opacity: 0.5;
+  }
+  .chart-tick {
+    position: absolute;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateX(-50%);
+  }
+  .chart-tick-line {
+    flex-grow: 1;
+    border-left: 1px solid;
+    opacity: 0.25;
+  }
+  .chart-tick-major .chart-tick-line {
+    opacity: 0.5;
+  }
+  .chart-tick-label {
+    font-size: 0.75rem;
+  }
+  .chart-hexes {
+    position: relative;
     width: 100%;
     height: auto;
   }

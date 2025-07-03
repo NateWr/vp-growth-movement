@@ -133,7 +133,8 @@ const eventsSlim = events.map(event => {
   return newEvent
 })
 
-const dateStart = events[0].date
+const dateStart = new Date(events[0].date)
+dateStart.setMonth(0)
 const dateEnd = events[events.length - 1].date
 const months = []
 i = new Date(dateStart)

@@ -10,4 +10,6 @@
   --color-yellow: #FFCC00;
 
   --breakpoint-3xl: 1920px;
+
+  --font-mono: "JetBrains Mono", monospace;
 }
