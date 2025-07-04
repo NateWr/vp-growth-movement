@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, type PropType } from 'vue'
+import { computed, TransitionGroup, type PropType } from 'vue'
 
 const props = defineProps({
   dateStart: {
@@ -15,7 +15,7 @@ const props = defineProps({
     required: true,
   },
   highlights: {
-    type: Array as PropType<Object[]>,
+    type: Array as PropType<String[]>,
     default: [],
   },
   showAllYears: {
@@ -83,7 +83,7 @@ const hexes = computed(() => {
           const xOffsetToggle = (topRow + e) % 2
           const x = (col * hexWidth) + (xOffsetToggle * (hexWidth / 2))
 
-          return [x, y, event.date, col, topRow + e]
+          return [x, y, event.id]
         })
     })
     .flat()
@@ -114,22 +114,29 @@ const ticks = computed(() => {
 </script>
 
 <template>
-  <div class="chart-wrapper bg-black" aria-hidden="true">
+  <div
+    class="chart-wrapper bg-black"
+    :class="highlights.length ? 'chart-wrapper-with-highlights' : ''"
+    aria-hidden="true"
+  >
     <div class="chart-ticks font-mono">
-      <div
-        v-for="tick in ticks"
-        class="chart-tick"
-        :class="tick?.isMajorTick ? 'chart-tick-major' : ''"
-        :style="`left: ${tick.x * 100}%`"
-      >
-        <div class="chart-tick-line" />
-        <span
-          class="chart-tick-label"
-          :style="`left: ${tick.x}%`"
+      <TransitionGroup name="chart-ticks" appear>
+        <div
+          v-for="tick in ticks"
+          :key="tick.year"
+          class="chart-tick"
+          :class="tick?.isMajorTick ? 'chart-tick-major' : ''"
+          :style="`left: ${tick.x * 100}%`"
         >
-          {{ tick.year }}
-        </span>
-      </div>
+          <div class="chart-tick-line" />
+          <span
+            class="chart-tick-label"
+            :style="`left: ${tick.x}%`"
+          >
+            {{ tick.year }}
+          </span>
+        </div>
+      </TransitionGroup>
     </div>
     <svg
       class="chart-hexes"
@@ -141,7 +148,7 @@ const ticks = computed(() => {
     >
       <polygon
         v-for="hex in hexes"
-        :data-date="hex[2]"
+        :class="highlights.includes(hex[2]) ? 'chart-hex-highlighted' : ''"
         :points="
           hexPoints
             .map((coords, i) => {
@@ -172,7 +179,7 @@ const ticks = computed(() => {
     position: absolute;
     left: var(--padding-x);
     right: var(--padding-x);
-    top: 50%;
+    top: 0;
     bottom: 0;
     color: var(--color-white);
     opacity: 0.5;
@@ -203,5 +210,24 @@ const ticks = computed(() => {
   }
   .chart-hexes polygon {
     fill: var(--color-red);
+  }
+  .chart-wrapper-with-highlights .chart-hexes polygon {
+    fill: var(--color-red-dark);
+  }
+  .chart-wrapper-with-highlights .chart-hexes .chart-hex-highlighted {
+    fill: var(--color-red);
+  }
+  .chart-ticks-active,
+  .chart-ticks-enter-active,
+  .chart-ticks-leave-active {
+    transition: opacity 0.5s 0.2s;
+  }
+  .chart-ticks-leave-active {
+    transition-duration: 0.2s;
+    transition-delay: 0s;
+  }
+  .chart-ticks-enter-from,
+  .chart-ticks-leave-to {
+    opacity: 0;
   }
 </style>

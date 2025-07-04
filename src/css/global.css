@@ -4,6 +4,7 @@
   --color-*: initial;
   --color-black: #000;
   --color-white: #fff;
+  --color-grey-dark: #222;
   --color-red: #FF7474;
   --color-red-bright: #FF1E1E;
   --color-red-dark: #4E2929;
@@ -12,4 +13,15 @@
   --breakpoint-3xl: 120rem;
 
   --font-mono: "JetBrains Mono", monospace;
+}
+
+:root {
+  --header-height: 4rem;
+}
+
+@media (min-width: 120rem) {
+
+  :root {
+    --header-height: 5rem;
+  }
 }
