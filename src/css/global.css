@@ -16,6 +16,11 @@
 }
 
 :root {
+  --color-chart: var(--color-red);
+  --color-chart-dim: var(--color-red-dark);
+  --color-chart-feature: var(--color-white);
+  --color-chart-feature-outline: var(--color-yellow);
+
   --header-height: 4rem;
 }
 

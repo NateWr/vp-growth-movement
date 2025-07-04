@@ -3,18 +3,24 @@ import { computed, ref, type PropType } from 'vue';
 import ButtonWhite from './ButtonWhite.vue';
 import Chart from './Chart.vue';
 import { useViewportSize } from '../utilities/useViewportSize';
+import type { ChartTick } from '../types/ChartTick';
+import type { ChartHex } from '../types/ChartHex';
 
 const props = defineProps({
-  dateStart: {
-    type: String,
+  columns: {
+    type: Number,
     required: true,
   },
-  dateEnd: {
-    type: String,
+  eventCoords: {
+    type: Array as PropType<ChartHex[]>,
     required: true,
   },
-  months: {
-    type: Array as PropType<Object[]>,
+  rows: {
+    type: Number,
+    required: true,
+  },
+  ticks: {
+    type: Array as PropType<ChartTick[]>,
     required: true,
   },
   story: {
@@ -27,16 +33,9 @@ const showIntro = ref(true)
 const showConclusion = ref(false)
 const storyCurrent = ref(null)
 
-const { width, BREAKPOINTS } = useViewportSize()
+const highlights = computed(() => props.eventCoords.filter((e, i) => i % 5 === 0))
 
-const highlights = computed(() => {
-  return props.months
-    .map(m => m.events)
-    .flat()
-    .filter(e => e)
-    .filter((e, i) => i % 5 === 0)
-    .map(e => e.id)
-})
+const { width, BREAKPOINTS } = useViewportSize()
 
 const fitChartOnScreen = computed(() => {
   if (width.value >= BREAKPOINTS.LAPTOP_SM) {
@@ -86,17 +85,29 @@ const storyCurrentX = computed(() => xPadding + (storyCurrent.value ?? 0) *  10)
 </script>
 
 <template>
-  <div :class="`
-    story-wrapper
-    ${!fitChartOnScreen ? 'story-wrapper-enlarged' : ''}
-    relative
-    h-full
-  `">
+  <div
+    :class="`
+      story-wrapper
+      ${!fitChartOnScreen ? 'story-wrapper-enlarged' : ''}
+      relative
+      h-full
+    `"
+  >
     <Chart
-      :dateStart="dateStart"
-      :dateEnd="dateEnd"
-      :highlights="highlights"
-      :months="months"
+      client:load
+      :columns="columns"
+      :datasets="[
+        {
+          id: 'all-data',
+          hexes: eventCoords,
+        },
+        {
+          id: 'highlights',
+          hexes: highlights,
+        }
+      ]"
+      :rows="rows"
+      :ticks="ticks"
       :showAllYears="showAllYears"
     />
     <div
@@ -163,7 +174,7 @@ const storyCurrentX = computed(() => xPadding + (storyCurrent.value ?? 0) *  10)
   transition: all 0.5s;
 }
 .story-wrapper-enlarged {
-  width: 200vw;
+  width: 300vw;
 }
 .story-wrapper .chart-wrapper {
   align-items: flex-end;
@@ -171,6 +182,10 @@ const storyCurrentX = computed(() => xPadding + (storyCurrent.value ?? 0) *  10)
 }
 .story-wrapper .chart-hexes {
   height: 25vh;
+  fill: var(--color-chart-dim);
+}
+.story-wrapper .chart-hex-group-highlights {
+  fill: var(--color-chart);
 }
 .story-item {
   bottom: calc(25vh + var(--button-height));

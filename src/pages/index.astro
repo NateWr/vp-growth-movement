@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import Chart from '../components/Chart.vue'
-import { dateStart, dateEnd, months } from '../data/chart-config.json'
+import { columns, data, rows, ticks } from '../data/chart-config.json'
 import stories from '../data/stories'
 import IconRadioButtonChecked from '../images/icon-radio-button-checked.svg'
 ---
@@ -24,9 +24,16 @@ import IconRadioButtonChecked from '../images/icon-radio-button-checked.svg'
 			`}
 		>
 			<Chart
-				dateStart={dateStart}
-				dateEnd={dateEnd}
-				months={months}
+				client:load
+				columns={columns}
+				datasets={[
+					{
+						id: 'all-data',
+						hexes: data,
+					},
+				]}
+				rows={rows}
+				ticks={ticks}
 				showAllYears={false}
 			/>
 		</div>

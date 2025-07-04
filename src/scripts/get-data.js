@@ -37,34 +37,6 @@ const validateRowData = row => {
 
 const getCommaSeparatedList = str => str.split(',').map(s => s.trim()).filter(s => s)
 
-const getFilterOptions = (prop) => {
-  let i = 0;
-  return [...new Set(
-      events
-        .map(event => event[prop])
-        .flat()
-    )]
-    .filter(o => o)
-    .sort()
-    .map(name => {
-      return {
-        id: i++,
-        name,
-        value: slugify(name)
-      }
-    })
-  }
-
-const getFilterOptionIds = (names, options) => {
-  const ids = options
-    .filter(o => names.includes(o.name))
-    .map(o => o.id)
-  if (ids.length !== names.length) {
-    throw new Error(`Unable to set one or more option ids for ${names.length}. Options:\n\n${JSON.stringify(options, null, 2)}`)
-  }
-  return ids
-}
-
 const formatDate = date => date.toISOString().split('T')[0]
 
 const rows = await fetch(URL)
@@ -113,74 +85,126 @@ const events = rows
     return event
   })
 
-const filters = {
-  area: getFilterOptions('area'),
-  campaign: getFilterOptions('campaign'),
-  country: getFilterOptions('country'),
-  region: getFilterOptions('region'),
-  target: getFilterOptions('target'),
-}
-
-const eventsSlim = events.map(event => {
-  let newEvent = {date: event.date}
-  let props = ['area', 'campaign', 'country', 'region', 'target']
-  props.forEach(prop => {
-      const ids = getFilterOptionIds(event[prop], filters[prop])
-      if (ids.length) {
-        newEvent[prop] = ids
-      }
-    })
-  return newEvent
-})
-
 const dateStart = new Date(events[0].date)
 dateStart.setMonth(0)
 const dateEnd = events[events.length - 1].date
+
+i = 0
+let iDate = new Date(dateStart)
 const months = []
-i = new Date(dateStart)
-while (i <= dateEnd) {
+while (iDate <= dateEnd) {
   months.push({
-    month: new Date(i),
+    x: i,
+    month: new Date(iDate),
     events: events
       .filter(event => {
-        return event.date.getFullYear() === i.getFullYear()
-          && event.date.getMonth() === i.getMonth()
-      })
-      .map(event => {
-        return {
-          id: event.id,
-          date: formatDate(event.date),
-        }
+        return event.date.getFullYear() === iDate.getFullYear()
+          && event.date.getMonth() === iDate.getMonth()
       }),
   })
-  if (i.getMonth() === 11) {
-    i.setFullYear(i.getFullYear() + 1)
-    i.setMonth(0)
+  if (iDate.getMonth() === 11) {
+    iDate.setFullYear(iDate.getFullYear() + 1)
+    iDate.setMonth(0)
   } else {
-    i.setMonth(i.getMonth() + 1)
+    iDate.setMonth(iDate.getMonth() + 1)
   }
+  i++
 }
 
+/**
+ * Get the chart data
+ */
+let chartColumns = months.length
+let chartRows = 0;
+chartRows = months.reduce((max, month) => Math.max(month.events.length, max), chartRows)
+
+const TICK_INTERVAL = 5
+const chartTicks = months
+  .filter(m => m.month.getMonth() === 0)
+  .map(m => {
+    return {
+      label: m.month.getFullYear(),
+      major: m.month.getFullYear() % TICK_INTERVAL === 0,
+      x: m.x,
+    }
+  })
+
 const chartConfig = {
-  dateStart: formatDate(dateStart),
-  dateEnd: formatDate(dateEnd),
-  months,
+  columns: chartColumns,
+  rows: chartRows,
+  ticks: chartTicks,
+}
+
+/**
+ * Get the x,y coordinate for each event
+ *
+ * To make the data center around the middle of the
+ * chart, we calculate the y-position of the first
+ * event based on the number of events in each month.
+ *
+ * For months with an odd number of events, we add an
+ * event to make that month's row assignments consistent
+ * with months that have even events.
+ */
+const eventsWithCoords = months
+  .map((month, col) => {
+    const eventsCount = month.events.length + month.events.length % 2
+    const topRow = Math.floor((chartRows - eventsCount) / 2)
+
+    return month.events.map((event, i) => {
+      return {
+        ...event,
+        x: col,
+        y: topRow + i,
+      }
+    })
+  })
+  .flat()
+  .flat()
+  .filter(e => e)
+
+chartConfig.data = eventsWithCoords
+  .map(({x, y}) => {
+    return {x, y}
+  })
+
+/**
+ * Get the possible values for each filter type
+ */
+const getFilterOptions = (prop, events) => {
+  let i = 0;
+  return [...new Set(
+      events
+        .map(event => event[prop])
+        .flat()
+    )]
+    .filter(o => o)
+    .sort()
+    .map(name => {
+      return {
+        id: i++,
+        name,
+        value: slugify(name)
+      }
+    })
+  }
+
+const filters = {
+  area: getFilterOptions('area', eventsWithCoords),
+  campaign: getFilterOptions('campaign', eventsWithCoords),
+  country: getFilterOptions('country', eventsWithCoords),
+  region: getFilterOptions('region', eventsWithCoords),
+  target: getFilterOptions('target', eventsWithCoords),
 }
 
 try {
-  fs.writeFileSync('./src/data/events.json', JSON.stringify(events, null, 2))
+  fs.writeFileSync('./src/data/events.json', JSON.stringify(eventsWithCoords, null, 2))
 } catch (err) {
   throw new Error(err)
 }
 
 try {
   fs.writeFileSync('./src/data/filters.json', JSON.stringify(filters, null, 2))
-} catch (err) {
-  throw new Error(err)
-}
-
-try {
-  fs.writeFileSync('./public/data/events-slim.json', JSON.stringify(eventsSlim, null, 2))
 } catch (err) {
   throw new Error(err)
 }

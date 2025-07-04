@@ -1,17 +1,24 @@
 <script setup lang="ts">
 import { computed, TransitionGroup, type PropType } from 'vue'
+import type { ChartTick } from '../types/ChartTick'
+import type { ChartHexGroup } from '../types/ChartHexGroup'
+import type { ChartHex } from '../types/ChartHex'
 
 const props = defineProps({
-  dateStart: {
-    type: String,
+  columns: {
+    type: Number,
     required: true,
   },
-  dateEnd: {
-    type: String,
+  datasets: {
+    type: Array as PropType<ChartHexGroup[]>,
     required: true,
   },
-  months: {
-    type: Array as PropType<Object[]>,
+  rows: {
+    type: Number,
+    required: true,
+  },
+  ticks: {
+    type: Array as PropType<ChartTick[]>,
     required: true,
   },
   highlights: {
@@ -32,14 +39,6 @@ const props = defineProps({
   },
 })
 
-const rows = computed(() => {
-  let r = 0
-  return props.months
-    .reduce((max, month) => {
-      return Math.max(month.events.length, max)
-    }, r)
-})
-
 const hexWidth = 9
 const hexHeight = 8
 const hexPoints = [
@@ -51,66 +50,41 @@ const hexPoints = [
   [0, 2],
 ]
 
-const width = computed(() => props.months.length * hexWidth)
-const height = computed(() => rows.value * hexHeight)
+// One half hex width is added to ensure the hexes
+// in the last column aren't cut off when the x offset
+// is applied
+const width = computed(() => props.columns * hexWidth + (hexWidth / 2))
+const height = computed(() => props.rows * hexHeight)
 
-const hexes = computed(() => {
-  return props.months
-    .map((month, col) => {
-      // Get the row number of the top hex
-      // for this month, so that hexes are
-      // centered around the middle row.
-      //
-      // For months with an odd number of events, we add
-      // an event to make their row assignments
-      // consistent with months with even events
-      let eventsCount = month.events.length + month.events.length % 2
-      let topRow = Math.floor((rows.value - eventsCount) / 2)
-
-      return month.events
-        .map((event, e) => {
-          // Y position is consistent for all rows
-          const y = ((topRow + e) * hexHeight)
-
-          // X position is staggered for every other
-          // row in order to create the hex layout.
-          //
-          // First, offset the x position of every second hex
-          // based on its position in the global grid
-          // coordinate system.
-          //
-          // Then, use this to get the correct x position
-          const xOffsetToggle = (topRow + e) % 2
-          const x = (col * hexWidth) + (xOffsetToggle * (hexWidth / 2))
-
-          return [x, y, event.id]
-        })
-    })
-    .flat()
+const currentTicks = computed(() => {
+  return props.showAllYears
+    ? props.ticks
+    : props.ticks.filter(t => t.major)
 })
 
-const allTicks = computed(() => {
-  return props.months
-    .map((month, col) => {
-      const date = new Date(month.month)
-      if (date.getMonth()) {
-        return
-      }
-      return {
-        year: date.getFullYear(),
-        x: (col * hexWidth) / width.value,
-        isMajorTick: col % 5 === 0,
-      }
-    })
-    .filter(m => m)
-}, [])
-
-const ticks = computed(() => {
-  if (props.showAllYears) {
-    return allTicks.value
-  }
-  return allTicks.value.filter(t => t.isMajorTick)
-})
+/**
+ * Get the x,y position for each hex
+ *
+ * The x position is staggered for every other row
+ * in order to create the hex layout.
+ *
+ * First, offset the x position of every second hex
+ * based on its position in the global grid coordinate
+ * system.
+ *
+ * Then, use this to get the correct position.
+ */
+const hexGroupsWithCoords = props.datasets
+  .map(group => {
+    const coords: ChartHex[] = group.hexes
+      .map(hex => {
+        const xOffsetToggle = hex.y % 2
+        const x = (hex.x * hexWidth) + (xOffsetToggle * (hexWidth / 2))
+        const y = hex.y * hexHeight
+        return {x, y}
+      })
+    return {...group, coords}
+  })
 </script>
 
 <template>
@@ -122,18 +96,18 @@ const ticks = computed(() => {
     <div class="chart-ticks font-mono">
       <TransitionGroup name="chart-ticks" appear>
         <div
-          v-for="tick in ticks"
-          :key="tick.year"
+          v-for="tick in currentTicks"
+          :key="tick.x"
           class="chart-tick"
-          :class="tick?.isMajorTick ? 'chart-tick-major' : ''"
-          :style="`left: ${tick.x * 100}%`"
+          :class="tick.major ? 'chart-tick-major' : ''"
+          :style="`left: ${(tick.x / columns) * 100}%`"
         >
           <div class="chart-tick-line" />
           <span
             class="chart-tick-label"
             :style="`left: ${tick.x}%`"
           >
-            {{ tick.year }}
+            {{ tick.label }}
           </span>
         </div>
       </TransitionGroup>
@@ -143,23 +117,27 @@ const ticks = computed(() => {
       :width="width"
       :height="height"
       :viewBox="`0 0 ${width} ${height}`"
-      fill="none"
+      fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <polygon
-        v-for="hex in hexes"
-        :class="highlights.includes(hex[2]) ? 'chart-hex-highlighted' : ''"
-        :points="
-          hexPoints
-            .map((coords, i) => {
-              return [
-                coords[0] + hex[0],
-                coords[1] + hex[1],
-              ].join(',')
-            })
-            .join(' ')
-            "
-      />
+      <g
+        v-for="hexGroup in hexGroupsWithCoords"
+        :class="`chart-hex-group chart-hex-group-${hexGroup.id}`"
+      >
+        <polygon
+          v-for="coords in hexGroup.coords"
+          :points="
+            hexPoints
+              .map(pointCoords => {
+                return [
+                  pointCoords[0] + coords.x,
+                  pointCoords[1] + coords.y,
+                ].join(',')
+              })
+              .join(' ')
+              "
+        />
+      </g>
     </svg>
   </div>
 </template>
@@ -207,15 +185,7 @@ const ticks = computed(() => {
     position: relative;
     width: 100%;
     height: auto;
-  }
-  .chart-hexes polygon {
-    fill: var(--color-red);
-  }
-  .chart-wrapper-with-highlights .chart-hexes polygon {
-    fill: var(--color-red-dark);
-  }
-  .chart-wrapper-with-highlights .chart-hexes .chart-hex-highlighted {
-    fill: var(--color-red);
+    fill: var(--color-chart);
   }
   .chart-ticks-active,
   .chart-ticks-enter-active,

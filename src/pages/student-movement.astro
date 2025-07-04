@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import Story from '../components/Story.vue'
-import { dateStart, dateEnd, months } from '../data/chart-config.json'
+import { columns, data, rows, ticks } from '../data/chart-config.json'
 import story from '../data/story-student-movement'
 ---
 
@@ -43,9 +43,10 @@ import story from '../data/story-student-movement'
     <div class="grow overflow-scroll scroll-smooth">
       <Story
         client:load
-        dateStart={dateStart}
-        dateEnd={dateEnd}
-        months={months}
+        columns={columns}
+        eventCoords={data}
+        rows={rows}
+        ticks={ticks}
         story={story}
       />
     </div>
