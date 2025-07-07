@@ -1,1065 +1,854 @@
 {
   "area": [
     {
-      "id": 0,
       "name": "Academic Boycott",
       "value": "academic-boycott"
     },
     {
-      "id": 1,
       "name": "Cultural Boycott",
       "value": "cultural-boycott"
     },
     {
-      "id": 2,
       "name": "Divestment",
       "value": "divestment"
     },
     {
-      "id": 3,
       "name": "Economic Boycott",
       "value": "economic-boycott"
     },
     {
-      "id": 4,
       "name": "Military Embargo",
       "value": "military-embargo"
     },
     {
-      "id": 5,
       "name": "Other",
       "value": "other"
     },
     {
-      "id": 6,
       "name": "Sanctions",
       "value": "sanctions"
     }
   ],
   "campaign": [
     {
-      "id": 0,
       "name": "Against Greenwashing",
       "value": "against-greenwashing"
     },
     {
-      "id": 1,
       "name": "Faith-based Solidarity",
       "value": "faith-based-solidarity"
     },
     {
-      "id": 2,
       "name": "Local Government",
       "value": "local-government"
     },
     {
-      "id": 3,
       "name": "Student Solidarity",
       "value": "student-solidarity"
     },
     {
-      "id": 4,
       "name": "Trade Union Solidarity",
       "value": "trade-union-solidarity"
     }
   ],
   "country": [
     {
-      "id": 0,
       "name": "Afghanistan",
       "value": "afghanistan"
     },
     {
-      "id": 1,
       "name": "Algeria",
       "value": "algeria"
     },
     {
-      "id": 2,
       "name": "Angola",
       "value": "angola"
     },
     {
-      "id": 3,
       "name": "Antigua and Barbuda",
       "value": "antigua-and-barbuda"
     },
     {
-      "id": 4,
       "name": "Argentina",
       "value": "argentina"
     },
     {
-      "id": 5,
       "name": "Australia",
       "value": "australia"
     },
     {
-      "id": 6,
       "name": "Austria",
       "value": "austria"
     },
     {
-      "id": 7,
       "name": "Bangladesh",
       "value": "bangladesh"
     },
     {
-      "id": 8,
       "name": "Belgium",
       "value": "belgium"
     },
     {
-      "id": 9,
       "name": "Bolivia",
       "value": "bolivia"
     },
     {
-      "id": 10,
       "name": "Brazil",
       "value": "brazil"
     },
     {
-      "id": 11,
       "name": "Canada",
       "value": "canada"
     },
     {
-      "id": 12,
       "name": "Chad",
       "value": "chad"
     },
     {
-      "id": 13,
       "name": "Chile",
       "value": "chile"
     },
     {
-      "id": 14,
       "name": "Chili",
       "value": "chili"
     },
     {
-      "id": 15,
       "name": "China",
       "value": "china"
     },
     {
-      "id": 16,
       "name": "Colombia",
       "value": "colombia"
     },
     {
-      "id": 17,
       "name": "Costa Rica",
       "value": "costa-rica"
     },
     {
-      "id": 18,
       "name": "Cyprus",
       "value": "cyprus"
     },
     {
-      "id": 19,
       "name": "Denmark",
       "value": "denmark"
     },
     {
-      "id": 20,
       "name": "Dominican Republic",
       "value": "dominican-republic"
     },
     {
-      "id": 21,
       "name": "Ecuador",
       "value": "ecuador"
     },
     {
-      "id": 22,
       "name": "Egypt",
       "value": "egypt"
     },
     {
-      "id": 23,
       "name": "Ethiopia",
       "value": "ethiopia"
     },
     {
-      "id": 24,
       "name": "Finland",
       "value": "finland"
     },
     {
-      "id": 25,
       "name": "France",
       "value": "france"
     },
     {
-      "id": 26,
       "name": "Germany",
       "value": "germany"
     },
     {
-      "id": 27,
       "name": "Greece",
       "value": "greece"
     },
     {
-      "id": 28,
       "name": "Honduras",
       "value": "honduras"
     },
     {
-      "id": 29,
       "name": "Iceland",
       "value": "iceland"
     },
     {
-      "id": 30,
       "name": "India",
       "value": "india"
     },
     {
-      "id": 31,
       "name": "Indonesia",
       "value": "indonesia"
     },
     {
-      "id": 32,
       "name": "Intl",
       "value": "intl"
     },
     {
-      "id": 33,
       "name": "Iran",
       "value": "iran"
     },
     {
-      "id": 34,
       "name": "Ireland",
       "value": "ireland"
     },
     {
-      "id": 35,
       "name": "Israel",
       "value": "israel"
     },
     {
-      "id": 36,
       "name": "Italy",
       "value": "italy"
     },
     {
-      "id": 37,
       "name": "Japan",
       "value": "japan"
     },
     {
-      "id": 38,
       "name": "Jordan",
       "value": "jordan"
     },
     {
-      "id": 39,
       "name": "Kenya",
       "value": "kenya"
     },
     {
-      "id": 40,
       "name": "Kuwait",
       "value": "kuwait"
     },
     {
-      "id": 41,
       "name": "Lebanon",
       "value": "lebanon"
     },
     {
-      "id": 42,
       "name": "Luxembourg",
       "value": "luxembourg"
     },
     {
-      "id": 43,
       "name": "Malaysia",
       "value": "malaysia"
     },
     {
-      "id": 44,
       "name": "Malta",
       "value": "malta"
     },
     {
-      "id": 45,
       "name": "Mauritania",
       "value": "mauritania"
     },
     {
-      "id": 46,
       "name": "Mexico",
       "value": "mexico"
     },
     {
-      "id": 47,
       "name": "Montenegro",
       "value": "montenegro"
     },
     {
-      "id": 48,
       "name": "Morocco",
       "value": "morocco"
     },
     {
-      "id": 49,
       "name": "Namibia",
       "value": "namibia"
     },
     {
-      "id": 50,
       "name": "Netherlands",
       "value": "netherlands"
     },
     {
-      "id": 51,
       "name": "New Zealand",
       "value": "new-zealand"
     },
     {
-      "id": 52,
       "name": "Nicaragua",
       "value": "nicaragua"
     },
     {
-      "id": 53,
       "name": "Norway",
       "value": "norway"
     },
     {
-      "id": 54,
       "name": "Oman",
       "value": "oman"
     },
     {
-      "id": 55,
       "name": "Pakistan",
       "value": "pakistan"
     },
     {
-      "id": 56,
       "name": "Palestine",
       "value": "palestine"
     },
     {
-      "id": 57,
       "name": "Pennsylvania",
       "value": "pennsylvania"
     },
     {
-      "id": 58,
       "name": "Philippines",
       "value": "philippines"
     },
     {
-      "id": 59,
       "name": "Poland",
       "value": "poland"
     },
     {
-      "id": 60,
       "name": "Portugal",
       "value": "portugal"
     },
     {
-      "id": 61,
       "name": "Qatar",
       "value": "qatar"
     },
     {
-      "id": 62,
       "name": "Romania",
       "value": "romania"
     },
     {
-      "id": 63,
       "name": "Saudi Arabia",
       "value": "saudi-arabia"
     },
     {
-      "id": 64,
       "name": "Senegal",
       "value": "senegal"
     },
     {
-      "id": 65,
       "name": "Slovenia",
       "value": "slovenia"
     },
     {
-      "id": 66,
       "name": "South Africa",
       "value": "south-africa"
     },
     {
-      "id": 67,
       "name": "South Korea",
       "value": "south-korea"
     },
     {
-      "id": 68,
       "name": "Spain",
       "value": "spain"
     },
     {
-      "id": 69,
       "name": "Sweden",
       "value": "sweden"
     },
     {
-      "id": 70,
       "name": "Switzerland",
       "value": "switzerland"
     },
     {
-      "id": 71,
       "name": "Thailand",
       "value": "thailand"
     },
     {
-      "id": 72,
       "name": "Tunisia",
       "value": "tunisia"
     },
     {
-      "id": 73,
       "name": "Turkey",
       "value": "turkey"
     },
     {
-      "id": 74,
       "name": "UN",
       "value": "un"
     },
     {
-      "id": 75,
       "name": "United Kingdom",
       "value": "united-kingdom"
     },
     {
-      "id": 76,
       "name": "United States",
       "value": "united-states"
     },
     {
-      "id": 77,
       "name": "Uruguay",
       "value": "uruguay"
     },
     {
-      "id": 78,
       "name": "Venezuela",
       "value": "venezuela"
     },
     {
-      "id": 79,
       "name": "the Gambia",
       "value": "the-gambia"
     }
   ],
   "region": [
     {
-      "id": 0,
       "name": "Africa",
       "value": "africa"
     },
     {
-      "id": 1,
       "name": "East Asia & Pacific",
       "value": "east-asia-and-pacific"
     },
     {
-      "id": 2,
       "name": "East Asia and Pacific",
       "value": "east-asia-and-pacific"
     },
     {
-      "id": 3,
       "name": "Europe and Central Asia",
       "value": "europe-and-central-asia"
     },
     {
-      "id": 4,
       "name": "Global",
       "value": "global"
     },
     {
-      "id": 5,
       "name": "Latin America and Caribbean",
       "value": "latin-america-and-caribbean"
     },
     {
-      "id": 6,
       "name": "Middle East and North Africa",
       "value": "middle-east-and-north-africa"
     },
     {
-      "id": 7,
       "name": "North America",
       "value": "north-america"
     },
     {
-      "id": 8,
       "name": "South America",
       "value": "south-america"
     },
     {
-      "id": 9,
       "name": "South Asia",
       "value": "south-asia"
     },
     {
-      "id": 10,
       "name": "Sub-Saharan Africa",
       "value": "sub-saharan-africa"
     }
   ],
   "target": [
     {
-      "id": 0,
       "name": "AXA",
       "value": "axa"
     },
     {
-      "id": 1,
       "name": "About Blank",
       "value": "about-blank"
     },
     {
-      "id": 2,
       "name": "Africa Israel",
       "value": "africa-israel"
     },
     {
-      "id": 3,
       "name": "Airbnb",
       "value": "airbnb"
     },
     {
-      "id": 4,
       "name": "Alstom",
       "value": "alstom"
     },
     {
-      "id": 5,
       "name": "Alstrom",
       "value": "alstrom"
     },
     {
-      "id": 6,
       "name": "Amazon",
       "value": "amazon"
     },
     {
-      "id": 7,
       "name": "Anti-theory in the Philosophy of Science and Ethics conference",
       "value": "anti-theory-in-the-philosophy-of-science-and-ethics-conference"
     },
     {
-      "id": 8,
       "name": "Aryt Industries Ltd.",
       "value": "aryt-industries-ltd"
     },
     {
-      "id": 9,
       "name": "Ashot Ashkelon",
       "value": "ashot-ashkelon"
     },
     {
-      "id": 10,
       "name": "Assa Abloy",
       "value": "assa-abloy"
     },
     {
-      "id": 11,
       "name": "Bahrain International Airshow",
       "value": "bahrain-international-airshow"
     },
     {
-      "id": 12,
       "name": "Balkan Trafik Festival",
       "value": "balkan-trafik-festival"
     },
     {
-      "id": 13,
       "name": "Bank Hapoalim",
       "value": "bank-hapoalim"
     },
     {
-      "id": 14,
       "name": "Bank Leumi",
       "value": "bank-leumi"
     },
     {
-      "id": 15,
       "name": "Bar-Ilan University",
       "value": "bar-ilan-university"
     },
     {
-      "id": 16,
       "name": "Beitar Jerusalem",
       "value": "beitar-jerusalem"
     },
     {
-      "id": 17,
       "name": "Ben & Jerry’s Israeli Licensee",
       "value": "ben-and-jerry-s-israeli-licensee"
     },
     {
-      "id": 18,
       "name": "Bezalel Academy of Arts and Design",
       "value": "bezalel-academy-of-arts-and-design"
     },
     {
-      "id": 19,
       "name": "Bezeq",
       "value": "bezeq"
     },
     {
-      "id": 20,
       "name": "Boeing",
       "value": "boeing"
     },
     {
-      "id": 21,
       "name": "Booking.com",
       "value": "booking-com"
     },
     {
-      "id": 22,
       "name": "Canada-Israel Free Trade Agreement",
       "value": "canada-israel-free-trade-agreement"
     },
     {
-      "id": 23,
       "name": "Carrefour",
       "value": "carrefour"
     },
     {
-      "id": 24,
       "name": "Caterpillar",
       "value": "caterpillar"
     },
     {
-      "id": 25,
       "name": "Cemex",
       "value": "cemex"
     },
     {
-      "id": 26,
       "name": "Chevron",
       "value": "chevron"
     },
     {
-      "id": 27,
       "name": "Conne Island",
       "value": "conne-island"
     },
     {
-      "id": 28,
       "name": "Danya Cebus",
       "value": "danya-cebus"
     },
     {
-      "id": 29,
       "name": "Deutsche Bank",
       "value": "deutsche-bank"
     },
     {
-      "id": 30,
       "name": "Dexia Israel",
       "value": "dexia-israel"
     },
     {
-      "id": 31,
       "name": "Disney",
       "value": "disney"
     },
     {
-      "id": 32,
       "name": "Eden Springs",
       "value": "eden-springs"
     },
     {
-      "id": 33,
       "name": "Elbit Systems",
       "value": "elbit-systems"
     },
     {
-      "id": 34,
       "name": "Emirates Literature Foundation",
       "value": "emirates-literature-foundation"
     },
     {
-      "id": 35,
       "name": "Example",
       "value": "example"
     },
     {
-      "id": 36,
       "name": "FIFA",
       "value": "fifa"
     },
     {
-      "id": 37,
       "name": "Federation of Israeli Medical Students",
       "value": "federation-of-israeli-medical-students"
     },
     {
-      "id": 38,
       "name": "Festival of Israeli Universities",
       "value": "festival-of-israeli-universities"
     },
     {
-      "id": 39,
       "name": "Finnish National Gallery",
       "value": "finnish-national-gallery"
     },
     {
-      "id": 40,
       "name": "First International Bank of Israel",
       "value": "first-international-bank-of-israel"
     },
     {
-      "id": 41,
       "name": "Fito Páez",
       "value": "fito-paez"
     },
     {
-      "id": 42,
       "name": "G4S",
       "value": "g4-s"
     },
     {
-      "id": 43,
       "name": "General Mills",
       "value": "general-mills"
     },
     {
-      "id": 44,
       "name": "Google",
       "value": "google"
     },
     {
-      "id": 45,
       "name": "HP",
       "value": "hp"
     },
     {
-      "id": 46,
       "name": "HP Enterprise",
       "value": "hp-enterprise"
     },
     {
-      "id": 47,
       "name": "HSBC",
       "value": "hsbc"
     },
     {
-      "id": 48,
       "name": "Hadassah Academic College",
       "value": "hadassah-academic-college"
     },
     {
-      "id": 49,
       "name": "Heidelberg Cement",
       "value": "heidelberg-cement"
     },
     {
-      "id": 50,
       "name": "Hyundai",
       "value": "hyundai"
     },
     {
-      "id": 51,
       "name": "ImageSat International",
       "value": "image-sat-international"
     },
     {
-      "id": 52,
       "name": "Indigo Music Festival",
       "value": "indigo-music-festival"
     },
     {
-      "id": 53,
       "name": "Intel",
       "value": "intel"
     },
     {
-      "id": 54,
       "name": "International Book Fair of Santo Domingo (FILSD)",
       "value": "international-book-fair-of-santo-domingo-filsd"
     },
     {
-      "id": 55,
       "name": "Ipsum",
       "value": "ipsum"
     },
     {
-      "id": 56,
       "name": "Israel Bonds",
       "value": "israel-bonds"
     },
     {
-      "id": 57,
       "name": "Israel Discount Bank",
       "value": "israel-discount-bank"
     },
     {
-      "id": 58,
       "name": "Israel Football Association",
       "value": "israel-football-association"
     },
     {
-      "id": 59,
       "name": "Israel-Premier Tech",
       "value": "israel-premier-tech"
     },
     {
-      "id": 60,
       "name": "Israeli Banks",
       "value": "israeli-banks"
     },
     {
-      "id": 61,
       "name": "Israeli Embassy in Portugal",
       "value": "israeli-embassy-in-portugal"
     },
     {
-      "id": 62,
       "name": "Israeli Football Association",
       "value": "israeli-football-association"
     },
     {
-      "id": 63,
       "name": "Israeli Men’s National Squash Team",
       "value": "israeli-men-s-national-squash-team"
     },
     {
-      "id": 64,
       "name": "Israeli Universities",
       "value": "israeli-universities"
     },
     {
-      "id": 65,
       "name": "Jerusalem Film Festival",
       "value": "jerusalem-film-festival"
     },
     {
-      "id": 66,
       "name": "Jewish National Fund",
       "value": "jewish-national-fund"
     },
     {
-      "id": 67,
       "name": "Leonardo",
       "value": "leonardo"
     },
     {
-      "id": 68,
       "name": "Locarno International Film Festival",
       "value": "locarno-international-film-festival"
     },
     {
-      "id": 69,
       "name": "Lockheed Martin",
       "value": "lockheed-martin"
     },
     {
-      "id": 70,
       "name": "Lucca Comics",
       "value": "lucca-comics"
     },
     {
-      "id": 71,
       "name": "Maersk",
       "value": "maersk"
     },
     {
-      "id": 72,
       "name": "Magal Security Systems",
       "value": "magal-security-systems"
     },
     {
-      "id": 73,
       "name": "McDonald's",
       "value": "mc-donalds"
     },
     {
-      "id": 74,
       "name": "McDonald’s",
       "value": "mc-donald-s"
     },
     {
-      "id": 75,
       "name": "Miss South Africa Pageant",
       "value": "miss-south-africa-pageant"
     },
     {
-      "id": 76,
       "name": "Miss Universe Pageant",
       "value": "miss-universe-pageant"
     },
     {
-      "id": 77,
       "name": "Mizrahi Tefahot Bank",
       "value": "mizrahi-tefahot-bank"
     },
     {
-      "id": 78,
       "name": "Motorola",
       "value": "motorola"
     },
     {
-      "id": 79,
       "name": "Motorola Solutions",
       "value": "motorola-solutions"
     },
     {
-      "id": 80,
       "name": "Olympic Committee of Israel",
       "value": "olympic-committee-of-israel"
     },
     {
-      "id": 81,
       "name": "Orange",
       "value": "orange"
     },
     {
-      "id": 82,
       "name": "PUMA",
       "value": "puma"
     },
     {
-      "id": 83,
       "name": "Palantir",
       "value": "palantir"
     },
     {
-      "id": 84,
       "name": "Palantir Technologies",
       "value": "palantir-technologies"
     },
     {
-      "id": 85,
       "name": "Pop-Kultur Berlin",
       "value": "pop-kultur-berlin"
     },
     {
-      "id": 86,
       "name": "Puma",
       "value": "puma"
     },
     {
-      "id": 87,
       "name": "Rabinovich Foundation",
       "value": "rabinovich-foundation"
     },
     {
-      "id": 88,
       "name": "SXSW",
       "value": "sxsw"
     },
     {
-      "id": 89,
       "name": "Sabra",
       "value": "sabra"
     },
     {
-      "id": 90,
       "name": "Sabra Hummus",
       "value": "sabra-hummus"
     },
     {
-      "id": 91,
       "name": "Settlement goods",
       "value": "settlement-goods"
     },
     {
-      "id": 92,
       "name": "Shikun & Binui",
       "value": "shikun-and-binui"
     },
     {
-      "id": 93,
       "name": "Shomron/Samaria Film Fund",
       "value": "shomron-samaria-film-fund"
     },
     {
-      "id": 94,
       "name": "Something Al'else",
       "value": "something-al-else"
     },
     {
-      "id": 95,
       "name": "Starbucks",
       "value": "starbucks"
     },
     {
-      "id": 96,
       "name": "Strauss Group",
       "value": "strauss-group"
     },
     {
-      "id": 97,
       "name": "Summer in the City festival",
       "value": "summer-in-the-city-festival"
     },
     {
-      "id": 98,
       "name": "Sydney Festival",
       "value": "sydney-festival"
     },
     {
-      "id": 99,
       "name": "TLVFest",
       "value": "tlv-fest"
     },
     {
-      "id": 100,
       "name": "Tel Aviv Heat",
       "value": "tel-aviv-heat"
     },
     {
-      "id": 101,
       "name": "Unilever",
       "value": "unilever"
     },
     {
-      "id": 102,
       "name": "University of Haifa",
       "value": "university-of-haifa"
     },
     {
-      "id": 103,
       "name": "Veolia",
       "value": "veolia"
     },
     {
-      "id": 104,
       "name": "Volvo",
       "value": "volvo"
     },
     {
-      "id": 105,
       "name": "ZIM",
       "value": "zim"
     },
     {
-      "id": 106,
       "name": "and G4S",
       "value": "and-g4-s"
     },
     {
-      "id": 107,
       "name": "itrek",
       "value": "itrek"
     }
