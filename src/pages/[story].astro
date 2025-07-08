@@ -1,0 +1,87 @@
+---
+import { getCollection } from "astro:content"
+import Layout from '../layouts/Layout.astro'
+import StoryBlock from '../components/StoryBlock.vue'
+import { getFilteredEvents } from '../utilities/getFilteredEvents.ts'
+import { columns, data, rows, ticks } from '../data/chart-config.json'
+import events from '../data/events.json'
+
+export async function getStaticPaths() {
+  const stories = await getCollection('stories')
+  return stories.map(story => ({
+    params: { story: story.id },
+    props: { story },
+  }))
+}
+
+const { story } = Astro.props
+
+const storyEvents = story.data.events
+  .map(event => {
+    return {
+      ...events.find(e => e.id === event.id),
+      ...event,
+    }
+  })
+
+const chartEventCoordsHighlighted = getFilteredEvents(events, story.data.filters)
+  .map(({x, y}) => ({x, y}))
+
+const chartEventCoords = data.filter(coords => {
+  const isHighlighted = chartEventCoordsHighlighted
+    .find(c => c.x == coords.x && c.y === coords.y)
+  return !isHighlighted
+})
+---
+
+<Layout
+	title={[story.data.prefix, story.data.title].join(' ')}
+	description={story.data.description}
+	currentUrl="/"
+	bgColor="black"
+>
+	<div class="
+      h-screen
+      h-svh
+      pt-(--header-height)
+      flex
+      flex-col
+      bg-black
+      text-white
+    "
+  >
+    <div
+      class="
+        grid
+        grid-cols-12
+        p-4
+        bg-grey-dark
+        sm:py-8
+        xl:px-8
+      "
+    >
+      <div class="col-span-9 flex flex-col">
+        <span class="sr-only 2xl:not-sr-only text-sm leading-tight uppercase">
+          {story.data.prefix}
+        </span>
+        <span class="text-2xl leading-tight font-black">
+          {story.data.title}
+        </span>
+      </div>
+    </div>
+    <div class="grow overflow-scroll scroll-smooth">
+      <StoryBlock
+        client:load
+        chartColumns={columns}
+        chartEventCoords={chartEventCoords}
+        chartEventCoordsHighlighted={chartEventCoordsHighlighted}
+        chartRows={rows}
+        ticks={ticks}
+        intro={story.data.intro}
+        conclusion={story.data.conclusion}
+        events={storyEvents}
+        actions={story.data.actions}
+      />
+    </div>
+	</div>
+</Layout>

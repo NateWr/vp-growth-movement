@@ -5,17 +5,23 @@ import Chart from './Chart.vue';
 import { useViewportSize } from '../utilities/useViewportSize';
 import type { ChartTick } from '../types/ChartTick';
 import type { ChartHex } from '../types/ChartHex';
+import type { Event } from '../types/Event';
+import type { StoryAction } from '../types/StoryAction';
 
 const props = defineProps({
-  columns: {
+  chartColumns: {
     type: Number,
     required: true,
   },
-  eventCoords: {
+  chartEventCoords: {
     type: Array as PropType<ChartHex[]>,
     required: true,
   },
-  rows: {
+  chartEventCoordsHighlighted: {
+    type: Array as PropType<ChartHex[]>,
+    required: true,
+  },
+  chartRows: {
     type: Number,
     required: true,
   },
@@ -23,17 +29,30 @@ const props = defineProps({
     type: Array as PropType<ChartTick[]>,
     required: true,
   },
-  story: {
-    type: Object,
+  intro: {
+    type: String,
+    required: true,
+  },
+  conclusion: {
+    type: String,
+    required: true,
+  },
+  events: {
+    type: Array as PropType<Event[]>,
+    required: true,
+  },
+  actions: {
+    type: Array as PropType<StoryAction[]>,
     required: true,
   },
 })
 
-const showIntro = ref(true)
-const showConclusion = ref(false)
-const storyCurrent = ref(null)
+const countSlides = computed(() => props.events.length + 2)
+const storyEventCoords = computed(() => props.events.map(({x, y}) => ({x, y})))
+const currentSlide = ref<number>(0)
 
-const highlights = computed(() => props.eventCoords.filter((e, i) => i % 5 === 0))
+const isIntro = computed(() => !currentSlide.value)
+const isConclusion = computed(() => currentSlide.value >= (countSlides.value - 1))
 
 const { width, BREAKPOINTS } = useViewportSize()
 
@@ -41,7 +60,7 @@ const fitChartOnScreen = computed(() => {
   if (width.value >= BREAKPOINTS.LAPTOP_SM) {
     return true
   }
-  return showIntro.value || showConclusion.value
+  return isIntro.value || isConclusion.value
 })
 
 const showAllYears = computed(() => {
@@ -52,36 +71,20 @@ const showAllYears = computed(() => {
 
 })
 
-const next = () => {
-  if (showConclusion.value) {
-    return
-  } else if (showIntro.value) {
-    showIntro.value = false
-    storyCurrent.value = 0
-    return
-  } else if (storyCurrent.value > props.story.events.length) {
-    showConclusion.value = true
-    storyCurrent.value++
-    return
+const back = () => {
+  if (!isIntro.value) {
+    currentSlide.value--
   }
-  storyCurrent.value++
 }
 
-const back = () => {
-  if (showConclusion.value) {
-    showConclusion.value = false
-    storyCurrent.value--
-    return
-  } else if (storyCurrent.value == 0) {
-    showIntro.value = true
-    storyCurrent.value = null
-    return
+const next = () => {
+  if (!isConclusion.value) {
+    currentSlide.value++
   }
-  storyCurrent.value--
 }
 
 const xPadding = 16
-const storyCurrentX = computed(() => xPadding + (storyCurrent.value ?? 0) *  10)
+const storyCurrentX = computed(() => xPadding + currentSlide.value *  10)
 </script>
 
 <template>
@@ -94,19 +97,18 @@ const storyCurrentX = computed(() => xPadding + (storyCurrent.value ?? 0) *  10)
     `"
   >
     <Chart
-      client:load
-      :columns="columns"
+      :columns="chartColumns"
       :datasets="[
         {
           id: 'all-data',
-          hexes: eventCoords,
+          hexes: chartEventCoords,
         },
         {
           id: 'highlights',
-          hexes: highlights,
+          hexes: chartEventCoordsHighlighted,
         }
       ]"
-      :rows="rows"
+      :rows="chartRows"
       :ticks="ticks"
       :showAllYears="showAllYears"
     />
@@ -162,7 +164,7 @@ const storyCurrentX = computed(() => xPadding + (storyCurrent.value ?? 0) *  10)
       "
       @click="next"
     >
-      Next ({{ storyCurrent }})
+      Next ({{ currentSlide }})
     </ButtonWhite>
   </div>
 </template>
