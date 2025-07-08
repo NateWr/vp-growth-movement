@@ -74,17 +74,19 @@ const currentTicks = computed(() => {
  *
  * Then, use this to get the correct position.
  */
-const hexGroupsWithCoords = props.datasets
-  .map(group => {
-    const coords: ChartHex[] = group.hexes
-      .map(hex => {
-        const xOffsetToggle = hex.y % 2
-        const x = (hex.x * hexWidth) + (xOffsetToggle * (hexWidth / 2))
-        const y = hex.y * hexHeight
-        return {x, y}
-      })
-    return {...group, coords}
-  })
+const hexGroupsWithCoords = computed(() => {
+  return props.datasets
+    .map(group => {
+      const coords: ChartHex[] = group.hexes
+        .map(hex => {
+          const xOffsetToggle = hex.y % 2
+          const x = (hex.x * hexWidth) + (xOffsetToggle * (hexWidth / 2))
+          const y = hex.y * hexHeight
+          return {x, y}
+        })
+      return {...group, coords}
+    })
+})
 </script>
 
 <template>
