@@ -192,14 +192,14 @@ const storyCurrentX = computed(() => xPadding + currentSlide.value *  10)
   fill: var(--color-chart);
 }
 .story-wrapper .chart-hex-group-story {
-  fill: var(--color-black);
+  fill: var(--color-chart-feature);
 }
 .story-wrapper .chart-hex-group-story polygon {
-  stroke: var(--color-yellow);
+  stroke: var(--color-chart-feature-outline);
   stroke-width: 4px;
 }
 .story-wrapper .chart-hex-group-story line {
-  stroke: var(--color-yellow);
+  stroke: var(--color-chart-feature-outline);
   stroke-width: 2px;
 }
 .story-item {
