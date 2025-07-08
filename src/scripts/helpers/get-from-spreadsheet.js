@@ -6,7 +6,7 @@ import { parse } from 'csv-parse/sync'
 
 const COL_ID = 'ID'
 const COL_DATE = 'Date \nYYYY-MM-DD'
-const COL_AREA = 'Campaign Area'
+const COL_AREA = 'Categorize\n(leave empty if not applicable) Campaign Area'
 const COL_CAMPAIGN = 'Campaign'
 const COL_HEADLINE = 'Headline'
 const COL_SUMMARY = 'Summary'
