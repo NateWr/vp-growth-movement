@@ -37,10 +37,17 @@ const props = defineProps({
     type: Array as PropType<Object[]>,
     default: [],
   },
+  storyPoints: {
+    type: Array as PropType<ChartHex[]>,
+    default: [],
+  },
+  storyPointsScale: {
+    type: Number,
+    default: 2.5,
+  },
 })
 
-const hexWidth = 9
-const hexHeight = 8
+// SVG polygon points
 const hexPoints = [
   [3.5, 0],
   [7, 2],
@@ -49,12 +56,22 @@ const hexPoints = [
   [0, 6],
   [0, 2],
 ]
+const hexSize = [
+  hexPoints.map(([x, y]) => x).sort().reverse()[0],
+  hexPoints.map(([x, y]) => y).sort().reverse()[0],
+]
+const hexWidth = hexSize[0] + 2
+const hexHeight = hexSize[1]
+
+// Size of the large story hex
+const storyHexWidth = computed(() => props.storyPointsScale * hexWidth)
+const storyHexHeight = computed(() => props.storyPointsScale * hexHeight)
 
 // One half hex width is added to ensure the hexes
 // in the last column aren't cut off when the x offset
 // is applied
-const width = computed(() => props.columns * hexWidth + (hexWidth / 2))
-const height = computed(() => props.rows * hexHeight)
+const width = computed(() => props.columns * hexWidth + (storyHexWidth.value / 2))
+const height = computed(() => props.rows * hexHeight + (storyHexHeight.value / 2))
 
 const currentTicks = computed(() => {
   return props.showAllYears
@@ -74,19 +91,34 @@ const currentTicks = computed(() => {
  *
  * Then, use this to get the correct position.
  */
-const hexGroupsWithCoords = computed(() => {
-  return props.datasets
-    .map(group => {
-      const coords: ChartHex[] = group.hexes
-        .map(hex => {
-          const xOffsetToggle = hex.y % 2
-          const x = (hex.x * hexWidth) + (xOffsetToggle * (hexWidth / 2))
-          const y = hex.y * hexHeight
-          return {x, y}
-        })
-      return {...group, coords}
+const getCoords = (hexes: ChartHex[]) => {
+  return hexes.map(hex => {
+    const xOffsetToggle = hex.y % 2
+    const x = (hex.x * hexWidth) + (xOffsetToggle * (hexWidth / 2))
+    const y = hex.y * hexHeight
+    return {x, y}
+  })
+}
+
+const datasetsWithCoords = computed(() => {
+  return props.datasets.map(dataset => {
+    const coords = getCoords(dataset.hexes)
+    return {...dataset, coords}
+  })
+})
+
+const storyCoords = computed(() => {
+  const scaleOffsetX = ((props.storyPointsScale * hexSize[0]) - hexSize[0]) / 2
+  const scaleOffsetY = ((props.storyPointsScale * hexSize[1]) - hexSize[1]) / 2
+  return getCoords(props.storyPoints)
+    .map(({x, y}) => {
+      return {
+        x: x - scaleOffsetX,
+        y: y - scaleOffsetY,
+      }
     })
 })
+
 </script>
 
 <template>
@@ -123,17 +155,44 @@ const hexGroupsWithCoords = computed(() => {
       xmlns="http://www.w3.org/2000/svg"
     >
       <g
-        v-for="hexGroup in hexGroupsWithCoords"
-        :class="`chart-hex-group chart-hex-group-${hexGroup.id}`"
+        v-for="dataset in datasetsWithCoords"
+        :class="`chart-hex-group chart-hex-group-${dataset.id}`"
       >
         <polygon
-          v-for="coords in hexGroup.coords"
+          v-for="coords in dataset.coords"
           :points="
             hexPoints
               .map(pointCoords => {
                 return [
                   pointCoords[0] + coords.x,
                   pointCoords[1] + coords.y,
+                ].join(',')
+              })
+              .join(' ')
+              "
+        />
+      </g>
+      <g
+        v-if="storyCoords.length"
+        class="chart-hex-group chart-hex-group-story"
+      >
+        <template v-for="(coords, i) in storyCoords">
+          <line
+            v-if="i"
+            :x1="storyCoords[i - 1].x + (storyHexWidth / 2)"
+            :y1="storyCoords[i - 1].y + (storyHexHeight / 2)"
+            :x2="coords.x + (storyHexWidth / 2)"
+            :y2="coords.y + (storyHexHeight / 2)"
+          />
+        </template>
+        <polygon
+          v-for="coords in storyCoords"
+          :points="
+            hexPoints
+              .map(pointCoords => {
+                return [
+                  (pointCoords[0] * storyPointsScale) + coords.x,
+                  (pointCoords[1] * storyPointsScale) + coords.y,
                 ].join(',')
               })
               .join(' ')

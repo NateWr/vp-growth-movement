@@ -106,11 +106,13 @@ const storyCurrentX = computed(() => xPadding + currentSlide.value *  10)
         {
           id: 'highlights',
           hexes: chartEventCoordsHighlighted,
-        }
+        },
       ]"
       :rows="chartRows"
       :ticks="ticks"
       :showAllYears="showAllYears"
+      :storyPoints="storyEventCoords"
+      :storyPointsScale="2.5"
     />
     <div
       class="story-item absolute left-[5%] flex flex-col justify-end w-[90vw] max-w-96 "
@@ -188,6 +190,17 @@ const storyCurrentX = computed(() => xPadding + currentSlide.value *  10)
 }
 .story-wrapper .chart-hex-group-highlights {
   fill: var(--color-chart);
+}
+.story-wrapper .chart-hex-group-story {
+  fill: var(--color-black);
+}
+.story-wrapper .chart-hex-group-story polygon {
+  stroke: var(--color-yellow);
+  stroke-width: 4px;
+}
+.story-wrapper .chart-hex-group-story line {
+  stroke: var(--color-yellow);
+  stroke-width: 2px;
 }
 .story-item {
   bottom: calc(25vh + var(--button-height));
