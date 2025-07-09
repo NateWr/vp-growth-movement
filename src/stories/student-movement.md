@@ -10,8 +10,9 @@ events:
   - id: "000000000000015"
   - id: "000000000000208"
     headline: Example of overriding a headline with a custom message rather than using the headline from the data point
-  - id: "000000000000442"
+  - id: "000000000000384"
   - id: "000000000000982"
+  - id: "000000000001295"
   - id: "000000000001341"
 conclusion: An example sentence that sums up the story and says something about where it’s heading or what next or what the final impact was or something like that.
 actions:

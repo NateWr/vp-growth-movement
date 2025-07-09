@@ -3,6 +3,7 @@ import { computed, ref, type PropType } from 'vue';
 import ButtonWhite from './ButtonWhite.vue';
 import Chart from './Chart.vue';
 import { useViewportSize } from '../utilities/useViewportSize';
+import hexConfig from '../utilities/hexConfig';
 import type { ChartTick } from '../types/ChartTick';
 import type { ChartHex } from '../types/ChartHex';
 import type { Event } from '../types/Event';
@@ -83,8 +84,19 @@ const next = () => {
   }
 }
 
-const xPadding = 16
-const storyCurrentX = computed(() => xPadding + currentSlide.value *  10)
+
+const storyPointCurrent = computed(() => {
+  if (!isIntro.value && !isConclusion.value) {
+    return storyEventCoords.value[currentSlide.value - 1]
+  }
+})
+
+const storyCurrentXPercent = computed(() => {
+  if (!isIntro.value && !isConclusion.value) {
+    return ((storyPointCurrent.value.x - hexConfig.gridSize[0]) / props.chartColumns) * 100
+  }
+})
+const storyPointCurrentScale = 4.0
 </script>
 
 <template>
@@ -113,39 +125,52 @@ const storyCurrentX = computed(() => xPadding + currentSlide.value *  10)
       :showAllYears="showAllYears"
       :storyPoints="storyEventCoords"
       :storyPointsScale="2.5"
+      :storyPointCurrent="storyPointCurrent"
+      :storyPointCurrentScale="storyPointCurrentScale"
     />
-    <div
-      class="story-item absolute left-[5%] flex flex-col justify-end w-[90vw] max-w-96 "
-      :style="`left: ${storyCurrentX}%;`"
-    >
+    <div class="absolute top-0 left-4 right-4 h-full">
       <div
+        v-if="storyPointCurrent"
         class="
-          overflow-scroll
+          story-item
+          absolute
           flex
           flex-col
-          gap-2
-          p-4
-          bg-yellow
-          text-black
+          justify-end
+          w-[90vw]
+          max-w-96
         "
+        :style="`left: max(1rem, ${storyCurrentXPercent}%);`"
       >
-        <div>
-          May 2, 2025
+        <div
+          class="
+            overflow-scroll
+            flex
+            flex-col
+            gap-2
+            p-4
+            bg-yellow
+            text-black
+          "
+        >
+          <div>
+            May 2, 2025
+          </div>
+          <p>
+            This is some text This is some text This is some text.
+            This is some text This is some text This is some text.
+            This is some text This is some text This is some text.
+            This is some text This is some text This is some text.
+            This is some text This is some text This is some text.
+            This is some text This is some text This is some text.
+            This is some text This is some text This is some text.
+            This is some text This is some text This is some text.
+            This is some text This is some text This is some text.
+            This is some text This is some text This is some text.
+            This is some text This is some text This is some text.
+            This is some text This is some text This is some text.
+          </p>
         </div>
-        <p>
-          This is some text This is some text This is some text.
-          This is some text This is some text This is some text.
-          This is some text This is some text This is some text.
-          This is some text This is some text This is some text.
-          This is some text This is some text This is some text.
-          This is some text This is some text This is some text.
-          This is some text This is some text This is some text.
-          This is some text This is some text This is some text.
-          This is some text This is some text This is some text.
-          This is some text This is some text This is some text.
-          This is some text This is some text This is some text.
-          This is some text This is some text This is some text.
-        </p>
       </div>
     </div>
     <ButtonWhite
@@ -200,7 +225,7 @@ const storyCurrentX = computed(() => xPadding + currentSlide.value *  10)
 }
 .story-wrapper .chart-hex-group-story line {
   stroke: var(--color-chart-feature-outline);
-  stroke-width: 2px;
+  stroke-width: 4px;
 }
 .story-item {
   bottom: calc(25vh + var(--button-height));
