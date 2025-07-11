@@ -244,12 +244,12 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
               story-item
               absolute
               top-4
-              bottom-[calc(25vh+var(--button-height))]
               flex
               flex-col
               justify-end
               w-[90vw]
               max-w-96
+              md:max-w-120
             "
             :class="[
               i === currentEventIndex ? 'story-item-current' : 'sr-only',
@@ -264,16 +264,33 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
                 overflow-scroll
                 flex
                 flex-col
-                gap-2
+                gap-1
                 p-4
                 bg-yellow
                 text-black
+                md:p-6
+                3xl:p-8
               "
             >
-              <h3>
+              <h3
+                class="
+                  text-base
+                  font-black
+                  uppercase
+                  md:text-base
+                "
+              >
                 {{ event.date }}
               </h3>
-              <p>
+              <p
+                class="
+                  text-lg
+                  font-medium
+                  leading-5.5
+                  md:text-xl
+                  md:leading-6
+                "
+              >
                 {{ event.summary || event.headline }}
               </p>
             </article>
@@ -370,33 +387,23 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
 <style>
 .story-wrapper {
   --button-height: 8rem;
-  width: 100vw;
+  --chart-height: 25vh;
+  --chart-width: 100vw;
+  width: var(--chart-width);
   transition: all 0.5s;
 }
 .story-wrapper-enlarged {
-  width: 300vw;
-}
-@media (min-width: 640px) {
-  .story-wrapper-enlarged {
-    width: 200vw;
-  }
-}
-@media (min-width: 900px) {
-  .story-wrapper-enlarged {
-    width: 180vw;
-  }
-}
-@media (min-width: 1024px) and (orientation: landscape) {
-  .story-wrapper-enlarged {
-    width: 100vw;
-  }
+  --chart-width: 300vw;
 }
 .story-wrapper .chart-wrapper {
   align-items: flex-end;
   padding-bottom: var(--button-height);
 }
 .story-wrapper .chart-hexes {
-  min-height: 25vh;
+  min-height: var(--chart-height);
+}
+.story-item {
+  bottom: calc(var(--chart-height) + var(--button-height));
 }
 .story-item article {
   transform: scale(0);
@@ -416,6 +423,28 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
 .story-item-origin-right article {
   transform-origin: bottom right;
 }
+@media (min-width: 640px) {
+  .story-wrapper-enlarged {
+    --chart-width: 200vw;
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) and (orientation: portrait) {
+  .story-wrapper {
+    --chart-height: 40vh;
+  }
+  .story-wrapper-enlarged {
+    --chart-width: 300vw;
+  }
+}
+@media (min-width: 1024px) and (orientation: landscape) {
+  .story-wrapper-enlarged {
+    --chart-width: 100vw;
+  }
+}
+
+/**
+ * Next/Back buttons
+ */
 .story-buttons {
   --offset-bottom: 3rem;
   --offset-inline: 1rem;
