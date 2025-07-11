@@ -1,5 +1,5 @@
 import debounce from "debounce"
-import { onMounted, ref } from "vue"
+import { onBeforeMount, onMounted, ref } from "vue"
 
 export const useViewportSize = () => {
   const BREAKPOINTS = {
@@ -11,7 +11,7 @@ export const useViewportSize = () => {
 
   const width = ref<number>(0)
 
-  onMounted(() => {
+  onBeforeMount(() => {
     width.value = document.body.clientWidth
     window.addEventListener('resize', debounce(() => {
       width.value = document.body.clientWidth
