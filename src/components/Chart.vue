@@ -46,10 +46,6 @@ const props = defineProps({
     type: Object as PropType<ChartHex | null>,
     default: null,
   },
-  storyPointCurrentScale: {
-    type: Number,
-    default: 4.0,
-  },
 })
 
 // Size of the hex for story points
@@ -57,7 +53,7 @@ const storyHexWidth = computed(() => props.storyPointsScale * hexConfig.gridSize
 const storyHexHeight = computed(() => props.storyPointsScale * hexConfig.gridSize[1])
 
 // Size of the hex for the current point
-const storyCurrentHexSize = computed(() => hexConfig.size.map(h => h * props.storyPointCurrentScale))
+const storyCurrentHexSize = computed(() => hexConfig.size.map(h => h * props.storyPointsScale))
 
 // One half hex width is added to ensure the hexes
 // in the last column aren't cut off when the x offset
@@ -109,13 +105,12 @@ const storyCurrentCoords = computed(() => {
   if (!props.storyPointCurrent) {
     return
   }
-  return getCoords([props.storyPointCurrent], props.storyPointCurrentScale)[0]
+  return getCoords([props.storyPointCurrent], props.storyPointsScale)[0]
 })
 </script>
 
 <template>
-  <div class="chart-wrapper bg-black" :class="highlights.length ? 'chart-wrapper-with-highlights' : ''"
-    aria-hidden="true">
+  <div class="chart-wrapper" aria-hidden="true">
     <div class="chart-ticks font-mono">
       <TransitionGroup name="chart-ticks" appear>
         <div v-for="tick in currentTicks" :key="tick.x" class="chart-tick" :class="tick.major ? 'chart-tick-major' : ''"
@@ -129,7 +124,11 @@ const storyCurrentCoords = computed(() => {
     </div>
     <svg class="chart-hexes" :width="width" :height="height" :viewBox="`0 0 ${width} ${height}`" fill="currentColor"
       xmlns="http://www.w3.org/2000/svg">
-      <g v-for="dataset in datasetsWithCoords" :class="`chart-hex-group chart-hex-group-${dataset.id}`">
+      <g
+        v-for="dataset in datasetsWithCoords"
+        :class="`chart-hex-group chart-hex-group-${dataset.id}`"
+        :style="dataset?.style"
+      >
         <polygon v-for="coords in dataset.coords" :points="hexConfig.points
             .map(pointCoords => {
               return [
@@ -173,8 +172,8 @@ const storyCurrentCoords = computed(() => {
           :points="hexConfig.points
             .map(pointCoords => {
               return [
-                (pointCoords[0] * storyPointCurrentScale) + storyCurrentCoords.x,
-                (pointCoords[1] * storyPointCurrentScale) + storyCurrentCoords.y,
+                (pointCoords[0] * storyPointsScale) + storyCurrentCoords.x,
+                (pointCoords[1] * storyPointsScale) + storyCurrentCoords.y,
               ].join(',')
             })
             .join(' ')
@@ -196,6 +195,9 @@ const storyCurrentCoords = computed(() => {
   height: 100%;
 }
 
+/**
+ * Time series
+ */
 .chart-ticks {
   position: absolute;
   left: var(--padding-x);
@@ -229,13 +231,6 @@ const storyCurrentCoords = computed(() => {
   font-size: 0.75rem;
 }
 
-.chart-hexes {
-  position: relative;
-  width: 100%;
-  height: auto;
-  fill: var(--color-chart);
-}
-
 .chart-ticks-active,
 .chart-ticks-enter-active,
 .chart-ticks-leave-active {
@@ -252,6 +247,33 @@ const storyCurrentCoords = computed(() => {
   opacity: 0;
 }
 
+/**
+ * Hex data groups
+ */
+.chart-hexes {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.chart-hex-group-story {
+  fill: var(--color-chart-story);
+  stroke: var(--color-chart-story);
+  stroke-width: 4px;
+}
+.chart-hex-group-story-current {
+  fill: var(--color-chart-story-current);
+}
+
+@media (min-width: 1536px) {
+  .chart-hex-group-story {
+    stroke-width: 3px;
+  }
+}
+
+/**
+ * Current story hex
+ */
 .chart-draw-line-enter-active {
   stroke-dasharray: 330;
   stroke-dashoffset: 0;

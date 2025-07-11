@@ -116,7 +116,19 @@ const zoomToEvent = (eventIndex: number) => {
   }, delay)
 }
 
-const storyPointCurrentScale = 4.0
+const storyPointsScale = computed(() => {
+  switch (true) {
+    case (width.value >= BREAKPOINTS.LAPTOP):
+      return 1.5
+    case (width.value >= BREAKPOINTS.LAPTOP_SM):
+      return 1.75
+    case (width.value >= BREAKPOINTS.TABLET):
+      return 2
+    default:
+      return 3
+  }
+})
+
 const storyPointCurrent = computed(() => {
   if (currentEventIndex.value > -1) {
     return storyEventCoords.value[currentEventIndex.value]
@@ -177,19 +189,24 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
           {
             id: 'all-data',
             hexes: chartEventCoords,
+            style: {
+              fill: 'var(--color-chart-dim)',
+            }
           },
           {
             id: 'highlights',
             hexes: chartEventCoordsHighlighted,
+            style: {
+              fill: 'var(--color-chart)',
+            }
           },
         ]"
         :rows="chartRows"
         :ticks="ticks"
         :showAllYears="showAllYears"
         :storyPoints="storyEventCoords"
-        :storyPointsScale="2.5"
+        :storyPointsScale="storyPointsScale"
         :storyPointCurrent="storyPointCurrent"
-        :storyPointCurrentScale="storyPointCurrentScale"
       />
       <StoryText
         :class="started ? 'sr-only opacity-0 delay-0' : 'opacity-100 delay-500'"
@@ -222,6 +239,7 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
           <div
             v-for="(event, i) in events"
             ref="event-ref"
+            :key="i"
             class="
               story-item
               absolute
@@ -379,18 +397,6 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
 }
 .story-wrapper .chart-hexes {
   min-height: 25vh;
-  fill: var(--color-chart-dim);
-}
-.story-wrapper .chart-hex-group-highlights {
-  fill: var(--color-chart);
-}
-.story-wrapper .chart-hex-group-story {
-  fill: var(--color-chart-story);
-  stroke: var(--color-chart-story);
-  stroke-width: 4px;
-}
-.story-wrapper .chart-hex-group-story-current {
-  fill: var(--color-chart-story-current);
 }
 .story-item article {
   transform: scale(0);
