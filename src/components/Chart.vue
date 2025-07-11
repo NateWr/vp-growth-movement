@@ -61,8 +61,8 @@ const storyCurrentHexSize = computed(() => hexConfig.size.map(h => h * props.sto
 
 // One half hex width is added to ensure the hexes
 // in the last column aren't cut off when the x offset
-// is applied
-const width = computed(() => props.columns * hexConfig.gridSize[0] + (storyHexWidth.value / 2))
+// is applied or story hex is featured
+const width = computed(() => props.columns * hexConfig.gridSize[0] + storyHexWidth.value)
 const height = computed(() => props.rows * hexConfig.gridSize[1] + (storyHexHeight.value / 2))
 
 const currentTicks = computed(() => {

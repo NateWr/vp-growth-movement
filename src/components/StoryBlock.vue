@@ -318,7 +318,11 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
           right-4
         "
       >
-        <ButtonWhite @click="next">
+        <ButtonWhite
+          :url="finished ? '/student-movement' : ''"
+          :disabled="started && currentEventIndex < 0"
+          @click="next"
+        >
           Next ({{ currentEventIndex }})
         </ButtonWhite>
       </div>
@@ -340,7 +344,7 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
   padding-bottom: var(--button-height);
 }
 .story-wrapper .chart-hexes {
-  height: 25vh;
+  min-height: 25vh;
   fill: var(--color-chart-dim);
 }
 .story-wrapper .chart-hex-group-highlights {
