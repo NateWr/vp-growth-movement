@@ -15,6 +15,7 @@
       sm:top-8
       xl:mx-0
       xl:w-screen
+      3xl:top-16
     "
   >
     <slot />
