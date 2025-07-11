@@ -81,19 +81,19 @@ const filterTypes = [
 const filters = getFilters(filterTypes, eventsWithCoords)
 
 try {
-  fs.writeFileSync('./src/data/events.json', JSON.stringify(eventsWithCoords, null, 2))
+  fs.writeFileSync('./src/data/events.json', JSON.stringify(eventsWithCoords))
 } catch (err) {
   throw new Error(err)
 }
 
 try {
-  fs.writeFileSync('./src/data/filters.json', JSON.stringify(filters, null, 2))
+  fs.writeFileSync('./src/data/filters.json', JSON.stringify(filters))
 } catch (err) {
   throw new Error(err)
 }
 
 try {
-  fs.writeFileSync('./src/data/chart-config.json', JSON.stringify(chartConfig, null, 2))
+  fs.writeFileSync('./src/data/chart-config.json', JSON.stringify(chartConfig))
 } catch (err) {
   throw new Error(err)
 }
