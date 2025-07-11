@@ -11,7 +11,9 @@ const stories = defineCollection({
     events: z.array(
       z.object({
         id: z.string(),
+        date: z.string().optional(),
         headline: z.string().optional(),
+        summary: z.string().optional(),
       })
     ),
     conclusion: z.string(),

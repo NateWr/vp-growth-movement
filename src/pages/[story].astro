@@ -1,9 +1,12 @@
 ---
+import { marked } from 'marked'
 import { getCollection } from "astro:content"
 import Layout from '../layouts/Layout.astro'
 import StoryBlock from '../components/StoryBlock.vue'
 import { getFilteredEvents } from '../utilities/getFilteredEvents.ts'
 import { columns, data, rows, ticks } from '../data/chart-config.json'
+import type { StoryEvent } from '../types/StoryEvent'
+import { StoryEventPositionOrigin } from '../types/StoryEventPosition.d.ts'
 import events from '../data/events.json'
 
 export async function getStaticPaths() {
@@ -16,11 +19,50 @@ export async function getStaticPaths() {
 
 const { story } = Astro.props
 
-const storyEvents = story.data.events
-  .map(event => {
+const formatDate = (str: string) => {
+  return (new Date(str))
+    .toLocaleDateString(
+      'en-US',
+      {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }
+    )
+}
+
+const storyEvents : StoryEvent[] = story.data.events
+  .map(storyEvent => {
+    const event = events.find(e => e.id === storyEvent.id)
+    if (!event) {
+      throw new Error(`Could not find event ${storyEvent.id} in story ${story.id}`)
+    }
+    const xPercent = event.x / columns
+    let position
+    if (xPercent < 0.35) {
+      position = {
+        origin: StoryEventPositionOrigin.left,
+        offset: xPercent,
+      }
+    } else if (xPercent < 0.65) {
+      position = {
+        origin: StoryEventPositionOrigin.center,
+        offset: xPercent,
+      }
+    } else {
+      position = {
+        origin: StoryEventPositionOrigin.right,
+        offset: 1 - xPercent,
+      }
+    }
     return {
-      ...events.find(e => e.id === event.id),
-      ...event,
+      date: formatDate(event.date),
+      headline: event.headline,
+      summary: event.summary,
+      x: event.x,
+      y: event.y,
+      position,
+      ...storyEvent,
     }
   })
 
@@ -32,6 +74,9 @@ const chartEventCoords = data.filter(coords => {
     .find(c => c.x == coords.x && c.y === coords.y)
   return !isHighlighted
 })
+
+const intro = await marked.parse(story.data.intro)
+const conclusion = await marked.parse(story.data.conclusion)
 ---
 
 <Layout
@@ -50,7 +95,7 @@ const chartEventCoords = data.filter(coords => {
       text-white
     "
   >
-    <div
+    <h1
       class="
         grid
         grid-cols-12
@@ -68,20 +113,18 @@ const chartEventCoords = data.filter(coords => {
           {story.data.title}
         </span>
       </div>
-    </div>
-    <div class="grow overflow-scroll scroll-smooth">
-      <StoryBlock
-        client:load
-        chartColumns={columns}
-        chartEventCoords={chartEventCoords}
-        chartEventCoordsHighlighted={chartEventCoordsHighlighted}
-        chartRows={rows}
-        ticks={ticks}
-        intro={story.data.intro}
-        conclusion={story.data.conclusion}
-        events={storyEvents}
-        actions={story.data.actions}
-      />
-    </div>
+    </h1>
+    <StoryBlock
+      client:load
+      chartColumns={columns}
+      chartEventCoords={chartEventCoords}
+      chartEventCoordsHighlighted={chartEventCoordsHighlighted}
+      chartRows={rows}
+      ticks={ticks}
+      intro={intro}
+      conclusion={conclusion}
+      events={storyEvents}
+      actions={story.data.actions}
+    />
 	</div>
 </Layout>

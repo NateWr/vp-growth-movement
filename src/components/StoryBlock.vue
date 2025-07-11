@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed, ref, type PropType } from 'vue';
+import { computed, nextTick, ref, useTemplateRef, watch, type PropType } from 'vue';
 import ButtonWhite from './ButtonWhite.vue';
 import Chart from './Chart.vue';
 import { useViewportSize } from '../utilities/useViewportSize';
-import hexConfig from '../utilities/hexConfig';
 import type { ChartTick } from '../types/ChartTick';
 import type { ChartHex } from '../types/ChartHex';
-import type { Event } from '../types/Event';
+import type { StoryEvent } from '../types/StoryEvent.d.ts';
+import { StoryEventPositionOrigin } from '../types/StoryEventPosition.d.ts';
 import type { StoryAction } from '../types/StoryAction';
 
 const props = defineProps({
@@ -39,7 +39,7 @@ const props = defineProps({
     required: true,
   },
   events: {
-    type: Array as PropType<Event[]>,
+    type: Array as PropType<StoryEvent[]>,
     required: true,
   },
   actions: {
@@ -48,12 +48,18 @@ const props = defineProps({
   },
 })
 
-const countSlides = computed(() => props.events.length + 2)
-const storyEventCoords = computed(() => props.events.map(({x, y}) => ({x, y})))
-const currentSlide = ref<number>(0)
+const scrollRef = useTemplateRef('scroll-ref')
+const eventRefs = useTemplateRef('event-ref')
 
-const isIntro = computed(() => !currentSlide.value)
-const isConclusion = computed(() => currentSlide.value >= (countSlides.value - 1))
+const currentEventIndex = ref<number>(-1)
+const started = ref<boolean>(false)
+const finished = ref<boolean>(false)
+
+const storyEventCoords = computed(() => props.events.map(({x, y}) => ({x, y})))
+
+const currentEventRef = computed(() => {
+  return eventRefs.value?.find((e, i) => i === currentEventIndex.value)
+})
 
 const { width, BREAKPOINTS } = useViewportSize()
 
@@ -61,7 +67,7 @@ const fitChartOnScreen = computed(() => {
   if (width.value >= BREAKPOINTS.LAPTOP_SM) {
     return true
   }
-  return isIntro.value || isConclusion.value
+  return !started.value || finished.value
 })
 
 const showAllYears = computed(() => {
@@ -73,126 +79,240 @@ const showAllYears = computed(() => {
 })
 
 const back = () => {
-  if (!isIntro.value) {
-    currentSlide.value--
+  if (currentEventIndex.value <= 0) {
+    started.value = false
+    currentEventIndex.value = -1
+  } else {
+    currentEventIndex.value--
   }
 }
 
 const next = () => {
-  if (!isConclusion.value) {
-    currentSlide.value++
+  if (!started.value) {
+    start()
+  } else if (currentEventIndex.value + 1 >= props.events.length) {
+    finished.value = true
+    currentEventIndex.value = -1
+  } else {
+    currentEventIndex.value++
   }
 }
 
+/**
+ * Add a short delay before showing
+ * the first event when starting
+ */
+const start = () => {
+  started.value = true
+  setTimeout(() => {
+    currentEventIndex.value = 0
+  }, fitChartOnScreen.value ? 0 : 800)
+}
 
-const storyPointCurrent = computed(() => {
-  if (!isIntro.value && !isConclusion.value) {
-    return storyEventCoords.value[currentSlide.value - 1]
-  }
-})
-
-const storyCurrentXPercent = computed(() => {
-  if (!isIntro.value && !isConclusion.value) {
-    return ((storyPointCurrent.value.x - hexConfig.gridSize[0]) / props.chartColumns) * 100
-  }
-})
 const storyPointCurrentScale = 4.0
+const storyPointCurrent = computed(() => {
+  if (currentEventIndex.value > -1) {
+    return storyEventCoords.value[currentEventIndex.value]
+  }
+})
+
+const eventPositionCSS = computed(() => {
+  return props.events.map((event: StoryEvent) => {
+    if (event.position.origin === StoryEventPositionOrigin.left) {
+      return {
+        left: `max(1rem, ${event.position.offset * 100}%)`,
+        transform: 'translateX(-1rem)',
+      }
+    } else if (event.position.origin === StoryEventPositionOrigin.center) {
+      return {
+        left: `max(1rem, ${event.position.offset * 100}%)`,
+        transform: 'translateX(-50%)',
+      }
+    } else if (event.position.origin === StoryEventPositionOrigin.right) {
+      return {
+        right: `max(1rem, ${event.position.offset * 100}%)`,
+        transform: 'translateX(1rem)',
+      }
+    }
+  })
+})
+
+watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
+  if (!newCurrentEventRef) {
+    if (scrollRef.value) {
+      scrollRef.value.scrollLeft = 0
+    }
+    return
+  }
+  const setScrollLeft = () => {
+    if (!scrollRef.value) {
+      return
+    }
+    let scrollLeft = 0
+    const currentEvent = props.events[currentEventIndex.value]
+    if (currentEvent.position.origin === StoryEventPositionOrigin.left) {
+      scrollLeft = newCurrentEventRef.offsetLeft - 16
+    } else if (currentEvent.position.origin === StoryEventPositionOrigin.center) {
+      scrollLeft = newCurrentEventRef.offsetLeft - (newCurrentEventRef.offsetWidth / 2)
+    } else {
+      scrollLeft = newCurrentEventRef.offsetLeft
+    }
+    scrollRef.value.scrollLeft = Math.min(scrollRef.value.scrollWidth, Math.max(0, scrollLeft))
+  }
+  nextTick(setScrollLeft)
+})
 </script>
 
 <template>
   <div
-    :class="`
-      story-wrapper
-      ${!fitChartOnScreen ? 'story-wrapper-enlarged' : ''}
-      relative
-      h-full
-    `"
+    ref="scroll-ref"
+    class="grow overflow-scroll scroll-smooth"
   >
-    <Chart
-      :columns="chartColumns"
-      :datasets="[
-        {
-          id: 'all-data',
-          hexes: chartEventCoords,
-        },
-        {
-          id: 'highlights',
-          hexes: chartEventCoordsHighlighted,
-        },
-      ]"
-      :rows="chartRows"
-      :ticks="ticks"
-      :showAllYears="showAllYears"
-      :storyPoints="storyEventCoords"
-      :storyPointsScale="2.5"
-      :storyPointCurrent="storyPointCurrent"
-      :storyPointCurrentScale="storyPointCurrentScale"
-    />
-    <div class="absolute top-0 left-4 right-4 h-full">
+    <div
+      :class="`
+        story-wrapper
+        ${!fitChartOnScreen ? 'story-wrapper-enlarged' : ''}
+        relative
+        h-full
+      `"
+    >
+      <Chart
+        aria-hidden="true"
+        :columns="chartColumns"
+        :datasets="[
+          {
+            id: 'all-data',
+            hexes: chartEventCoords,
+          },
+          {
+            id: 'highlights',
+            hexes: chartEventCoordsHighlighted,
+          },
+        ]"
+        :rows="chartRows"
+        :ticks="ticks"
+        :showAllYears="showAllYears"
+        :storyPoints="storyEventCoords"
+        :storyPointsScale="2.5"
+        :storyPointCurrent="storyPointCurrent"
+        :storyPointCurrentScale="storyPointCurrentScale"
+      />
       <div
-        v-if="storyPointCurrent"
         class="
-          story-item
           absolute
+          top-0
+          left-0
+          bottom-[calc(25vh+var(--button-height))]
+          p-4
           flex
           flex-col
-          justify-end
-          w-[90vw]
-          max-w-96
+          gap-4
+          max-w-screen
+          z-50
+          text-lg
+          transition-opacity
+          duration-300
         "
-        :style="`left: max(1rem, ${storyCurrentXPercent}%);`"
+        :class="started ? 'sr-only opacity-0 delay-0' : 'opacity-100 delay-500'"
       >
+        <h2 class="sr-only">Introduction</h2>
         <div
+          v-html="intro"
+          class="flex flex-col gap-4"
+        />
+      </div>
+      <div class="absolute top-0 left-4 right-4 h-full">
+        <h2 class="sr-only">Key Dates</h2>
+        <div
+          v-for="(event, i) in events"
+          ref="event-ref"
           class="
-            overflow-scroll
+            story-item
+            absolute
+            top-4
+            bottom-[calc(25vh+var(--button-height))]
             flex
             flex-col
-            gap-2
-            p-4
-            bg-yellow
-            text-black
+            justify-end
+            w-[90vw]
+            max-w-96
           "
+          :class="i === currentEventIndex ? '' : 'sr-only'"
+          :style="eventPositionCSS[i]"
         >
-          <div>
-            May 2, 2025
-          </div>
-          <p>
-            This is some text This is some text This is some text.
-            This is some text This is some text This is some text.
-            This is some text This is some text This is some text.
-            This is some text This is some text This is some text.
-            This is some text This is some text This is some text.
-            This is some text This is some text This is some text.
-            This is some text This is some text This is some text.
-            This is some text This is some text This is some text.
-            This is some text This is some text This is some text.
-            This is some text This is some text This is some text.
-            This is some text This is some text This is some text.
-            This is some text This is some text This is some text.
-          </p>
+          <article
+            class="
+              overflow-scroll
+              flex
+              flex-col
+              gap-2
+              p-4
+              bg-yellow
+              text-black
+            "
+          >
+            <h3>
+              {{ event.date }}
+            </h3>
+            <p>
+              {{ event.summary || event.headline }}
+            </p>
+          </article>
         </div>
       </div>
+      <div
+        class="
+          absolute
+          top-0
+          left-0
+          bottom-[calc(25vh+var(--button-height))]
+          p-4
+          flex
+          flex-col
+          gap-4
+          max-w-screen
+          z-50
+          text-lg
+          transition-opacity
+          duration-300
+        "
+        :class="!finished ? 'sr-only opacity-0 delay-0' : 'opacity-100 delay-500'"
+      >
+        <h2 class="sr-only">Conclusion</h2>
+        <div v-html="conclusion" />
+        <div v-if="actions.length">
+          <a
+            v-for="action in actions"
+            :href="action.url"
+          >
+            <div>{{ action.prefix }}</div>
+            <div>{{ action.title }}</div>
+          </a>
+        </div>
+      </div>
+      <div
+        class="
+          fixed
+          bottom-12
+          left-4
+        "
+      >
+        <ButtonWhite @click="back">
+          Prev
+        </ButtonWhite>
+      </div>
+      <div
+        class="
+          fixed
+          bottom-12
+          right-4
+        "
+      >
+        <ButtonWhite @click="next">
+          Next ({{ currentEventIndex }})
+        </ButtonWhite>
+      </div>
     </div>
-    <ButtonWhite
-      class="
-        fixed
-        bottom-12
-        left-4
-      "
-      @click="back"
-    >
-      Prev
-    </ButtonWhite>
-    <ButtonWhite
-      class="
-        fixed
-        bottom-12
-        right-4
-      "
-      @click="next"
-    >
-      Next ({{ currentSlide }})
-    </ButtonWhite>
   </div>
 </template>
 
@@ -226,9 +346,5 @@ const storyPointCurrentScale = 4.0
 .story-wrapper .chart-hex-group-story line {
   stroke: var(--color-chart-feature-outline);
   stroke-width: 4px;
-}
-.story-item {
-  bottom: calc(25vh + var(--button-height));
-  top: 1rem;
 }
 </style>

@@ -3,14 +3,17 @@ prefix: Growth of a
 title: Student Movement
 description: Student unions and student governments around the world have organized BDS campaigns in solidarity with Palestinians, building the legacy of student movements in igniting progressive change.
 intro: |
-  Student unions and student governments around the world have organized BDS campaigns in solidarity with Palestinians, building the legacy of student movements in igniting progressive change.
+  Student unions and student *governments* around the [world](https://example.org) have organized **BDS campaigns** in solidarity with Palestinians, building the legacy of student movements in igniting progressive change.
 
   Building the legacy of student unions and student governments around the world have organized BDS campaigns in solidarity with Palestinians.
 events:
   - id: "000000000000015"
   - id: "000000000000208"
-    headline: Example of overriding a headline with a custom message rather than using the headline from the data point
+    summary: Example of overriding a summary with a custom message rather than using the headline from the data point.
   - id: "000000000000384"
+  - id: "000000000000484"
+  - id: "000000000000614"
+  - id: "000000000000750"
   - id: "000000000000982"
   - id: "000000000001295"
   - id: "000000000001341"
