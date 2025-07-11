@@ -19,8 +19,8 @@
 :root {
   --color-chart: var(--color-red);
   --color-chart-dim: var(--color-red-dark);
-  --color-chart-feature: var(--color-black);
-  --color-chart-feature-outline: var(--color-yellow);
+  --color-chart-story: var(--color-yellow);
+  --color-chart-story-current: var(--color-black);
 
   --header-height: 4rem;
 }

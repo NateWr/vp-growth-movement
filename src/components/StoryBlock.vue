@@ -385,15 +385,12 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
   fill: var(--color-chart);
 }
 .story-wrapper .chart-hex-group-story {
-  fill: var(--color-chart-feature);
-}
-.story-wrapper .chart-hex-group-story polygon {
-  stroke: var(--color-chart-feature-outline);
+  fill: var(--color-chart-story);
+  stroke: var(--color-chart-story);
   stroke-width: 4px;
 }
-.story-wrapper .chart-hex-group-story line {
-  stroke: var(--color-chart-feature-outline);
-  stroke-width: 4px;
+.story-wrapper .chart-hex-group-story-current {
+  fill: var(--color-chart-story-current);
 }
 .story-item article {
   transform: scale(0);
