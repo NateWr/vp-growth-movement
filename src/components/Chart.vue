@@ -43,7 +43,7 @@ const props = defineProps({
     default: 2.5,
   },
   storyPointCurrent: {
-    type: Object as PropType<ChartHex|null>,
+    type: Object as PropType<ChartHex | null>,
     default: null,
   },
   storyPointCurrentScale: {
@@ -90,14 +90,14 @@ const getCoords = (hexes: ChartHex[], scale: number = 1) => {
     const xOffsetToggle = hex.y % 2
     const x = (hex.x * hexConfig.gridSize[0]) + (xOffsetToggle * (hexConfig.gridSize[0] / 2)) - scaleOffsetX
     const y = hex.y * hexConfig.gridSize[1] - scaleOffsetY
-    return {x, y}
+    return { x, y }
   })
 }
 
 const datasetsWithCoords = computed(() => {
   return props.datasets.map(dataset => {
     const coords = getCoords(dataset.hexes)
-    return {...dataset, coords}
+    return { ...dataset, coords }
   })
 })
 
@@ -114,96 +114,65 @@ const storyCurrentCoords = computed(() => {
 </script>
 
 <template>
-  <div
-    class="chart-wrapper bg-black"
-    :class="highlights.length ? 'chart-wrapper-with-highlights' : ''"
-    aria-hidden="true"
-  >
+  <div class="chart-wrapper bg-black" :class="highlights.length ? 'chart-wrapper-with-highlights' : ''"
+    aria-hidden="true">
     <div class="chart-ticks font-mono">
       <TransitionGroup name="chart-ticks" appear>
-        <div
-          v-for="tick in currentTicks"
-          :key="tick.x"
-          class="chart-tick"
-          :class="tick.major ? 'chart-tick-major' : ''"
-          :style="`left: ${(tick.x / columns) * 100}%`"
-        >
+        <div v-for="tick in currentTicks" :key="tick.x" class="chart-tick" :class="tick.major ? 'chart-tick-major' : ''"
+          :style="`left: ${(tick.x / columns) * 100}%`">
           <div class="chart-tick-line" />
-          <span
-            class="chart-tick-label"
-            :style="`left: ${tick.x}%`"
-          >
+          <span class="chart-tick-label" :style="`left: ${tick.x}%`">
             {{ tick.label }}
           </span>
         </div>
       </TransitionGroup>
     </div>
-    <svg
-      class="chart-hexes"
-      :width="width"
-      :height="height"
-      :viewBox="`0 0 ${width} ${height}`"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <g
-        v-for="dataset in datasetsWithCoords"
-        :class="`chart-hex-group chart-hex-group-${dataset.id}`"
-      >
-        <polygon
-          v-for="coords in dataset.coords"
-          :points="
-            hexConfig.points
-              .map(pointCoords => {
-                return [
-                  pointCoords[0] + coords.x,
-                  pointCoords[1] + coords.y,
-                ].join(',')
-              })
-              .join(' ')
-              "
-        />
+    <svg class="chart-hexes" :width="width" :height="height" :viewBox="`0 0 ${width} ${height}`" fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg">
+      <g v-for="dataset in datasetsWithCoords" :class="`chart-hex-group chart-hex-group-${dataset.id}`">
+        <polygon v-for="coords in dataset.coords" :points="hexConfig.points
+            .map(pointCoords => {
+              return [
+                pointCoords[0] + coords.x,
+                pointCoords[1] + coords.y,
+              ].join(',')
+            })
+            .join(' ')
+          " />
       </g>
-      <g
-        v-if="storyCoords.length"
-        class="chart-hex-group chart-hex-group-story"
-      >
+      <g v-if="storyCoords.length" class="chart-hex-group chart-hex-group-story">
         <template v-for="(coords, i) in storyCoords">
-          <line
-            v-if="i"
-            :x1="storyCoords[i - 1].x + (storyHexWidth / 2)"
-            :y1="storyCoords[i - 1].y + (storyHexHeight / 2)"
-            :x2="coords.x + (storyHexWidth / 2)"
-            :y2="coords.y + (storyHexHeight / 2)"
-          />
+          <line v-if="i" :x1="storyCoords[i - 1].x + (storyHexWidth / 2)"
+            :y1="storyCoords[i - 1].y + (storyHexHeight / 2)" :x2="coords.x + (storyHexWidth / 2)"
+            :y2="coords.y + (storyHexHeight / 2)" />
         </template>
-        <polygon
-          v-for="(coords, i) in storyCoords"
-          :points="
-            hexConfig.points
-              .map(pointCoords => {
-                return [
-                  (pointCoords[0] * storyPointsScale) + coords.x,
-                  (pointCoords[1] * storyPointsScale) + coords.y,
-                ].join(',')
-              })
-              .join(' ')
-              "
-        />
+        <polygon v-for="(coords, i) in storyCoords" :points="hexConfig.points
+            .map(pointCoords => {
+              return [
+                (pointCoords[0] * storyPointsScale) + coords.x,
+                (pointCoords[1] * storyPointsScale) + coords.y,
+              ].join(',')
+            })
+            .join(' ')
+          " />
       </g>
       <g
         v-if="storyCurrentCoords"
         class="chart-hex-group chart-hex-group-story chart-hex-group-story-current"
       >
-        <line
-          :x1="storyCurrentCoords.x + (storyCurrentHexSize[0] / 2)"
-          :y1="storyCurrentCoords.y + (storyCurrentHexSize[1] / 2)"
-          :x2="storyCurrentCoords.x + (storyCurrentHexSize[0] / 2)"
-          :y2="-100"
-        />
-        <polygon
-          :points="
-            hexConfig.points
+        <Transition name="chart-draw-line" appear>
+          <line
+            :key="storyCurrentCoords.x"
+            :x1="storyCurrentCoords.x + (storyCurrentHexSize[0] / 2)"
+            :y1="storyCurrentCoords.y + (storyCurrentHexSize[1] / 2)"
+            :x2="storyCurrentCoords.x + (storyCurrentHexSize[0] / 2)"
+            :y2="-100"
+          />
+        </Transition>
+        <Transition name="chart-draw-hex" appear>
+          <polygon
+            :key="storyCurrentCoords.x"
+            :points="hexConfig.points
               .map(pointCoords => {
                 return [
                   (pointCoords[0] * storyPointCurrentScale) + storyCurrentCoords.x,
@@ -211,69 +180,110 @@ const storyCurrentCoords = computed(() => {
                 ].join(',')
               })
               .join(' ')
-              "
-        />
+            " />
+        </Transition>
       </g>
     </svg>
   </div>
 </template>
 
 <style>
-  .chart-wrapper {
-    --padding-x: 1rem;
-    position: relative;
-    display: flex;
-    align-items: center;
-    padding-left: var(--padding-x);
-    padding-right: var(--padding-x);
-    background: var(--color-black);
-    height: 100%;
-  }
-  .chart-ticks {
-    position: absolute;
-    left: var(--padding-x);
-    right: var(--padding-x);
-    top: 0;
-    bottom: 0;
-    color: var(--color-white);
-    opacity: 0.5;
-  }
-  .chart-tick {
-    position: absolute;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transform: translateX(-50%);
-  }
-  .chart-tick-line {
-    flex-grow: 1;
-    border-left: 1px solid;
-    opacity: 0.25;
-  }
-  .chart-tick-major .chart-tick-line {
-    opacity: 0.5;
-  }
-  .chart-tick-label {
-    font-size: 0.75rem;
-  }
-  .chart-hexes {
-    position: relative;
-    width: 100%;
-    height: auto;
-    fill: var(--color-chart);
-  }
-  .chart-ticks-active,
-  .chart-ticks-enter-active,
-  .chart-ticks-leave-active {
-    transition: opacity 0.5s 0.2s;
-  }
-  .chart-ticks-leave-active {
-    transition-duration: 0.2s;
-    transition-delay: 0s;
-  }
-  .chart-ticks-enter-from,
-  .chart-ticks-leave-to {
-    opacity: 0;
-  }
+.chart-wrapper {
+  --padding-x: 1rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: var(--padding-x);
+  padding-right: var(--padding-x);
+  background: var(--color-black);
+  height: 100%;
+}
+
+.chart-ticks {
+  position: absolute;
+  left: var(--padding-x);
+  right: var(--padding-x);
+  top: 0;
+  bottom: 0;
+  color: var(--color-white);
+  opacity: 0.5;
+}
+
+.chart-tick {
+  position: absolute;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateX(-50%);
+}
+
+.chart-tick-line {
+  flex-grow: 1;
+  border-left: 1px solid;
+  opacity: 0.25;
+}
+
+.chart-tick-major .chart-tick-line {
+  opacity: 0.5;
+}
+
+.chart-tick-label {
+  font-size: 0.75rem;
+}
+
+.chart-hexes {
+  position: relative;
+  width: 100%;
+  height: auto;
+  fill: var(--color-chart);
+}
+
+.chart-ticks-active,
+.chart-ticks-enter-active,
+.chart-ticks-leave-active {
+  transition: opacity 0.5s 0.2s;
+}
+
+.chart-ticks-leave-active {
+  transition-duration: 0.2s;
+  transition-delay: 0s;
+}
+
+.chart-ticks-enter-from,
+.chart-ticks-leave-to {
+  opacity: 0;
+}
+
+.chart-draw-line-enter-active {
+  stroke-dasharray: 300;
+  stroke-dashoffset: 0;
+  transition: all 0.4s;
+  transition-delay: 0.4s;
+}
+
+.chart-draw-line-leave-active {
+  transition: none;
+}
+
+.chart-draw-line-enter-from,
+.chart-draw-line-leave-to {
+  stroke-dashoffset: 300;
+}
+
+.chart-draw-hex-enter-active {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 0;
+  transition: opacity 0.3s, stroke-dashoffset 0.4s 0.2s;
+}
+
+.chart-draw-hex-leave-active {
+  transition: none;
+}
+
+.chart-draw-hex-enter-from,
+.chart-draw-hex-leave-to {
+  stroke-dashoffset: 200;
+}
 </style>
+

@@ -79,7 +79,10 @@ const showAllYears = computed(() => {
 })
 
 const back = () => {
-  if (currentEventIndex.value <= 0) {
+  if (finished.value) {
+    finished.value = false
+    currentEventIndex.value = props.events.length - 1
+  } else if (currentEventIndex.value <= 0) {
     started.value = false
     currentEventIndex.value = -1
   } else {
@@ -223,42 +226,49 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
       </div>
       <div class="absolute top-0 left-4 right-4 h-full">
         <h2 class="sr-only">Key Dates</h2>
-        <div
-          v-for="(event, i) in events"
-          ref="event-ref"
-          class="
-            story-item
-            absolute
-            top-4
-            bottom-[calc(25vh+var(--button-height))]
-            flex
-            flex-col
-            justify-end
-            w-[90vw]
-            max-w-96
-          "
-          :class="i === currentEventIndex ? '' : 'sr-only'"
-          :style="eventPositionCSS[i]"
-        >
-          <article
+        <TransitionGroup name="story-event" appear>
+          <div
+            v-for="(event, i) in events"
+            ref="event-ref"
             class="
-              overflow-scroll
+              story-item
+              absolute
+              top-4
+              bottom-[calc(25vh+var(--button-height))]
               flex
               flex-col
-              gap-2
-              p-4
-              bg-yellow
-              text-black
+              justify-end
+              w-[90vw]
+              max-w-96
             "
+            :class="[
+              i === currentEventIndex ? 'story-item-current' : 'sr-only',
+              event.position.origin === StoryEventPositionOrigin.left ? 'story-item-origin-left' : '',
+              event.position.origin === StoryEventPositionOrigin.center ? 'story-item-origin-center' : '',
+              event.position.origin === StoryEventPositionOrigin.right ? 'story-item-origin-right' : '',
+            ]"
+            :style="eventPositionCSS[i]"
           >
-            <h3>
-              {{ event.date }}
-            </h3>
-            <p>
-              {{ event.summary || event.headline }}
-            </p>
-          </article>
-        </div>
+            <article
+              class="
+                overflow-scroll
+                flex
+                flex-col
+                gap-2
+                p-4
+                bg-yellow
+                text-black
+              "
+            >
+              <h3>
+                {{ event.date }}
+              </h3>
+              <p>
+                {{ event.summary || event.headline }}
+              </p>
+            </article>
+          </div>
+        </TransitionGroup>
       </div>
       <div
         class="
@@ -346,5 +356,23 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
 .story-wrapper .chart-hex-group-story line {
   stroke: var(--color-chart-feature-outline);
   stroke-width: 4px;
+}
+.story-item article {
+  transform: scale(0);
+  opacity: 0;
+  transition: transform 0.2s 0.5s, opacity 0.5s 0.5s;
+}
+.story-item-current article {
+  transform: scale(1);
+  opacity: 1;
+}
+.story-item-origin-left article {
+  transform-origin: bottom left;
+}
+.story-item-origin-center article {
+  transform-origin: bottom center;
+}
+.story-item-origin-right article {
+  transform-origin: bottom right;
 }
 </style>
