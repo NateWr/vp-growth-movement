@@ -3,7 +3,7 @@ import { onMounted, ref } from "vue"
 
 export const useViewportSize = () => {
   const BREAKPOINTS = {
-    LAPTOP_SM: 1024
+    LAPTOP_SM: 1280
   }
 
   const width = ref<Number>(0)

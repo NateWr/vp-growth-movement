@@ -220,7 +220,7 @@ const storyCurrentCoords = computed(() => {
 
 .chart-tick-line {
   flex-grow: 1;
-  border-left: 1px solid;
+  border-left: 1px dashed;
   opacity: 0.25;
 }
 

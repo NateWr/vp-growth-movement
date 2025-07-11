@@ -1,0 +1,22 @@
+<template>
+  <div
+    class="
+      absolute
+      top-0
+      bottom-[calc(25vh+var(--button-height))]
+      z-50
+      transition-opacity
+      duration-300
+      w-screen
+      max-w-6xl
+      left-1/2
+      -translate-x-1/2
+      sm:w-lg
+      sm:top-8
+      xl:mx-0
+      xl:w-screen
+    "
+  >
+    <slot />
+  </div>
+</template>

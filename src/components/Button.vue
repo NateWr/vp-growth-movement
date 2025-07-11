@@ -18,6 +18,7 @@ const props = defineProps({
       border-2
       font-bold
       uppercase
+      text-left
       disabled:opacity-50
     "
   >

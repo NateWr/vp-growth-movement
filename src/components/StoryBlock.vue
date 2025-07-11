@@ -8,6 +8,8 @@ import type { ChartHex } from '../types/ChartHex';
 import type { StoryEvent } from '../types/StoryEvent.d.ts';
 import { StoryEventPositionOrigin } from '../types/StoryEventPosition.d.ts';
 import type { StoryAction } from '../types/StoryAction';
+import Button from './Button.vue';
+import StoryText from './StoryText.vue';
 
 const props = defineProps({
   chartColumns: {
@@ -200,30 +202,31 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
         :storyPointCurrent="storyPointCurrent"
         :storyPointCurrentScale="storyPointCurrentScale"
       />
-      <div
-        class="
-          absolute
-          top-0
-          left-0
-          bottom-[calc(25vh+var(--button-height))]
-          p-4
-          flex
-          flex-col
-          gap-4
-          max-w-screen
-          z-50
-          text-lg
-          transition-opacity
-          duration-300
-        "
+      <StoryText
         :class="started ? 'sr-only opacity-0 delay-0' : 'opacity-100 delay-500'"
       >
         <h2 class="sr-only">Introduction</h2>
         <div
+          class="
+            p-4
+            flex
+            flex-col
+            gap-4
+            font-medium
+            text-md
+            leading-6
+            sm:gap-6
+            sm:text-xl
+            sm:leading-7
+            xl:w-xl
+            3xl:w-2xl
+            3xl:gap-8
+            3xl:text-2xl
+            3xl:leading-8
+          "
           v-html="intro"
-          class="flex flex-col gap-4"
         />
-      </div>
+      </StoryText>
       <div class="absolute top-0 left-4 right-4 h-full">
         <h2 class="sr-only">Key Dates</h2>
         <TransitionGroup name="story-event" appear>
@@ -270,55 +273,82 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
           </div>
         </TransitionGroup>
       </div>
-      <div
-        class="
-          absolute
-          top-0
-          left-0
-          bottom-[calc(25vh+var(--button-height))]
-          p-4
-          flex
-          flex-col
-          gap-4
-          max-w-screen
-          z-50
-          text-lg
-          transition-opacity
-          duration-300
-        "
-        :class="!finished ? 'sr-only opacity-0 delay-0' : 'opacity-100 delay-500'"
+      <StoryText
+        :class="!finished ? 'sr-only opacity-0' : 'opacity-100'"
       >
         <h2 class="sr-only">Conclusion</h2>
-        <div v-html="conclusion" />
-        <div v-if="actions.length">
-          <a
-            v-for="action in actions"
-            :href="action.url"
+        <div
+          class="
+            flex
+            flex-col
+            gap-4
+            p-4
+            xl:grid
+            xl:grid-cols-2
+            xl:gap-16
+            3xl:gap-16
+          "
+        >
+          <div
+            class="
+              flex
+              flex-col
+              gap-4
+              font-medium
+              text-md
+              leading-6
+              sm:gap-6
+              sm:text-xl
+              sm:leading-7
+              3xl:gap-8
+              3xl:text-2xl
+              3xl:leading-8
+            "
+            v-html="conclusion"
+          />
+          <div
+            v-if="actions.length"
+            class="
+              flex
+              flex-col
+              gap-2
+            "
           >
-            <div>{{ action.prefix }}</div>
-            <div>{{ action.title }}</div>
-          </a>
+            <Button
+              v-for="action in actions"
+              :href="action.url"
+            >
+              <div class="flex flex-col">
+                <div
+                  class="
+                    text-sm
+                    3xl:text-base
+                  "
+                >
+                  {{ action.prefix }}
+                </div>
+                <div
+                  class="
+                    font-normal
+                    normal-case
+                    leading-4
+                    3xl:text-xl
+                    3xl:leading-5
+                  "
+                >
+                  {{ action.title }}
+              </div>
+              </div>
+            </Button>
+          </div>
         </div>
-      </div>
-      <div
-        class="
-          fixed
-          bottom-12
-          left-4
-        "
-      >
-        <ButtonWhite @click="back">
+      </StoryText>
+      <div class="story-buttons">
+        <ButtonWhite class="story-button story-button-back" @click="back">
           Prev
         </ButtonWhite>
-      </div>
-      <div
-        class="
-          fixed
-          bottom-12
-          right-4
-        "
-      >
         <ButtonWhite
+          class="story-button story-button-next"
           :url="finished ? '/student-movement' : ''"
           :disabled="started && currentEventIndex < 0"
           @click="next"
@@ -338,6 +368,21 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
 }
 .story-wrapper-enlarged {
   width: 300vw;
+}
+@media (min-width: 640px) {
+  .story-wrapper-enlarged {
+    width: 200vw;
+  }
+}
+@media (min-width: 900px) {
+  .story-wrapper-enlarged {
+    width: 180vw;
+  }
+}
+@media (min-width: 1024px) and (orientation: landscape) {
+  .story-wrapper-enlarged {
+    width: 100vw;
+  }
 }
 .story-wrapper .chart-wrapper {
   align-items: flex-end;
@@ -378,5 +423,42 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
 }
 .story-item-origin-right article {
   transform-origin: bottom right;
+}
+.story-buttons {
+  --offset-bottom: 3rem;
+  --offset-inline: 1rem;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 0;
+}
+.story-button {
+  position: fixed;
+  bottom: var(--offset-bottom);
+}
+.story-button-back {
+  left: var(--offset-inline);
+}
+.story-button-next {
+  right: var(--offset-inline);
+}
+@media (min-width: 1280px) {
+  .story-buttons {
+    --offset-inline: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    bottom: var(--offset-bottom);
+    right: var(--offset-inline);
+    left: auto;
+    width: auto;
+  }
+  .story-buttons .story-button-back,
+  .story-buttons .story-button-next {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+  }
 }
 </style>
