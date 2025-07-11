@@ -7,6 +7,7 @@ const stories = defineCollection({
     order: z.number(),
     prefix: z.string(),
     title: z.string(),
+    title_short: z.string(),
     description: z.string(),
     intro: z.string(),
     events: z.array(

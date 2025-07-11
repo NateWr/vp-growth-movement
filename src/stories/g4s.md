@@ -2,6 +2,7 @@
 order: 20
 prefix: The campaign against
 title: G4S
+title_short: G4S
 description: The BDS movement targeted G4S for their role in providing services to Israeli prisons, police, the military, and illegal settlements.
 intro: |
   G4S, the largest security company in the world, was targeted by the BDS movement for providing services to Israeli prisons, police, the military, and illegal settlements.

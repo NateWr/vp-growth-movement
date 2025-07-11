@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, useTemplateRef, watch, type PropType } from 'vue';
+import { computed, ref, useTemplateRef, watch, type PropType } from 'vue';
 import ButtonWhite from './ButtonWhite.vue';
 import Chart from './Chart.vue';
 import { useViewportSize } from '../utilities/useViewportSize';
@@ -46,6 +46,22 @@ const props = defineProps({
   },
   actions: {
     type: Array as PropType<StoryAction[]>,
+    required: true,
+  },
+  nextStoryUrl: {
+    type: String,
+    required: true,
+  },
+  nextStoryTitle: {
+    type: String,
+    required: true,
+  },
+  lastStoryUrl: {
+    type: String,
+    required: true,
+  },
+  lastStoryTitle: {
+    type: String,
     required: true,
   },
 })
@@ -368,16 +384,21 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
         </div>
       </StoryText>
       <div class="story-buttons">
-        <ButtonWhite class="story-button story-button-back" @click="back">
-          Prev
+        <ButtonWhite
+          :url="!started ? lastStoryUrl : ''"
+          class="story-button story-button-back"
+          @click="started ? back() : null"
+        >
+          <div>Prev</div>
+          <div>{{ !started ? lastStoryTitle : currentEventIndex }}</div>
         </ButtonWhite>
         <ButtonWhite
           class="story-button story-button-next"
-          :url="finished ? '/student-movement' : ''"
-          :disabled="started && currentEventIndex < 0"
-          @click="next"
+          :url="finished ? nextStoryUrl : ''"
+          @click="finished ? null : next()"
         >
-          Next ({{ currentEventIndex }})
+          <div>Next</div>
+          <div>{{ finished ? nextStoryTitle : currentEventIndex }}</div>
         </ButtonWhite>
       </div>
     </div>

@@ -8,6 +8,7 @@ import { columns, data, rows, ticks } from '../data/chart-config.json'
 import type { StoryEvent } from '../types/StoryEvent'
 import { StoryEventPositionOrigin } from '../types/StoryEventPositionOrigin.ts'
 import events from '../data/events.json'
+import { astroGetAdjacentStories } from '../utilities/astro-utilities'
 
 export async function getStaticPaths() {
   const stories = await getCollection('stories')
@@ -18,6 +19,9 @@ export async function getStaticPaths() {
 }
 
 const { story } = Astro.props
+
+const { nextStory, lastStory } = await astroGetAdjacentStories(story.id)
+const homeTitle = 'All Stories'
 
 const formatDate = (str: string) => {
   return (new Date(str))
@@ -151,6 +155,10 @@ const conclusion = await marked.parse(story.data.conclusion)
       conclusion={conclusion}
       events={storyEvents}
       actions={story.data.actions}
+      nextStoryUrl={`/${nextStory?.id ?? ''}`}
+      nextStoryTitle={nextStory?.data?.title_short ?? homeTitle}
+      lastStoryUrl={`/${lastStory?.id ?? ''}`}
+      lastStoryTitle={lastStory?.data?.title_short ?? homeTitle}
     />
 	</div>
 </Layout>

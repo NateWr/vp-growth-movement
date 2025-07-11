@@ -2,6 +2,7 @@
 order: 10
 prefix: Growth of a
 title: Student Movement
+title_short: Students
 description: Student unions and student governments around the world have organized BDS campaigns in solidarity with Palestinians, building the legacy of student movements in igniting progressive change.
 intro: |
   Student unions and student *governments* around the [world](https://example.org) have organized **BDS campaigns** in solidarity with Palestinians, building the legacy of student movements in igniting progressive change.

@@ -1,12 +1,11 @@
 ---
-import { getCollection } from "astro:content"
 import Layout from '../layouts/Layout.astro'
 import Chart from '../components/Chart.vue'
 import { columns, data, rows, ticks } from '../data/chart-config.json'
 import IconRadioButtonChecked from '../images/icon-radio-button-checked.svg'
+import { astroGetSortedStories } from "../utilities/astro-utilities"
 
-const stories = (await getCollection('stories'))
-	.sort((a, b) => a.data.order - b.data.order)
+const stories = await astroGetSortedStories()
 ---
 
 <Layout
