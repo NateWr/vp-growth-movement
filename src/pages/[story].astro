@@ -6,7 +6,7 @@ import StoryBlock from '../components/StoryBlock.vue'
 import { getFilteredEvents } from '../utilities/getFilteredEvents.ts'
 import { columns, data, rows, ticks } from '../data/chart-config.json'
 import type { StoryEvent } from '../types/StoryEvent'
-import { StoryEventPositionOrigin } from '../types/StoryEventPosition.d.ts'
+import { StoryEventPositionOrigin } from '../types/StoryEventPositionOrigin.ts'
 import events from '../data/events.json'
 
 export async function getStaticPaths() {

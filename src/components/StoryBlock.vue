@@ -6,7 +6,7 @@ import { useViewportSize } from '../utilities/useViewportSize';
 import type { ChartTick } from '../types/ChartTick';
 import type { ChartHex } from '../types/ChartHex';
 import type { StoryEvent } from '../types/StoryEvent.d.ts';
-import { StoryEventPositionOrigin } from '../types/StoryEventPosition.d.ts';
+import { StoryEventPositionOrigin } from '../types/StoryEventPositionOrigin.ts';
 import type { StoryAction } from '../types/StoryAction';
 import Button from './Button.vue';
 import StoryText from './StoryText.vue';

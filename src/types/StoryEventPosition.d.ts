@@ -1,8 +1,4 @@
-export enum StoryEventPositionOrigin {
-  left,
-  center,
-  right,
-}
+import { StoryEventPositionOrigin } from "./StoryEventPositionOrigin"
 
 export type StoryEventPosition = {
   origin: StoryEventPositionOrigin,
