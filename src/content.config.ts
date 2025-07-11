@@ -4,6 +4,7 @@ import { glob } from 'astro/loaders'
 const stories = defineCollection({
   loader: glob({ pattern: "*.md", base: 'src/stories'}),
   schema: z.object({
+    order: z.number(),
     prefix: z.string(),
     title: z.string(),
     description: z.string(),
