@@ -83,7 +83,7 @@ const showAllYears = computed(() => {
 const back = () => {
   if (finished.value) {
     finished.value = false
-    currentEventIndex.value = props.events.length - 1
+    zoomToEvent(props.events.length - 1)
   } else if (currentEventIndex.value <= 0) {
     started.value = false
     currentEventIndex.value = -1
@@ -94,7 +94,8 @@ const back = () => {
 
 const next = () => {
   if (!started.value) {
-    start()
+    started.value = true
+    zoomToEvent(0)
   } else if (currentEventIndex.value + 1 >= props.events.length) {
     finished.value = true
     currentEventIndex.value = -1
@@ -104,14 +105,15 @@ const next = () => {
 }
 
 /**
- * Add a short delay before showing
- * the first event when starting
+ * Add a short delay before setting the
+ * current event when the timeline is
+ * being zoomed in/out
  */
-const start = () => {
-  started.value = true
+const zoomToEvent = (eventIndex: number) => {
+  const delay = fitChartOnScreen.value ? 0 : 600
   setTimeout(() => {
-    currentEventIndex.value = 0
-  }, fitChartOnScreen.value ? 0 : 800)
+    currentEventIndex.value = eventIndex
+  }, delay)
 }
 
 const storyPointCurrentScale = 4.0
@@ -149,22 +151,9 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
     }
     return
   }
-  const setScrollLeft = () => {
-    if (!scrollRef.value) {
-      return
-    }
-    let scrollLeft = 0
-    const currentEvent = props.events[currentEventIndex.value]
-    if (currentEvent.position.origin === StoryEventPositionOrigin.left) {
-      scrollLeft = newCurrentEventRef.offsetLeft - 16
-    } else if (currentEvent.position.origin === StoryEventPositionOrigin.center) {
-      scrollLeft = newCurrentEventRef.offsetLeft - (newCurrentEventRef.offsetWidth / 2)
-    } else {
-      scrollLeft = newCurrentEventRef.offsetLeft
-    }
-    scrollRef.value.scrollLeft = Math.min(scrollRef.value.scrollWidth, Math.max(0, scrollLeft))
-  }
-  nextTick(setScrollLeft)
+  newCurrentEventRef.scrollIntoView({
+    inline: 'center',
+  })
 })
 </script>
 

@@ -256,7 +256,7 @@ const storyCurrentCoords = computed(() => {
 }
 
 .chart-draw-line-enter-active {
-  stroke-dasharray: 300;
+  stroke-dasharray: 400;
   stroke-dashoffset: 0;
   transition: all 0.4s;
   transition-delay: 0.4s;
@@ -268,7 +268,7 @@ const storyCurrentCoords = computed(() => {
 
 .chart-draw-line-enter-from,
 .chart-draw-line-leave-to {
-  stroke-dashoffset: 300;
+  stroke-dashoffset: 400;
 }
 
 .chart-draw-hex-enter-active {
