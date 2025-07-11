@@ -395,7 +395,7 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
 .story-item article {
   transform: scale(0);
   opacity: 0;
-  transition: transform 0.2s 0.5s, opacity 0.5s 0.5s;
+  transition: transform 0.2s 0.25s, opacity 0.5s 0.25s;
 }
 .story-item-current article {
   transform: scale(1);

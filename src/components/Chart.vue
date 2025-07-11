@@ -169,19 +169,16 @@ const storyCurrentCoords = computed(() => {
             :y2="-100"
           />
         </Transition>
-        <Transition name="chart-draw-hex" appear>
-          <polygon
-            :key="storyCurrentCoords.x"
-            :points="hexConfig.points
-              .map(pointCoords => {
-                return [
-                  (pointCoords[0] * storyPointCurrentScale) + storyCurrentCoords.x,
-                  (pointCoords[1] * storyPointCurrentScale) + storyCurrentCoords.y,
-                ].join(',')
-              })
-              .join(' ')
-            " />
-        </Transition>
+        <polygon
+          :points="hexConfig.points
+            .map(pointCoords => {
+              return [
+                (pointCoords[0] * storyPointCurrentScale) + storyCurrentCoords.x,
+                (pointCoords[1] * storyPointCurrentScale) + storyCurrentCoords.y,
+              ].join(',')
+            })
+            .join(' ')
+          " />
       </g>
     </svg>
   </div>
@@ -256,10 +253,9 @@ const storyCurrentCoords = computed(() => {
 }
 
 .chart-draw-line-enter-active {
-  stroke-dasharray: 400;
+  stroke-dasharray: 330;
   stroke-dashoffset: 0;
-  transition: all 0.4s;
-  transition-delay: 0.4s;
+  transition: all 0.4s ease-in;
 }
 
 .chart-draw-line-leave-active {
@@ -268,22 +264,7 @@ const storyCurrentCoords = computed(() => {
 
 .chart-draw-line-enter-from,
 .chart-draw-line-leave-to {
-  stroke-dashoffset: 400;
-}
-
-.chart-draw-hex-enter-active {
-  stroke-dasharray: 200;
-  stroke-dashoffset: 0;
-  transition: opacity 0.3s, stroke-dashoffset 0.4s 0.2s;
-}
-
-.chart-draw-hex-leave-active {
-  transition: none;
-}
-
-.chart-draw-hex-enter-from,
-.chart-draw-hex-leave-to {
-  stroke-dashoffset: 200;
+  stroke-dashoffset: 330;
 }
 </style>
 
