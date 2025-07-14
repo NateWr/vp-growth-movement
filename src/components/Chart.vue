@@ -269,16 +269,6 @@ const storyCurrentCoords = computed(() => {
   fill: var(--color-chart-story-current);
 }
 @media (min-width: 768px) {
-  .chart-hex-group-story polygon {
-    stroke-width: 1px;
-  }
-}
-@media (min-width: 1280px) {
-  .chart-hex-group-story polygon {
-    stroke-width: 3px;
-  }
-}
-@media (min-width: 1536px) {
   .chart-hex-group-story {
     stroke-width: 3px;
   }
