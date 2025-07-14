@@ -5,11 +5,12 @@ import Chart from './Chart.vue';
 import { useViewportSize } from '../utilities/useViewportSize';
 import type { ChartTick } from '../types/ChartTick';
 import type { ChartHex } from '../types/ChartHex';
-import type { StoryEvent } from '../types/StoryEvent.d.ts';
+import type { StoryEvent as StoryEventType } from '../types/StoryEvent.d.ts';
 import { StoryEventPositionOrigin } from '../types/StoryEventPositionOrigin.ts';
 import type { StoryAction } from '../types/StoryAction';
 import Button from './Button.vue';
 import StoryText from './StoryText.vue';
+import StoryEvent from './StoryEvent.vue';
 
 const props = defineProps({
   chartColumns: {
@@ -41,7 +42,7 @@ const props = defineProps({
     required: true,
   },
   events: {
-    type: Array as PropType<StoryEvent[]>,
+    type: Array as PropType<StoryEventType[]>,
     required: true,
   },
   actions: {
@@ -152,7 +153,7 @@ const storyPointCurrent = computed(() => {
 })
 
 const eventPositionCSS = computed(() => {
-  return props.events.map((event: StoryEvent) => {
+  return props.events.map((event: StoryEventType) => {
     if (event.position.origin === StoryEventPositionOrigin.left) {
       return {
         left: `max(1rem, ${event.position.offset * 100}%)`,
@@ -173,13 +174,13 @@ const eventPositionCSS = computed(() => {
 })
 
 watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
-  if (!newCurrentEventRef) {
+  if (!newCurrentEventRef?.$el) {
     if (scrollRef.value) {
       scrollRef.value.scrollLeft = 0
     }
     return
   }
-  newCurrentEventRef.scrollIntoView({
+  newCurrentEventRef?.$el.scrollIntoView({
     inline: 'center',
   })
 })
@@ -252,65 +253,21 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
       <div class="absolute top-0 left-4 right-4 h-full">
         <h2 class="sr-only">Key Dates</h2>
         <TransitionGroup name="story-event" appear>
-          <div
+          <StoryEvent
             v-for="(event, i) in events"
-            ref="event-ref"
             :key="i"
+            ref="event-ref"
             class="
-              story-item
               absolute
               top-4
-              flex
-              flex-col
-              justify-end
               w-[90vw]
               max-w-96
               md:max-w-120
             "
-            :class="[
-              i === currentEventIndex ? 'story-item-current' : 'sr-only',
-              event.position.origin === StoryEventPositionOrigin.left ? 'story-item-origin-left' : '',
-              event.position.origin === StoryEventPositionOrigin.center ? 'story-item-origin-center' : '',
-              event.position.origin === StoryEventPositionOrigin.right ? 'story-item-origin-right' : '',
-            ]"
-            :style="eventPositionCSS[i]"
-          >
-            <article
-              class="
-                overflow-scroll
-                flex
-                flex-col
-                gap-1
-                p-4
-                bg-yellow
-                text-black
-                md:p-6
-                3xl:p-8
-              "
-            >
-              <h3
-                class="
-                  text-base
-                  font-black
-                  uppercase
-                  md:text-base
-                "
-              >
-                {{ event.date }}
-              </h3>
-              <p
-                class="
-                  text-lg
-                  font-medium
-                  leading-5.5
-                  md:text-xl
-                  md:leading-6
-                "
-              >
-                {{ event.summary || event.headline }}
-              </p>
-            </article>
-          </div>
+            :event="event"
+            :isCurrent="i === currentEventIndex"
+            :styleCSS="eventPositionCSS[i]"
+          />
         </TransitionGroup>
       </div>
       <StoryText
@@ -425,24 +382,6 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
 }
 .story-item {
   bottom: calc(var(--chart-height) + var(--button-height));
-}
-.story-item article {
-  transform: scale(0);
-  opacity: 0;
-  transition: transform 0.2s 0.25s, opacity 0.5s 0.25s;
-}
-.story-item-current article {
-  transform: scale(1);
-  opacity: 1;
-}
-.story-item-origin-left article {
-  transform-origin: bottom left;
-}
-.story-item-origin-center article {
-  transform-origin: bottom center;
-}
-.story-item-origin-right article {
-  transform-origin: bottom right;
 }
 @media (min-width: 640px) {
   .story-wrapper-enlarged {
