@@ -2,10 +2,10 @@
 import { computed, ref, useTemplateRef, watch, type PropType } from 'vue';
 import ButtonWhite from './ButtonWhite.vue';
 import Chart from './Chart.vue';
-import { useViewportSize } from '../utilities/useViewportSize';
+import { useViewportSize } from '../utilities/useViewportSize.ts';
 import type { ChartTick } from '../types/ChartTick';
 import type { ChartHex } from '../types/ChartHex';
-import type { StoryEvent as StoryEventType } from '../types/StoryEvent.d.ts';
+import type { StoryEvent as StoryEventType } from '../types/StoryEvent';
 import { StoryEventPositionOrigin } from '../types/StoryEventPositionOrigin.ts';
 import type { StoryAction } from '../types/StoryAction';
 import Button from './Button.vue';
@@ -193,8 +193,8 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
   >
     <div
       :class="`
-        story-wrapper
-        ${!fitChartOnScreen ? 'story-wrapper-enlarged' : ''}
+        app-story
+        ${!fitChartOnScreen ? 'app-story-enlarged' : ''}
         relative
         h-full
       `"
@@ -363,41 +363,41 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
 </template>
 
 <style>
-.story-wrapper {
+.app-story {
   --button-height: 8rem;
   --chart-height: 25vh;
   --chart-width: 100vw;
   width: var(--chart-width);
   transition: all 0.5s;
 }
-.story-wrapper-enlarged {
+.app-story-enlarged {
   --chart-width: 300vw;
 }
-.story-wrapper .chart-wrapper {
+.app-story .chart-wrapper {
   align-items: flex-end;
   padding-bottom: var(--button-height);
 }
-.story-wrapper .chart-hexes {
+.app-story .chart-hexes {
   min-height: var(--chart-height);
 }
 .story-item {
   bottom: calc(var(--chart-height) + var(--button-height));
 }
 @media (min-width: 640px) {
-  .story-wrapper-enlarged {
+  .app-story-enlarged {
     --chart-width: 200vw;
   }
 }
 @media (min-width: 768px) and (max-width: 1023px) and (orientation: portrait) {
-  .story-wrapper {
+  .app-story {
     --chart-height: 40vh;
   }
-  .story-wrapper-enlarged {
+  .app-story-enlarged {
     --chart-width: 300vw;
   }
 }
 @media (min-width: 1024px) and (orientation: landscape) {
-  .story-wrapper-enlarged {
+  .app-story-enlarged {
     --chart-width: 100vw;
   }
 }

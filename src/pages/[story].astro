@@ -2,7 +2,7 @@
 import { marked } from 'marked'
 import { getCollection } from "astro:content"
 import Layout from '../layouts/Layout.astro'
-import StoryBlock from '../components/StoryBlock.vue'
+import AppStory from '../components/AppStory.vue'
 import { getFilteredEvents } from '../utilities/getFilteredEvents.ts'
 import { columns, data, rows, ticks } from '../data/chart-config.json'
 import type { StoryEvent } from '../types/StoryEvent'
@@ -144,7 +144,7 @@ const conclusion = await marked.parse(story.data.conclusion)
         </span>
       </div>
     </h1>
-    <StoryBlock
+    <AppStory
       client:only="vue"
       chartColumns={columns}
       chartEventCoords={chartEventCoords}
