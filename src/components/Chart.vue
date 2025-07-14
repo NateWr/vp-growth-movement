@@ -126,6 +126,7 @@ const storyCurrentCoords = computed(() => {
       xmlns="http://www.w3.org/2000/svg">
       <g
         v-for="dataset in datasetsWithCoords"
+        :key="dataset.id"
         :class="`chart-hex-group chart-hex-group-${dataset.id}`"
         :style="dataset?.style"
       >
@@ -141,8 +142,11 @@ const storyCurrentCoords = computed(() => {
       </g>
       <g v-if="storyCoords.length" class="chart-hex-group chart-hex-group-story">
         <template v-for="(coords, i) in storyCoords">
-          <line v-if="i" :x1="storyCoords[i - 1].x + (storyHexWidth / 2)"
-            :y1="storyCoords[i - 1].y + (storyHexHeight / 2)" :x2="coords.x + (storyHexWidth / 2)"
+          <line
+            v-if="i" :x1="storyCoords[i - 1].x + (storyHexWidth / 2)"
+            :key="i"
+            :y1="storyCoords[i - 1].y + (storyHexHeight / 2)"
+            :x2="coords.x + (storyHexWidth / 2)"
             :y2="coords.y + (storyHexHeight / 2)" />
         </template>
         <polygon v-for="(coords, i) in storyCoords" :points="hexConfig.points
