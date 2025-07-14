@@ -145,7 +145,7 @@ const conclusion = await marked.parse(story.data.conclusion)
       </div>
     </h1>
     <StoryBlock
-      client:load
+      client:only="vue"
       chartColumns={columns}
       chartEventCoords={chartEventCoords}
       chartEventCoordsHighlighted={chartEventCoordsHighlighted}

@@ -11,12 +11,10 @@ export const useViewportSize = () => {
 
   const width = ref<number>(0)
 
-  onBeforeMount(() => {
+  width.value = document.body.clientWidth
+  window.addEventListener('resize', debounce(() => {
     width.value = document.body.clientWidth
-    window.addEventListener('resize', debounce(() => {
-      width.value = document.body.clientWidth
-    }, 250))
-  })
+  }, 250))
 
   return {
     BREAKPOINTS,
