@@ -80,20 +80,33 @@ const filterTypes = [
 ]
 const filters = getFilters(filterTypes, eventsWithCoords)
 
-try {
-  fs.writeFileSync('./src/data/events.json', JSON.stringify(eventsWithCoords))
-} catch (err) {
-  throw new Error(err)
-}
+/**
+ * Convert the Date objects into YYYY-MM-DD strings
+ */
+const eventsWithDates = eventsWithCoords
+  .map(e => {
+    e.dateFormatted = e.date.toLocaleDateString(
+      'en-US',
+      {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }
+    )
+    e.date = [
+      e.date.getFullYear(),
+      (e.date.getMonth() + 1).toString().padStart(2, '0'),
+      e.date.getDate().toString().padStart(2, '0'),
+    ].join('-')
+    return e
+  })
 
 try {
+  fs.writeFileSync('./src/data/events.json', JSON.stringify(eventsWithDates))
   fs.writeFileSync('./src/data/filters.json', JSON.stringify(filters))
+  fs.writeFileSync('./src/data/chart-config.json', JSON.stringify(chartConfig))
+  fs.writeFileSync('./public/data/events.json', JSON.stringify(eventsWithDates))
 } catch (err) {
   throw new Error(err)
 }
 
-try {
-  fs.writeFileSync('./src/data/chart-config.json', JSON.stringify(chartConfig))
-} catch (err) {
-  throw new Error(err)
-}
