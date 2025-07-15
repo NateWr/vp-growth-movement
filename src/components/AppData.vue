@@ -5,15 +5,11 @@ import { getFilteredEvents } from '../utilities/getFilteredEvents';
 import type { SelectedFilters } from '../types/SelectedFilters.d.ts';
 import type { ChartTick } from '../types/ChartTick';
 import Chart from './Chart.vue';
-import IconFilters from './IconFilters.vue';
-import ButtonBlack from './ButtonBlack.vue';
 import Button from './Button.vue';
-import IconSort from './IconSort.vue';
 import Spinner from './Spinner.vue';
 import IconArrowUpRight from './IconArrowUpRight.vue';
-import IconChevronLeft from './IconChevronLeft.vue';
-import IconChevronRight from './IconChevronRight.vue';
 import NavPage from './NavPage.vue';
+import FilterHeader from './FilterHeader.vue';
 
 
 const props = defineProps({
@@ -83,6 +79,7 @@ const setPage = (newPage: number) => {
 
 const toggleSort = () => {
   sortBy.value = !sortBy.value
+  currentPage.value = 1
 }
 onMounted(() => {
   fetch('./data/events.json')
@@ -149,40 +146,17 @@ onMounted(() => {
           class="
             relative
             p-2
-            flex
-            items-center
-            justify-between
             bg-yellow
           "
         >
           <h2 class="sr-only">Controls</h2>
-          <div class="flex items-center gap-2">
-            <ButtonBlack
-              @click="showFilters = !showFilters"
-            >
-              <IconFilters aria-hidden="true" />
-              <span>
-                Filters
-              </span>
-            </ButtonBlack>
-            <Button
-              v-if="hasActiveFilters"
-              @click="resetFilters"
-            >
-              Reset
-            </Button>
-          </div>
-          <div class="flex items-center gap-2">
-            <button
-              @click="toggleSort"
-            >
-              <span class="sr-only">Sort by: {{ sortBy ? 'oldest' : 'recent' }}</span>
-              <IconSort
-                class="w-10 h-10"
-                aria-hidden="true"
-              />
-            </button>
-          </div>
+          <FilterHeader
+            :showResetFilters="hasActiveFilters"
+            :sortBy="sortBy"
+            @toggle-filters-panel="showFilters = !showFilters"
+            @reset-filters="resetFilters"
+            @toggle-sort="toggleSort"
+          />
         </div>
       </div>
       <div
