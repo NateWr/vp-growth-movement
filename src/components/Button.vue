@@ -12,7 +12,9 @@ const props = defineProps({
     :is="url ? 'a' : 'button'"
     :href="url"
     class="
-      inline-block
+      flex
+      items-center
+      gap-2
       py-2
       px-4
       border-2

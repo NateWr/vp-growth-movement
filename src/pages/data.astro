@@ -1,5 +1,8 @@
 ---
+import AppData from '../components/AppData.vue'
 import Layout from '../layouts/Layout.astro'
+import filters from '../data/filters.json'
+import { columns, rows, ticks } from '../data/chart-config.json'
 ---
 
 <Layout
@@ -8,40 +11,12 @@ import Layout from '../layouts/Layout.astro'
 	currentUrl="/data"
 	bgColor="white"
 >
-	<div class="bg-white text-black">
-		<h1 class="text-3xl font-bold">Dataset</h1>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-		<p>1234</p>
-	</div>
+	<h1 class="sr-only">Full Dataset</h1>
+	<AppData
+		client:only="vue"
+		chartColumns={columns}
+		chartRows={rows}
+		chartTicks={ticks}
+		filters={filters}
+	/>
 </Layout>

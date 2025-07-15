@@ -160,6 +160,20 @@ const nav = [
 				))}
 			</div>
 		</header>
-		<slot />
+		<div class="pt-(--header-height)">
+			<slot />
+		</div>
 	</body>
 </html>
+
+<style>
+:root {
+	--header-height: 4rem;
+}
+
+@media (min-width: 120rem) {
+  :root {
+    --header-height: 5rem;
+  }
+}
+</style>

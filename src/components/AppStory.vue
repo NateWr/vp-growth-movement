@@ -255,7 +255,7 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
         <TransitionGroup name="story-event" appear>
           <StoryEvent
             v-for="(event, i) in events"
-            :key="i"
+            :key="event.id"
             ref="event-ref"
             class="
               absolute

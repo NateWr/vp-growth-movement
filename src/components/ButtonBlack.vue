@@ -13,9 +13,9 @@ const props = defineProps({
   <Button
     :url="url"
     class="
-      bg-white
-      text-black
-      border-white
+      bg-black
+      text-white
+      border-black
     "
   >
     <slot />
