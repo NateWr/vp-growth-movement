@@ -11,6 +11,9 @@ import Button from './Button.vue';
 import IconSort from './IconSort.vue';
 import Spinner from './Spinner.vue';
 import IconArrowUpRight from './IconArrowUpRight.vue';
+import IconChevronLeft from './IconChevronLeft.vue';
+import IconChevronRight from './IconChevronRight.vue';
+import NavPage from './NavPage.vue';
 
 
 const props = defineProps({
@@ -60,13 +63,27 @@ const currentPageEvents = computed(() => {
   const newEvents = sortBy.value === SORT_BY_OLDEST
     ? filteredEvents.value.slice().reverse()
     : filteredEvents.value
-  return newEvents.slice(0, EVENTS_PER_PAGE * currentPage.value)
+  const end = EVENTS_PER_PAGE * currentPage.value
+  const start = end - EVENTS_PER_PAGE
+  return newEvents.slice(start, end)
 })
+
+const lastPage = computed(() => {
+  return Math.ceil(filteredEvents.value.length / EVENTS_PER_PAGE)
+})
+
+const showingStart = computed(() => (currentPage.value - 1) * EVENTS_PER_PAGE)
+
+const setPage = (newPage: number) => {
+  if (newPage < 1 || newPage > lastPage.value) {
+    return
+  }
+  currentPage.value = newPage
+}
 
 const toggleSort = () => {
   sortBy.value = !sortBy.value
 }
-
 onMounted(() => {
   fetch('./data/events.json')
     .then(r => r.json())
@@ -87,7 +104,7 @@ onMounted(() => {
   >
     <div
       class="
-        relative
+        z-50
         xl:col-span-7
         xl:order-2
       "
@@ -96,6 +113,7 @@ onMounted(() => {
         class="
           sticky
           top-(--header-height)
+          z-50
         "
       >
         <Chart
@@ -129,6 +147,7 @@ onMounted(() => {
         />
         <div
           class="
+            relative
             p-2
             flex
             items-center
@@ -168,7 +187,9 @@ onMounted(() => {
       </div>
       <div
         class="
+          relative
           p-4
+          pt-8
           flex
           flex-col
           gap-16
@@ -259,6 +280,24 @@ onMounted(() => {
             </article>
           </div>
         </template>
+        <NavPage
+          v-if="filteredEvents.length > EVENTS_PER_PAGE"
+          class="
+            fixed
+            bottom-4
+            left-1/2
+            -translate-x-1/2
+            min-w-80
+            max-w-[90vw]
+          "
+          :currentPage="currentPage"
+          :lastPage="lastPage"
+          :eventsPerPage="EVENTS_PER_PAGE"
+          :showingStart="(showingStart + 1).toLocaleString('en-US')"
+          :showingEnd="(showingStart + currentPageEvents.length).toLocaleString('en-US')"
+          :total="filteredEvents.length"
+          @set-page="setPage"
+        />
       </div>
     </div>
     <div
