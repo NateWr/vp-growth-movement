@@ -5,11 +5,12 @@ import { getFilteredEvents } from '../utilities/getFilteredEvents';
 import type { SelectedFilters } from '../types/SelectedFilters.d.ts';
 import type { ChartTick } from '../types/ChartTick';
 import Chart from './Chart.vue';
-import Button from './Button.vue';
 import Spinner from './Spinner.vue';
-import IconArrowUpRight from './IconArrowUpRight.vue';
 import NavPage from './NavPage.vue';
 import FilterHeader from './FilterHeader.vue';
+import IconFilters from './IconFilters.vue';
+import IconClose from './IconClose.vue';
+import EventSummary from './EventSummary.vue';
 
 
 const props = defineProps({
@@ -95,6 +96,7 @@ onMounted(() => {
   <div
     class="
       app-data
+      bg-white
       xl:grid
       xl:grid-cols-12
     "
@@ -147,6 +149,7 @@ onMounted(() => {
             relative
             p-2
             bg-yellow
+            xl:hidden
           "
         >
           <h2 class="sr-only">Controls</h2>
@@ -164,9 +167,11 @@ onMounted(() => {
           relative
           p-4
           pt-8
+          pb-32
           flex
           flex-col
           gap-16
+          xl:max-w-160
         "
       >
         <div
@@ -188,82 +193,29 @@ onMounted(() => {
         </div>
         <template v-else>
           <h2 class="sr-only">Events</h2>
-          <div
+          <EventSummary
             v-for="event in currentPageEvents"
             :key="event.id"
-          >
-            <article
-              class="
-                flex
-                flex-col
-                gap-4
-              "
-            >
-              <div
-                class="
-                  flex
-                  flex-col
-                  gap-1
-                "
-              >
-                <div
-                  class="
-                    font-semibold
-                    uppercase
-                  "
-                >
-                  {{ event.dateFormatted }}
-                </div>
-                <h3
-                  class="
-                    text-xl
-                    leading-tight
-                    font-bold
-                  "
-                >
-                  {{ event.headline }}
-                </h3>
-                <div
-                  v-if="event.country"
-                  class="
-
-                  "
-                >
-                  <span v-if="event.city">
-                    {{ event.city }},
-                  </span>
-                  <span>
-                    {{ event.country.join(', ') }}
-                  </span>
-                </div>
-              </div>
-              <div
-                class="
-                  text-lg
-
-                "
-              >
-                {{ event.summary }}
-              </div>
-              <div>
-                <Button>
-                  <IconArrowUpRight aria-hidden="true" />
-                  View Event
-                </Button>
-              </div>
-            </article>
-          </div>
+            :event="event"
+          />
         </template>
+      </div>
+      <div
+        v-if="lastPage > 1"
+        class="
+          fixed
+          bottom-4
+          left-1/2
+          -translate-x-1/2
+          min-w-80
+          max-w-[90vw]
+          xl:left-auto
+          xl:right-4
+          xl:translate-none
+        "
+      >
+        <h2 class="sr-only">Pages</h2>
         <NavPage
-          v-if="filteredEvents.length > EVENTS_PER_PAGE"
-          class="
-            fixed
-            bottom-4
-            left-1/2
-            -translate-x-1/2
-            min-w-80
-            max-w-[90vw]
-          "
           :currentPage="currentPage"
           :lastPage="lastPage"
           :eventsPerPage="EVENTS_PER_PAGE"
@@ -276,12 +228,133 @@ onMounted(() => {
     </div>
     <div
       class="
+        fixed
+        top-45
+        -bottom-4
+        left-2
+        right-2
+        z-70
+        overflow-scroll
+        pb-24
+        rounded
+        bg-white
+        shadow-lg/100
+        transition-transform
+        duration-300
+        md:top-65
+        xl:static
         xl:col-span-5
         xl:order-1
+        xl:translate-none
+        xl:shadow-none
+        xl:rounded-none
+      "
+      :class="[
+        showFilters ? 'translate-y-0 ease-out' : 'translate-y-full ease-in',
+      ]
       "
     >
+      <h2 class="sr-only">Search, filter, and sort</h2>
+      <div class="sticky top-0 flex items-center justify-between gap-2 bg-white xl:bg-yellow">
+        <div class="p-2 flex items-center gap-2">
+          <IconFilters class="w-8 h-8" aria-hidden="true" />
+          <span class="text-xl font-bold">
+            Filters
+          </span>
+        </div>
+        <div class="flex items-center gap-2 xl:hidden">
+          <button
+            class="flex justify-center items-center"
+            @click="showFilters = !showFilters"
+          >
+            <span class="sr-only">Close Filters</span>
+            <IconClose aria-hidden="true" />
+          </button>
+        </div>
+      </div>
       <div>...{{ filteredEvents.length }}/{{ allEvents.length }} items...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
+      <div>...filters...</div>
       <div>...filters...</div>
     </div>
   </div>
 </template>
+
+<style>
+
+.slide-up-active {
+  transition: all 0.3s;
+}
+
+.slide-up-enter-from,
+.slide-up-leave-to {
+  transform: translateY(-100%);
+}
+</style>

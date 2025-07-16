@@ -26,7 +26,6 @@ const emit = defineEmits(['toggle-filters-panel', 'reset-filters', 'toggle-sort'
       justify-between
     "
   >
-    <h2 class="sr-only">Search, filter, and sort</h2>
     <div class="flex items-center gap-2">
       <ButtonBlack
         @click="emit('toggle-filters-panel')"
