@@ -83,7 +83,10 @@ const filters = getFilters(filterTypes, eventsWithCoords)
 /**
  * Convert the Date objects into YYYY-MM-DD strings
  */
-const eventsWithDates = eventsWithCoords
+const finalEvents = eventsWithCoords
+  /**
+   * Convert the Date objects into YYYY-MM-DD strings
+   */
   .map(e => {
     e.dateFormatted = e.date.toLocaleDateString(
       'en-US',
@@ -100,12 +103,29 @@ const eventsWithDates = eventsWithCoords
     ].join('-')
     return e
   })
+  /**
+   * Convert all filterable properties to their slug versions
+   */
+  .map(e => {
+    filterTypes.forEach(type => {
+      if (e[type] && e[type].length) {
+        e[type] = e[type].map(value => {
+          const slug = filters[type].find(option => option.name === value)
+          if (slug) {
+            return slug.value
+          }
+          throw new Error(`Couldn't find slug form of ${type} value ${value} in event id ${e.id}`)
+        })
+      }
+    })
+    return e
+  })
 
 try {
-  fs.writeFileSync('./src/data/events.json', JSON.stringify(eventsWithDates))
+  fs.writeFileSync('./src/data/events.json', JSON.stringify(finalEvents))
   fs.writeFileSync('./src/data/filters.json', JSON.stringify(filters))
   fs.writeFileSync('./src/data/chart-config.json', JSON.stringify(chartConfig))
-  fs.writeFileSync('./public/data/events.json', JSON.stringify(eventsWithDates))
+  fs.writeFileSync('./public/data/events.json', JSON.stringify(finalEvents))
 } catch (err) {
   throw new Error(err)
 }
