@@ -252,23 +252,21 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
       </StoryText>
       <div class="absolute top-0 left-4 right-4 h-full">
         <h2 class="sr-only">Key Dates</h2>
-        <TransitionGroup name="story-event" appear>
-          <StoryEvent
-            v-for="(event, i) in events"
-            :key="event.id"
-            ref="event-ref"
-            class="
-              absolute
-              top-4
-              w-[90vw]
-              max-w-96
-              md:max-w-120
-            "
-            :event="event"
-            :isCurrent="i === currentEventIndex"
-            :styleCSS="eventPositionCSS[i]"
-          />
-        </TransitionGroup>
+        <StoryEvent
+          v-for="(event, i) in events"
+          :key="event.id"
+          ref="event-ref"
+          class="
+            absolute
+            top-4
+            w-[90vw]
+            max-w-96
+            md:max-w-120
+          "
+          :event="event"
+          :isCurrent="i === currentEventIndex"
+          :styleCSS="eventPositionCSS[i]"
+        />
       </div>
       <StoryText
         :class="!finished ? 'sr-only opacity-0' : 'opacity-100'"
