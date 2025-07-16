@@ -57,7 +57,7 @@ const props = defineProps({
       {{ event.summary }}
     </div>
     <div>
-      <Button>
+      <Button class="scroll-mt-[32rem]">
         <IconArrowUpRight aria-hidden="true" />
         View Event
       </Button>
