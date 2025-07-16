@@ -11,6 +11,14 @@ import FilterHeader from './FilterHeader.vue';
 import IconFilters from './IconFilters.vue';
 import IconClose from './IconClose.vue';
 import EventSummary from './EventSummary.vue';
+import Filter from './Filter.vue';
+import InputWrapper from './InputWrapper.vue';
+import IconSearch from './IconSearch.vue';
+import FilterToggleList from './FilterToggleList.vue';
+import type { FilterOptions } from '../types/FilterOptions';
+import IconCalendar from './IconCalendar.vue';
+import IconLocation from './IconLocation.vue';
+import IconTarget from './IconTarget.vue';
 
 
 const props = defineProps({
@@ -27,7 +35,7 @@ const props = defineProps({
     required: true,
   },
   filters: {
-    type: Object as PropType<SelectedFilters>,
+    type: Object as PropType<FilterOptions>,
     required: true,
   }
 })
@@ -82,6 +90,11 @@ const toggleSort = () => {
   sortBy.value = !sortBy.value
   currentPage.value = 1
 }
+
+const toggleFilter = (type: string, value: string) => {
+  console.log('toggleFilter', type, value)
+}
+
 onMounted(() => {
   fetch('./data/events.json')
     .then(r => r.json())
@@ -242,7 +255,12 @@ onMounted(() => {
         transition-transform
         duration-300
         md:top-65
-        xl:static
+        xl:sticky
+        xl:top-(--header-height)
+        xl:max-h-[calc(100vh-var(--header-height))]
+        xl:left-auto
+        xl:right-auto
+        xl:pb-8
         xl:col-span-5
         xl:order-1
         xl:translate-none
@@ -255,7 +273,7 @@ onMounted(() => {
       "
     >
       <h2 class="sr-only">Search, filter, and sort</h2>
-      <div class="sticky top-0 flex items-center justify-between gap-2 bg-white xl:bg-yellow">
+      <div class="sticky top-0 flex items-center justify-between gap-2 z-50 bg-white xl:bg-yellow">
         <div class="p-2 flex items-center gap-2">
           <IconFilters class="w-8 h-8" aria-hidden="true" />
           <span class="text-xl font-bold">
@@ -272,83 +290,85 @@ onMounted(() => {
           </button>
         </div>
       </div>
-      <div>...{{ filteredEvents.length }}/{{ allEvents.length }} items...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
-      <div>...filters...</div>
+      <div class="flex flex-col gap-6 p-2">
+        <Filter>
+          <template #title>
+            <h3>Search</h3>
+          </template>
+          <InputWrapper>
+            <IconSearch #icon />
+            <input />
+          </InputWrapper>
+        </Filter>
+        <div class="flex flex-col gap-6">
+          <Filter>
+            <template #title>
+              <h3>Sector</h3>
+            </template>
+            <FilterToggleList
+              :options="filters.area"
+              :selected="selectedFilters?.area ?? []"
+              @toggle="(value) => toggleFilter('area', value)"
+            />
+          </Filter>
+          <Filter>
+            <template #title>
+              <h3>Campaign</h3>
+            </template>
+            <FilterToggleList
+              :options="filters.campaign"
+              :selected="selectedFilters?.campaign ?? []"
+              @toggle="(value) => toggleFilter('campaign', value)"
+            />
+          </Filter>
+        </div>
+        <div class="flex flex-col gap-6">
+          <Filter>
+            <template #title>
+              <h3>Date Range</h3>
+            </template>
+            <InputWrapper>
+              <IconCalendar #icon />
+              <input />
+            </InputWrapper>
+          </Filter>
+          <Filter>
+            <template #title>
+              <h3>Country</h3>
+            </template>
+            <InputWrapper>
+              <IconLocation #icon />
+              <input />
+            </InputWrapper>
+          </Filter>
+          <Filter>
+            <template #title>
+              <h3>Target</h3>
+            </template>
+            <InputWrapper>
+              <IconTarget #icon />
+              <input />
+            </InputWrapper>
+          </Filter>
+        </div>
+        <div class="flex flex-col gap-6">
+          <Filter>
+            <template #title>
+              <h3>Region</h3>
+            </template>
+            <FilterToggleList
+              :options="filters.region"
+              :selected="selectedFilters?.region ?? []"
+              @toggle="(value) => toggleFilter('region', value)"
+            />
+          </Filter>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style>
-
 .slide-up-active {
   transition: all 0.3s;
 }
