@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, type PropType } from 'vue';
+import { computed, onMounted, ref, watch, type PropType } from 'vue';
 import type { Event } from '../types/Event';
 import { getFilteredEvents } from '../utilities/getFilteredEvents';
 import type { SelectedFilters } from '../types/SelectedFilters.d.ts';
@@ -19,6 +19,9 @@ import type { FilterOptions } from '../types/FilterOptions';
 import IconCalendar from './IconCalendar.vue';
 import IconLocation from './IconLocation.vue';
 import IconTarget from './IconTarget.vue';
+import debounce from 'debounce';
+import IconSort from './IconSort.vue';
+import Button from './Button.vue';
 
 
 const props = defineProps({
@@ -43,6 +46,7 @@ const props = defineProps({
 const EVENTS_PER_PAGE = 100
 const SORT_BY_RECENT = false
 const SORT_BY_OLDEST = true
+const DEBOUNCE_DELAY = 250
 
 const allEvents = ref<Event[]>([])
 const currentPage = ref<number>(1)
@@ -50,15 +54,25 @@ const loading = ref<boolean>(true)
 const selectedFilters = ref<SelectedFilters>({})
 const showFilters = ref<boolean>(false)
 const sortBy = ref<boolean>(SORT_BY_RECENT)
+const searchInput = ref<string>('')
+const dateFromInput = ref<string>('')
+const dateToInput = ref<string>('')
 
 const chartCoords = computed(() => allEvents.value.map(({x, y}) => ({x, y})))
 const chartHighlightCoords = computed(() => filteredEvents.value.map(({x, y}) => ({x, y})))
 
 const hasActiveFilters = computed(() => {
-  return Object.keys(selectedFilters.value).length > 0
+  return Object.keys(selectedFilters.value)
+    .filter((type: string) => selectedFilters.value[type]?.length)
+    .length > 0
 })
 
-const resetFilters = () => selectedFilters.value = {}
+const resetFilters = () => {
+  selectedFilters.value = {}
+  searchInput.value = ''
+  dateFromInput.value = ''
+  dateToInput.value = ''
+}
 
 const filteredEvents = computed(() => {
   return getFilteredEvents(allEvents.value, selectedFilters.value)
@@ -92,8 +106,19 @@ const toggleSort = () => {
 }
 
 const toggleFilter = (type: string, value: string) => {
-  console.log('toggleFilter', type, value)
+  let selected = [...selectedFilters.value[type] ?? []]
+  if (selected.includes(value)) {
+    selected = selected.filter(s => s !== value)
+  } else {
+    selected.push(value)
+  }
+  selectedFilters.value[type] = selected
 }
+
+const setSearch = debounce(val => {
+  selectedFilters.value.search = val
+}, DEBOUNCE_DELAY)
+watch(searchInput, setSearch)
 
 onMounted(() => {
   fetch('./data/events.json')
@@ -210,11 +235,11 @@ onMounted(() => {
             v-for="event in currentPageEvents"
             :key="event.id"
             :event="event"
+            :countries="filters.country"
           />
         </template>
       </div>
       <div
-        v-if="lastPage > 1"
         class="
           fixed
           bottom-4
@@ -274,15 +299,35 @@ onMounted(() => {
     >
       <h2 class="sr-only">Search, filter, and sort</h2>
       <div class="sticky top-0 flex items-center justify-between gap-2 z-50 bg-white xl:bg-yellow">
-        <div class="p-2 flex items-center gap-2">
-          <IconFilters class="w-8 h-8" aria-hidden="true" />
-          <span class="text-xl font-bold">
-            Filters
-          </span>
+        <div class="flex items-center gap-4">
+          <div class="p-2 flex items-center gap-2">
+            <IconFilters class="w-8 h-8" aria-hidden="true" />
+            <span class="text-xl font-bold">
+              Filters
+            </span>
+          </div>
+          <Button
+            v-if="hasActiveFilters"
+            class="hidden xl:flex"
+            size="sm"
+            @click="resetFilters"
+          >
+            Reset
+          </Button>
         </div>
-        <div class="flex items-center gap-2 xl:hidden">
+        <div class="flex items-center gap-2">
           <button
-            class="flex justify-center items-center"
+            class="hidden xl:block xl:p-2"
+            @click="toggleSort"
+          >
+            <span class="sr-only">Sort by: {{ sortBy ? 'oldest' : 'recent' }}</span>
+            <IconSort
+              class="w-8 h-8"
+              aria-hidden="true"
+            />
+          </button>
+          <button
+            class="flex justify-center items-center xl:hidden"
             @click="showFilters = !showFilters"
           >
             <span class="sr-only">Close Filters</span>
@@ -297,7 +342,7 @@ onMounted(() => {
           </template>
           <InputWrapper>
             <IconSearch #icon />
-            <input />
+            <input name="search" id="search" v-model.trim="searchInput" />
           </InputWrapper>
         </Filter>
         <div class="flex flex-col gap-6">

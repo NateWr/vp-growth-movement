@@ -31,6 +31,6 @@ actions:
     url: 'https://bdsmovement.net/stop-g4s'
 filters:
   target:
-    - G4S
+    - g4-s
 ---
 

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref, useTemplateRef, watch, type PropType } from 'vue';
-import ButtonWhite from './ButtonWhite.vue';
 import Chart from './Chart.vue';
 import { useViewportSize } from '../utilities/useViewportSize.ts';
 import type { ChartTick } from '../types/ChartTick';
@@ -332,29 +331,31 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
                   "
                 >
                   {{ action.title }}
-              </div>
+                </div>
               </div>
             </Button>
           </div>
         </div>
       </StoryText>
       <div class="story-buttons">
-        <ButtonWhite
-          :url="!started ? lastStoryUrl : ''"
+        <Button
+          :href="!started ? lastStoryUrl : ''"
           class="story-button story-button-back"
+          variant="white"
           @click="started ? back() : null"
         >
           <div>Prev</div>
           <div>{{ !started ? lastStoryTitle : currentEventIndex }}</div>
-        </ButtonWhite>
-        <ButtonWhite
+        </Button>
+        <Button
           class="story-button story-button-next"
-          :url="finished ? nextStoryUrl : ''"
+          :href="finished ? nextStoryUrl : ''"
+          variant="white"
           @click="finished ? null : next()"
         >
           <div>Next</div>
           <div>{{ finished ? nextStoryTitle : currentEventIndex }}</div>
-        </ButtonWhite>
+        </Button>
       </div>
     </div>
   </div>

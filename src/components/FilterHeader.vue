@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Button from './Button.vue';
-import ButtonBlack from './ButtonBlack.vue';
 import IconFilters from './IconFilters.vue';
 import IconSort from './IconSort.vue';
 
@@ -26,17 +25,19 @@ const emit = defineEmits(['toggle-filters-panel', 'reset-filters', 'toggle-sort'
       justify-between
     "
   >
-    <div class="flex items-center gap-2">
-      <ButtonBlack
+    <div class="flex items-center gap-4">
+      <Button
+        variant="black"
         @click="emit('toggle-filters-panel')"
       >
-        <IconFilters aria-hidden="true" />
-        <span>
-          Filters
-        </span>
-      </ButtonBlack>
+        <template #icon>
+          <IconFilters aria-hidden="true" />
+        </template>
+        Filters
+      </Button>
       <Button
         v-if="showResetFilters"
+        size="sm"
         @click="emit('reset-filters')"
       >
         Reset

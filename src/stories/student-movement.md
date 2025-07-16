@@ -32,6 +32,6 @@ actions:
     url: '/'
 filters:
   campaign:
-    - Student Solidarity
+    - student-solidarity
 ---
 

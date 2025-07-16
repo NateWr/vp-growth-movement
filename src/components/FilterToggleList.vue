@@ -2,7 +2,6 @@
 import type { PropType } from 'vue';
 import type { FilterOption } from '../types/FilterOption';
 import Button from './Button.vue';
-import ButtonBlack from './ButtonBlack.vue';
 import IconMinus from './IconMinus.vue';
 import IconPlus from './IconPlus.vue';
 
@@ -24,27 +23,22 @@ const emit = defineEmits<{
 
 <template>
   <div class="filter-toggle-list flex flex-wrap gap-2">
-    <component
+    <Button
       v-for="({name, value}) in options"
       :key="value"
-      :is="selected.includes(value) ? ButtonBlack : Button"
+      size="sm"
+      :variant="selected.includes(value) ? 'black' : ''"
       @click="emit('toggle', value)"
     >
-      <template v-if="selected.includes(value)">
-        <IconMinus aria-hidden="true" />
-      </template>
-      <template v-else>
-        <IconPlus aria-hidden="true" />
+      <template #icon>
+        <IconMinus v-if="selected.includes(value)" aria-hidden="true" />
+        <IconPlus v-else aria-hidden="true" />
       </template>
       {{ name }}
-    </component>
+    </Button>
     <slot />
   </div>
 </template>
 
 <style>
-.filter-toggle-list button {
-  font-size: 14px;
-  padding: 0.25rem 0.5rem;
-}
 </style>

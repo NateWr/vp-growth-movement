@@ -1,6 +1,20 @@
 <script setup lang="ts">
 const props = defineProps({
-  url: {
+  size: {
+    type: String,
+    default: '',
+    validator(value: string) {
+      return ['', 'sm'].includes(value)
+    },
+  },
+  variant: {
+    type: String,
+    default: '',
+    validator(value: string) {
+      return ['', 'black', 'white'].includes(value)
+    },
+  },
+  href: {
     type: String,
     default: '',
   }
@@ -9,21 +23,31 @@ const props = defineProps({
 
 <template>
   <component
-    :is="url ? 'a' : 'button'"
-    :href="url"
+    :is="href ? 'a' : 'button'"
+    :href="href"
     class="
+      relative
       flex
       items-center
-      gap-2
-      py-2
-      px-4
       border-2
-      font-bold
-      uppercase
       text-left
       disabled:opacity-50
     "
+    :class="[
+      size === 'sm'
+        ? 'text-sm gap-1 py-1 px-2 font-medium'
+        : 'gap-2 py-2 px-4 font-bold uppercase',
+      variant === 'black'
+        ? 'bg-black text-white border-black'
+        : '',
+      variant === 'white'
+        ? 'bg-white text-black border-white'
+        : '',
+    ]"
   >
-    <slot />
-</component>
+    <slot name="icon" />
+    <span class="relative top-px">
+      <slot />
+    </span>
+  </component>
 </template>
