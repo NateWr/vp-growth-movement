@@ -12,7 +12,7 @@
 .input-wrapper > svg {
   position: absolute;
   top: 50%;
-  left: 0.5em;
+  left: 0.75em;
   transform: translateY(-50%);
   width: 1.5em;
   height: auto;

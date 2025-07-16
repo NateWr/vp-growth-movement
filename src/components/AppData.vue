@@ -22,6 +22,7 @@ import IconTarget from './IconTarget.vue';
 import debounce from 'debounce';
 import IconSort from './IconSort.vue';
 import Button from './Button.vue';
+import Autocomplete from './Autocomplete.vue';
 
 
 const props = defineProps({
@@ -298,7 +299,7 @@ onMounted(() => {
       "
     >
       <h2 class="sr-only">Search, filter, and sort</h2>
-      <div class="sticky top-0 flex items-center justify-between gap-2 z-50 bg-white xl:bg-yellow">
+      <div class="sticky top-0 flex items-center justify-between gap-2 z-50 bg-white xl:p-2 xl:bg-yellow">
         <div class="flex items-center gap-4">
           <div class="p-2 flex items-center gap-2">
             <IconFilters class="w-8 h-8" aria-hidden="true" />
@@ -308,7 +309,6 @@ onMounted(() => {
           </div>
           <Button
             v-if="hasActiveFilters"
-            class="hidden xl:flex"
             size="sm"
             @click="resetFilters"
           >
@@ -335,7 +335,7 @@ onMounted(() => {
           </button>
         </div>
       </div>
-      <div class="flex flex-col gap-6 p-2">
+      <div class="flex flex-col gap-6 p-2 xl:p-4">
         <Filter>
           <template #title>
             <h3>Search</h3>
@@ -388,12 +388,21 @@ onMounted(() => {
           </Filter>
           <Filter>
             <template #title>
-              <h3>Target</h3>
+              <h3>Campaign Target</h3>
             </template>
-            <InputWrapper>
-              <IconTarget #icon />
-              <input />
-            </InputWrapper>
+            <template #description>
+              Find events related to a specific campaign target, like G4S or Elbit Systems.
+            </template>
+            <Autocomplete
+              name="targets"
+              :options="filters.target"
+              :selected="selectedFilters?.target ?? []"
+              @toggle="(value) => toggleFilter('target', value)"
+            >
+              <template #icon>
+                <IconTarget aria-hidden="true" />
+              </template>
+            </Autocomplete>
           </Filter>
         </div>
         <div class="flex flex-col gap-6">
