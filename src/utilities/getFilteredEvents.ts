@@ -28,7 +28,7 @@ export const getFilteredEvents = (events: Event[], selectedFilters: SelectedFilt
         case 'country':
         case 'region':
         case 'target':
-          // These filters are additive. An event is matched if it
+          // These filters are additive. An event is included if it
           // matches at least one of the selected options
           let countMatches = event[type].filter((f: string) => selectedFilters[type]?.includes(f))
           if (countMatches.length) {
