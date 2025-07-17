@@ -3,6 +3,9 @@ import AppData from '../components/AppData.vue'
 import Layout from '../layouts/Layout.astro'
 import filters from '../data/filters.json'
 import { columns, rows, ticks } from '../data/chart-config.json'
+import events from '../data/events.json'
+
+const lastDate = events[events.length - 1].date
 ---
 
 <Layout
@@ -18,5 +21,6 @@ import { columns, rows, ticks } from '../data/chart-config.json'
 		chartRows={rows}
 		chartTicks={ticks}
 		filters={filters}
+		lastDate={lastDate}
 	/>
 </Layout>

@@ -24,9 +24,6 @@
   border: 2px solid;
   border-radius: 2px;
 }
-.input-wrapper input:placeholder {
-  opacity: 0.5;
-}
 .input-wrapper input:focus-visible {
   outline: 2px solid;
 }

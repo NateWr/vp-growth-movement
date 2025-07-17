@@ -21,14 +21,21 @@ export const getFilteredEvents = (events: Event[], selectedFilters: SelectedFilt
           }
           break
         case 'dateFrom':
+          if (event.date >= (selectedFilters?.dateFrom ?? '')) {
+            matchedFilters++
+          }
+          break;
         case 'dateTo':
+          if (event.date <= (selectedFilters?.dateTo ?? '')) {
+            matchedFilters++
+          }
           break
         case 'area':
         case 'campaign':
         case 'country':
         case 'region':
         case 'target':
-          // These filters are additive. An event is included if it
+          // For these filters, an event is included if it
           // matches at least one of the selected options
           let countMatches = event[type].filter((f: string) => selectedFilters[type]?.includes(f))
           if (countMatches.length) {

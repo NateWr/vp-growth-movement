@@ -16,13 +16,13 @@ import InputWrapper from './InputWrapper.vue';
 import IconSearch from './IconSearch.vue';
 import FilterToggleList from './FilterToggleList.vue';
 import type { FilterOptions } from '../types/FilterOptions';
-import IconCalendar from './IconCalendar.vue';
 import IconLocation from './IconLocation.vue';
 import IconTarget from './IconTarget.vue';
 import debounce from 'debounce';
 import IconSort from './IconSort.vue';
 import Button from './Button.vue';
 import Autocomplete from './Autocomplete.vue';
+import InputDateRange from './InputDateRange.vue';
 
 
 const props = defineProps({
@@ -41,6 +41,10 @@ const props = defineProps({
   filters: {
     type: Object as PropType<FilterOptions>,
     required: true,
+  },
+  lastDate: {
+    type: String,
+    required: true,
   }
 })
 
@@ -58,6 +62,7 @@ const sortBy = ref<boolean>(SORT_BY_RECENT)
 const searchInput = ref<string>('')
 const dateFromInput = ref<string>('')
 const dateToInput = ref<string>('')
+const invalidDateRange = ref<boolean>(false)
 
 const chartCoords = computed(() => allEvents.value.map(({x, y}) => ({x, y})))
 const chartHighlightCoords = computed(() => filteredEvents.value.map(({x, y}) => ({x, y})))
@@ -120,6 +125,31 @@ const setSearch = debounce(val => {
   selectedFilters.value.search = val
 }, DEBOUNCE_DELAY)
 watch(searchInput, setSearch)
+
+
+const isDateValid = (date: string) => {
+  if (!date.length) {
+    return true
+  }
+  return !!date.match(/[0-9]{4}\-[0-9]{2}\-[0-9]{2}/)
+}
+const isDateRangeValid = (from: string, to: string) => {
+  return !from.length
+    || !to.length
+    || from <= to
+}
+const setDateRange = debounce(() => {
+  invalidDateRange.value = !isDateValid(dateFromInput.value)
+    || !isDateValid(dateToInput.value)
+    || !isDateRangeValid(dateFromInput.value, dateToInput.value)
+  if (invalidDateRange.value) {
+    return
+  }
+  selectedFilters.value.dateFrom = dateFromInput.value
+  selectedFilters.value.dateTo = dateToInput.value
+}, 1000)
+watch(dateFromInput, setDateRange)
+watch(dateToInput, setDateRange)
 
 onMounted(() => {
   fetch('./data/events.json')
@@ -368,23 +398,37 @@ onMounted(() => {
           </Filter>
         </div>
         <div class="flex flex-col gap-6">
-          <Filter>
+          <Filter class="items-start">
             <template #title>
               <h3>Date Range</h3>
             </template>
-            <InputWrapper>
-              <IconCalendar #icon />
-              <input />
-            </InputWrapper>
+            <template #description>
+            </template>
+            <InputDateRange
+              defaultFrom="2005-01-01"
+              :defaultTo="lastDate"
+              name="date-range"
+              v-model:date-from="dateFromInput"
+              v-model:date-to="dateToInput"
+            />
+            <div v-if="invalidDateRange" class="bg-red px-3 py-1">
+              Invalid date range!
+            </div>
           </Filter>
           <Filter>
             <template #title>
               <h3>Country</h3>
             </template>
-            <InputWrapper>
-              <IconLocation #icon />
-              <input />
-            </InputWrapper>
+            <Autocomplete
+              name="targets"
+              :options="filters.country"
+              :selected="selectedFilters?.country ?? []"
+              @toggle="(value) => toggleFilter('country', value)"
+            >
+              <template #icon>
+                <IconLocation aria-hidden="true"/>
+              </template>
+            </Autocomplete>
           </Filter>
           <Filter>
             <template #title>
