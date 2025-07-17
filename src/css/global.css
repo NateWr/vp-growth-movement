@@ -10,6 +10,11 @@
   --color-red-bright: #FF1E1E;
   --color-red-dark: #4E2929;
   --color-yellow: #FFCC00;
+  --color-white-alpha-100: rgba(255, 255, 255, 0.1);
+  --color-white-alpha-200: rgba(255, 255, 255, 0.2);
+  --color-white-alpha-300: rgba(255, 255, 255, 0.3);
+  --color-white-alpha-400: rgba(255, 255, 255, 0.4);
+  --color-white-alpha-500: rgba(255, 255, 255, 0.5);
 
   --breakpoint-3xl: 120rem;
 

@@ -14,6 +14,14 @@ const props = defineProps({
     type: Array as PropType<ChartHexGroup[]>,
     required: true,
   },
+  dateRangeFrom: {
+    type: Number,
+    default: -1,
+  },
+  dateRangeTo: {
+    type: Number,
+    default: -1,
+  },
   rows: {
     type: Number,
     required: true,
@@ -58,8 +66,8 @@ const storyCurrentHexSize = computed(() => hexConfig.size.map(h => h * props.sto
 // One half hex width is added to ensure the hexes
 // in the last column aren't cut off when the x offset
 // is applied or story hex is featured
-const width = computed(() => props.columns * hexConfig.gridSize[0] + storyHexWidth.value)
-const height = computed(() => props.rows * hexConfig.gridSize[1] + (storyHexHeight.value / 2))
+const width = computed(() => props.columns * hexConfig.gridSize[0])
+const height = computed(() => props.rows * hexConfig.gridSize[1])
 
 const currentTicks = computed(() => {
   return props.showAllYears
@@ -122,7 +130,18 @@ const storyCurrentCoords = computed(() => {
         </div>
       </TransitionGroup>
     </div>
-    <svg class="chart-hexes" :width="width" :height="height" :viewBox="`0 0 ${width} ${height}`" fill="currentColor"
+    <div
+      v-if="dateRangeFrom > -1 && dateRangeTo > -1"
+      class="absolute mx-(--padding-x) h-full left-0 right-0"
+    >
+      <div
+        class="absolute h-full min-w-[1px] bg-white-alpha-100 flex font-mono text-xs uppercase text-white-alpha-500"
+        :style="`left: ${dateRangeFrom}%; right: ${100 - dateRangeTo}%;`"
+      >
+        Date Range
+      </div>
+    </div>
+    <svg class="chart-hexes overflow-visible" :width="width" :height="height" :viewBox="`0 0 ${width} ${height}`" fill="currentColor"
       xmlns="http://www.w3.org/2000/svg">
       <g
         v-for="dataset in datasetsWithCoords"

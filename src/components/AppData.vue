@@ -43,10 +43,14 @@ const props = defineProps({
     type: Object as PropType<FilterOptions>,
     required: true,
   },
+  firstDate: {
+    type: String,
+    required: true,
+  },
   lastDate: {
     type: String,
     required: true,
-  }
+  },
 })
 
 const EVENTS_PER_PAGE = 100
@@ -143,7 +147,7 @@ const isDateValid = (date: string) => {
   if (!date.length) {
     return true
   }
-  return !!date.match(/[0-9]{4}\-[0-9]{2}\-[0-9]{2}/)
+  return !isNaN((new Date(date)).getTime())
 }
 const isDateRangeValid = (from: string, to: string) => {
   return !from.length
@@ -164,6 +168,24 @@ const setDateRange = debounce(() => {
 watch(dateFromInput, setDateRange)
 watch(dateToInput, setDateRange)
 
+const firstDateTimestamp = computed(() => (new Date(props.firstDate)).getTime())
+const lastDateTimestamp = computed(() => (new Date(props.lastDate)).getTime())
+const chartDateRangeFrom = computed(() => {
+  if (!selectedFilters.value.dateFrom) {
+    return -1
+  }
+  const timestamp = (new Date(selectedFilters.value?.dateFrom ?? '')).getTime()
+  const total = lastDateTimestamp.value - firstDateTimestamp.value
+  return Math.max(0, ((timestamp - firstDateTimestamp.value) / total) * 100)
+})
+const chartDateRangeTo = computed(() => {
+  if (!selectedFilters.value.dateTo) {
+    return -1
+  }
+  const timestamp = (new Date(selectedFilters.value?.dateTo ?? '')).getTime()
+  const total = lastDateTimestamp.value - firstDateTimestamp.value
+  return Math.min(100, ((timestamp - firstDateTimestamp.value) / total) * 100)
+})
 
 onMounted(() => {
   fetch('./data/events.json')
@@ -230,6 +252,8 @@ onMounted(() => {
               }
             },
           ]"
+          :dateRangeFrom="chartDateRangeFrom"
+          :dateRangeTo="chartDateRangeTo"
           :rows="chartRows"
           :ticks="chartTicks"
           class="
