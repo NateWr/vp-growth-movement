@@ -165,6 +165,7 @@ onMounted(() => {
   <div
     class="
       app-data
+      min-h-[calc(100vh-var(--header-height))]
       bg-white
       xl:grid
       xl:grid-cols-12
@@ -173,6 +174,8 @@ onMounted(() => {
     <div
       class="
         z-50
+        min-h-screen
+        xl:min-h-auto
         xl:col-span-7
         xl:order-2
       "
@@ -247,7 +250,7 @@ onMounted(() => {
           <Spinner />
           Loading
         </div>
-        <div v-else-if="!currentPageEvents.length" class="flex flex-col items-start gap-4 min-h-32 p-8 bg-red-light" role="alert">
+        <div v-else-if="!currentPageEvents.length" class="flex flex-col items-start gap-4 p-8 min-h-32 bg-red-light" role="alert">
           <div class="text-lg leading-tight">
             No events were found matching your request.
           </div>
