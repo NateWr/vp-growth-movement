@@ -23,6 +23,7 @@ import IconSort from './IconSort.vue';
 import Button from './Button.vue';
 import Autocomplete from './Autocomplete.vue';
 import InputDateRange from './InputDateRange.vue';
+import { useUrlParams } from '../utilities/useUrlParams.ts';
 
 
 const props = defineProps({
@@ -73,11 +74,20 @@ const hasActiveFilters = computed(() => {
     .length > 0
 })
 
+const { changeUrl, setFiltersFromParams } = useUrlParams(
+  selectedFilters,
+  currentPage,
+  searchInput,
+  dateFromInput,
+  dateToInput,
+)
+
 const resetFilters = () => {
   selectedFilters.value = {}
   searchInput.value = ''
   dateFromInput.value = ''
   dateToInput.value = ''
+  changeUrl(selectedFilters, currentPage)
 }
 
 const filteredEvents = computed(() => {
@@ -119,10 +129,12 @@ const toggleFilter = (type: string, value: string) => {
     selected.push(value)
   }
   selectedFilters.value[type] = selected
+  changeUrl(selectedFilters, currentPage)
 }
 
 const setSearch = debounce(val => {
   selectedFilters.value.search = val
+  changeUrl(selectedFilters, currentPage)
 }, DEBOUNCE_DELAY)
 watch(searchInput, setSearch)
 
@@ -147,9 +159,11 @@ const setDateRange = debounce(() => {
   }
   selectedFilters.value.dateFrom = dateFromInput.value
   selectedFilters.value.dateTo = dateToInput.value
+  changeUrl(selectedFilters, currentPage)
 }, 1000)
 watch(dateFromInput, setDateRange)
 watch(dateToInput, setDateRange)
+
 
 onMounted(() => {
   fetch('./data/events.json')
@@ -158,6 +172,16 @@ onMounted(() => {
       allEvents.value = events
       loading.value = false
     })
+
+  if (window.location.search) {
+    setFiltersFromParams(
+      selectedFilters,
+      currentPage,
+      searchInput,
+      dateFromInput,
+      dateToInput
+    )
+  }
 })
 </script>
 
