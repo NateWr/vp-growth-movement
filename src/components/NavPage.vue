@@ -40,7 +40,6 @@ const emit = defineEmits(['set-page'])
       items-stretch
       justify-between
       h-16
-      rounded-full
       bg-black
       text-white
     "
