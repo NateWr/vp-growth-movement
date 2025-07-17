@@ -264,6 +264,7 @@ onMounted(() => {
         </template>
       </div>
       <div
+        v-if="currentPageEvents.length"
         class="
           fixed
           bottom-4
