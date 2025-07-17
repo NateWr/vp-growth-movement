@@ -243,22 +243,15 @@ onMounted(() => {
           xl:max-w-160
         "
       >
-        <div
-          v-if="loading"
-          class="
-            min-h-[35vh]
-            flex
-            items-center
-            justify-center
-            gap-4
-            text-lg
-            font-semibold
-            uppercase
-          "
-          role="alert"
-        >
+        <div v-if="loading" class="min-h-[35vh] flex items-center justify-center gap-4 text-lg font-semibold uppercase" role="alert">
           <Spinner />
           Loading
+        </div>
+        <div v-else-if="!currentPageEvents.length" class="flex flex-col items-start gap-4 min-h-32 p-8 bg-red-light" role="alert">
+          <div class="text-lg leading-tight">
+            No events were found matching your request.
+          </div>
+          <Button @click="resetFilters">Reset Filters</Button>
         </div>
         <template v-else>
           <h2 class="sr-only">Events</h2>
