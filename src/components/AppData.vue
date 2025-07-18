@@ -249,7 +249,6 @@ const chartCurrentEvent = computed(() => {
 
 const setFocusedEvent = () => {
     if (!$events.value) {
-      console.log('hmmm')
       return
     }
     const $event = $events.value?.find(e => {
