@@ -177,23 +177,27 @@ const setDateRange = debounce(() => {
   selectedFilters.value.dateTo = dateToInput.value
   currentPage.value = 1
   changeUrl(selectedFilters, currentPage)
-}, 1000)
+}, DEBOUNCE_DELAY)
 watch(dateFromInput, setDateRange)
 watch(dateToInput, setDateRange)
 
 const firstDateTimestamp = computed(() => (new Date(props.firstDate)).getTime())
 const lastDateTimestamp = computed(() => (new Date(props.lastDate)).getTime())
 const chartDateRangeFrom = computed(() => {
-  if (!selectedFilters.value.dateFrom) {
-    return -1
+  if (!selectedFilters.value?.dateFrom) {
+    return selectedFilters.value?.dateTo
+      ? 0
+      : -1
   }
   const timestamp = (new Date(selectedFilters.value?.dateFrom ?? '')).getTime()
   const total = lastDateTimestamp.value - firstDateTimestamp.value
   return Math.max(0, ((timestamp - firstDateTimestamp.value) / total) * 100)
 })
 const chartDateRangeTo = computed(() => {
-  if (!selectedFilters.value.dateTo) {
-    return -1
+  if (!selectedFilters.value?.dateTo) {
+    return selectedFilters.value?.dateFrom
+      ? 100
+      : -1
   }
   const timestamp = (new Date(selectedFilters.value?.dateTo ?? '')).getTime()
   const total = lastDateTimestamp.value - firstDateTimestamp.value
