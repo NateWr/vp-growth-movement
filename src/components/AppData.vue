@@ -209,7 +209,7 @@ watch(disableBodyOverflow, (newValue) => {
 })
 
 onMounted(() => {
-  fetch('./data/events.json')
+  fetch('/data/events.json')
     .then(r => r.json())
     .then(events => {
       allEvents.value = events
