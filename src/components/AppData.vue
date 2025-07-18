@@ -219,6 +219,17 @@ watch(disableBodyOverflow, (newValue) => {
   }
 })
 
+const storyPointsScale = computed(() => {
+  switch (true) {
+    case (width.value >= BREAKPOINTS.LAPTOP):
+      return 2
+    case (width.value >= BREAKPOINTS.TABLET):
+      return 3
+    default:
+      return 6
+  }
+})
+
 onMounted(() => {
   fetch('/data/events.json')
     .then(r => r.json())
@@ -269,6 +280,7 @@ onMounted(() => {
         <Chart
           aria-hidden="true"
           :columns="chartColumns"
+          :highlightEvent="currentEvent"
           :datasets="[
             {
               id: 'all-data',
@@ -288,6 +300,7 @@ onMounted(() => {
           :dateRangeFrom="chartDateRangeFrom"
           :dateRangeTo="chartDateRangeTo"
           :rows="chartRows"
+          :storyPointsScale="storyPointsScale"
           :ticks="chartTicks"
           class="
             min-h-28

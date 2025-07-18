@@ -4,6 +4,7 @@ import hexConfig from '../utilities/hexConfig'
 import type { ChartTick } from '../types/ChartTick'
 import type { ChartHexGroup } from '../types/ChartHexGroup'
 import type { ChartHex } from '../types/ChartHex'
+import type { Event } from '../types/Event'
 
 const props = defineProps({
   columns: {
@@ -33,6 +34,10 @@ const props = defineProps({
   highlights: {
     type: Array as PropType<String[]>,
     default: [],
+  },
+  highlightEvent: {
+    type: Object as PropType<Event|null>,
+    default: null,
   },
   showAllYears: {
     type: Boolean,
@@ -114,6 +119,14 @@ const storyCurrentCoords = computed(() => {
     return
   }
   return getCoords([props.storyPointCurrent], props.storyPointsScale)[0]
+})
+
+const highlightEventCoords = computed(() => {
+  if (!props.highlightEvent) {
+    return null
+  }
+  const {x, y} = props.highlightEvent
+  return getCoords([{x, y}])[0]
 })
 </script>
 
@@ -200,7 +213,30 @@ const storyCurrentCoords = computed(() => {
               ].join(',')
             })
             .join(' ')
-          " />
+          "
+        />
+      </g>
+      <g
+        v-if="highlightEvent"
+        class="chart-hex-group chart-hex-group-highlight-event"
+      >
+        <line
+          :x1="highlightEventCoords.x + (storyCurrentHexSize[0] / 2)"
+          y1="0"
+          :x2="highlightEventCoords.x + (storyCurrentHexSize[0] / 2)"
+          :y2="height"
+        />
+        <polygon
+          :points="hexConfig.points
+            .map(pointCoords => {
+              return [
+                (pointCoords[0] * storyPointsScale) + highlightEventCoords.x,
+                (pointCoords[1] * storyPointsScale) + highlightEventCoords.y,
+              ].join(',')
+            })
+            .join(' ')
+          "
+        />
       </g>
     </svg>
   </div>
@@ -309,6 +345,25 @@ const storyCurrentCoords = computed(() => {
 .chart-draw-line-enter-from,
 .chart-draw-line-leave-to {
   stroke-dashoffset: 330;
+}
+
+/**
+ * Highlighted event line+hex
+ */
+.chart-hex-group-highlight-event {
+  fill: var(--color-chart-story-current);
+  stroke: var(--color-chart-story);
+  stroke-width: 8px;
+}
+@media (min-width: 768px) {
+  .chart-hex-group-highlight-event {
+    stroke-width: 6px;
+  }
+}
+@media (min-width: 1536px) {
+  .chart-hex-group-highlight-event {
+    stroke-width: 4px;
+  }
 }
 </style>
 
