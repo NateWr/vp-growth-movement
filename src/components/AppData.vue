@@ -98,12 +98,12 @@ const resetFilters = () => {
   searchInput.value = ''
   dateFromInput.value = ''
   dateToInput.value = ''
+  currentPage.value = 1
   resetEventsView()
   changeUrl(selectedFilters, currentPage)
 }
 
 const resetEventsView = () => {
-  currentPage.value = 1
   currentEvent.value = null
   window.scrollTo(0, 0)
   nextTick(() => setFocusedEvent())
@@ -187,6 +187,7 @@ const setDateRange = debounce(() => {
   }
   selectedFilters.value.dateFrom = dateFromInput.value
   selectedFilters.value.dateTo = dateToInput.value
+  currentPage.value = 1
   resetEventsView()
   changeUrl(selectedFilters, currentPage)
 }, DEBOUNCE_DELAY)
