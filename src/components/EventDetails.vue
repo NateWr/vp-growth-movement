@@ -56,23 +56,29 @@ const targets = computed(() => {
       :event="event"
       :countries="countries"
     />
-    <div class="flex flex-wrap gap-4">
-      Area:
-      <Button v-for="area in areas" :key="area" size="sm">
-        {{ area }}
-      </Button>
+    <div v-if="areas.length">
+      <div class="font-bold uppercase">Area</div>
+      <div class="flex flex-wrap gap-4">
+        <Button v-for="area in areas" :key="area" size="sm">
+          {{ area }}
+        </Button>
+      </div>
     </div>
-    <div class="flex flex-wrap gap-4">
-      Campaigns:
-      <Button v-for="campaign in campaigns" :key="campaign" size="sm">
-        {{ campaign }}
-      </Button>
+    <div v-if="campaigns.length">
+      <div class="font-bold uppercase">Campaigns</div>
+      <div class="flex flex-wrap gap-4">
+        <Button v-for="campaign in campaigns" :key="campaign" size="sm">
+          {{ campaign }}
+        </Button>
+      </div>
     </div>
-    <div class="flex flex-wrap gap-4">
-      Targets:
-      <Button v-for="target in targets" :key="target" size="sm">
-        {{ target }}
-      </Button>
+    <div v-if="targets.length">
+      <div class="font-bold uppercase">Targets</div>
+      <div class="flex flex-wrap gap-4">
+        <Button v-for="target in targets" :key="target" size="sm">
+          {{ target }}
+        </Button>
+      </div>
     </div>
     <div v-if="event.sources.length">
       <div class="font-bold uppercase">Read more</div>
