@@ -97,6 +97,7 @@ const resetFilters = () => {
   searchInput.value = ''
   dateFromInput.value = ''
   dateToInput.value = ''
+  currentPage.value = 1
   changeUrl(selectedFilters, currentPage)
 }
 
@@ -124,6 +125,7 @@ const setPage = (newPage: number) => {
     return
   }
   currentPage.value = newPage
+  changeUrl(selectedFilters, currentPage)
 }
 
 const toggleSort = () => {
@@ -139,12 +141,16 @@ const toggleFilter = (type: string, value: string) => {
     selected.push(value)
   }
   selectedFilters.value[type] = selected
+  currentPage.value = 1
   changeUrl(selectedFilters, currentPage)
 }
 
 const setSearch = debounce(val => {
-  selectedFilters.value.search = val
-  changeUrl(selectedFilters, currentPage)
+  if (val.length > 2) {
+    selectedFilters.value.search = val
+    currentPage.value = 1
+    changeUrl(selectedFilters, currentPage)
+  }
 }, DEBOUNCE_DELAY)
 watch(searchInput, setSearch)
 
@@ -169,6 +175,7 @@ const setDateRange = debounce(() => {
   }
   selectedFilters.value.dateFrom = dateFromInput.value
   selectedFilters.value.dateTo = dateToInput.value
+  currentPage.value = 1
   changeUrl(selectedFilters, currentPage)
 }, 1000)
 watch(dateFromInput, setDateRange)
