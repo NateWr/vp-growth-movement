@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue';
 import type { Event } from '../types/Event';
-import Button from './Button.vue';
-import IconArrowUpRight from './IconArrowUpRight.vue';
 import type { FilterOption } from '../types/FilterOption';
 
 const props = defineProps({
@@ -13,6 +11,10 @@ const props = defineProps({
   countries: {
     type: Array as PropType<FilterOption[]>,
     required: true,
+  },
+  heading: {
+    type: String,
+    default: 'h3',
   }
 })
 
@@ -24,7 +26,7 @@ const country = computed(() => {
 </script>
 
 <template>
-  <article
+  <div
     class="
       flex
       flex-col
@@ -46,7 +48,8 @@ const country = computed(() => {
       >
         {{ event.dateFormatted }}
       </div>
-      <h3
+      <component
+        :is="heading"
         class="
           text-xl
           leading-tight
@@ -54,7 +57,7 @@ const country = computed(() => {
         "
       >
         {{ event.headline }}
-      </h3>
+      </component>
       <div v-if="country.length">
         <span v-if="event.city">
           {{ event.city }},
@@ -67,13 +70,5 @@ const country = computed(() => {
     <div class="text-lg">
       {{ event.summary }}
     </div>
-    <div>
-      <Button class="scroll-mt-[32rem]">
-        <template #icon>
-          <IconArrowUpRight aria-hidden="true" />
-        </template>
-        View Event
-      </Button>
-    </div>
-  </article>
+  </div>
 </template>

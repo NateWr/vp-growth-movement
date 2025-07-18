@@ -24,6 +24,9 @@ import Button from './Button.vue';
 import Autocomplete from './Autocomplete.vue';
 import InputDateRange from './InputDateRange.vue';
 import { useUrlParams } from '../utilities/useUrlParams.ts';
+import IconArrowUpRight from './IconArrowUpRight.vue';
+import EventDetails from './EventDetails.vue';
+import { useViewportSize } from '../utilities/useViewportSize.ts';
 
 
 const props = defineProps({
@@ -68,9 +71,12 @@ const searchInput = ref<string>('')
 const dateFromInput = ref<string>('')
 const dateToInput = ref<string>('')
 const invalidDateRange = ref<boolean>(false)
+const currentEvent = ref<Event|null>(null)
 
 const chartCoords = computed(() => allEvents.value.map(({x, y}) => ({x, y})))
 const chartHighlightCoords = computed(() => filteredEvents.value.map(({x, y}) => ({x, y})))
+
+const { width, BREAKPOINTS } = useViewportSize()
 
 const hasActiveFilters = computed(() => {
   return Object.keys(selectedFilters.value)
@@ -187,6 +193,21 @@ const chartDateRangeTo = computed(() => {
   return Math.min(100, ((timestamp - firstDateTimestamp.value) / total) * 100)
 })
 
+const disableBodyOverflow = computed(() => {
+  if (width.value >= BREAKPOINTS.LAPTOP_SM) {
+    return currentEvent.value
+  }
+  return showFilters.value || currentEvent.value
+})
+watch(disableBodyOverflow, (newValue) => {
+  const hasClass = document.body.className.includes('overflow-hidden')
+  if (newValue && !hasClass) {
+    document.body.className += ' overflow-hidden'
+  } else if (!newValue && hasClass) {
+    document.body.className = document.body.className.replace('overflow-hidden', '').trim()
+  }
+})
+
 onMounted(() => {
   fetch('./data/events.json')
     .then(r => r.json())
@@ -219,6 +240,7 @@ onMounted(() => {
   >
     <div
       class="
+        relative
         z-50
         min-h-screen
         xl:min-h-auto
@@ -306,12 +328,22 @@ onMounted(() => {
         </div>
         <template v-else>
           <h2 class="sr-only">Events</h2>
-          <EventSummary
+          <article
             v-for="event in currentPageEvents"
             :key="event.id"
-            :event="event"
-            :countries="filters.country"
-          />
+            class="flex flex-col gap-4 items-start"
+          >
+            <EventSummary
+              :event="event"
+              :countries="filters.country"
+            />
+            <Button class="scroll-mt-[32rem]" @click="currentEvent = event">
+              <template #icon>
+                <IconArrowUpRight aria-hidden="true" />
+              </template>
+              View Event
+            </Button>
+          </article>
         </template>
       </div>
       <div
@@ -337,6 +369,50 @@ onMounted(() => {
           :showingEnd="(showingStart + currentPageEvents.length).toLocaleString('en-US')"
           :total="filteredEvents.length"
           @set-page="setPage"
+        />
+      </div>
+      <div
+        class="
+          fixed
+          top-45
+          -bottom-4
+          left-2
+          right-2
+          z-70
+          overflow-scroll
+          pt-4
+          pb-24
+          px-4
+          rounded
+          bg-white
+          shadow-lg/100
+          transition-transform
+          duration-200
+          md:top-65
+          xl:top-58
+          xl:left-[41.667%]
+          xl:ml-4
+          xl:p-8
+          xl:max-w-160
+        "
+        :class="[
+          currentEvent ? 'translate-y-0 ease-out' : 'translate-y-full ease-in',
+        ]"
+      >
+        <button
+          class="absolute top-0 right-0 flex justify-center items-center"
+          @click="currentEvent = null"
+        >
+          <span class="sr-only">Close Event</span>
+          <IconClose aria-hidden="true" />
+        </button>
+        <EventDetails
+          v-if="currentEvent"
+          :event="currentEvent"
+          :areas="filters.area"
+          :campaigns="filters.campaign"
+          :countries="filters.country"
+          :targets="filters.target"
         />
       </div>
     </div>
@@ -370,8 +446,7 @@ onMounted(() => {
       "
       :class="[
         showFilters ? 'translate-y-0 ease-out' : 'translate-y-full ease-in',
-      ]
-      "
+      ]"
     >
       <h2 class="sr-only">Search, filter, and sort</h2>
       <div class="sticky top-0 flex items-center justify-between gap-2 z-50 bg-white xl:p-2 xl:bg-yellow">
