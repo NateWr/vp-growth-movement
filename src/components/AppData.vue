@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, type PropType } from 'vue';
+import { computed, nextTick, onMounted, ref, useTemplateRef, watch, type PropType } from 'vue';
 import type { Event } from '../types/Event';
 import { getFilteredEvents } from '../utilities/getFilteredEvents';
 import type { SelectedFilters } from '../types/SelectedFilters.d.ts';
@@ -72,6 +72,7 @@ const dateFromInput = ref<string>('')
 const dateToInput = ref<string>('')
 const invalidDateRange = ref<boolean>(false)
 const currentEvent = ref<Event|null>(null)
+const $events = useTemplateRef('events')
 
 const chartCoords = computed(() => allEvents.value.map(({x, y}) => ({x, y})))
 const chartHighlightCoords = computed(() => filteredEvents.value.map(({x, y}) => ({x, y})))
@@ -97,8 +98,15 @@ const resetFilters = () => {
   searchInput.value = ''
   dateFromInput.value = ''
   dateToInput.value = ''
-  currentPage.value = 1
+  resetEventsView()
   changeUrl(selectedFilters, currentPage)
+}
+
+const resetEventsView = () => {
+  currentPage.value = 1
+  currentEvent.value = null
+  window.scrollTo(0, 0)
+  nextTick(() => setFocusedEvent())
 }
 
 const filteredEvents = computed(() => {
@@ -125,8 +133,11 @@ const setPage = (newPage: number) => {
     return
   }
   currentPage.value = newPage
+  resetEventsView()
   changeUrl(selectedFilters, currentPage)
 }
+
+watch(currentPage, () => window.scrollTo(0, 0))
 
 const toggleSort = () => {
   sortBy.value = !sortBy.value
@@ -142,6 +153,7 @@ const toggleFilter = (type: string, value: string) => {
   }
   selectedFilters.value[type] = selected
   currentPage.value = 1
+  resetEventsView()
   changeUrl(selectedFilters, currentPage)
 }
 
@@ -175,7 +187,7 @@ const setDateRange = debounce(() => {
   }
   selectedFilters.value.dateFrom = dateFromInput.value
   selectedFilters.value.dateTo = dateToInput.value
-  currentPage.value = 1
+  resetEventsView()
   changeUrl(selectedFilters, currentPage)
 }, DEBOUNCE_DELAY)
 watch(dateFromInput, setDateRange)
@@ -230,12 +242,33 @@ const storyPointsScale = computed(() => {
   }
 })
 
+const focusedEvent = ref<Event|null>(null)
+const chartCurrentEvent = computed(() => {
+  return currentEvent.value ?? focusedEvent.value
+})
+
+const setFocusedEvent = () => {
+    if (!$events.value) {
+      console.log('hmmm')
+      return
+    }
+    const $event = $events.value?.find(e => {
+      const pos = e.offsetTop - window.scrollY
+      return pos > -200 && pos < 200
+    })
+
+    if ($event) {
+      focusedEvent.value = currentPageEvents.value.find(e => e.id === $event.dataset?.id) ?? null
+    }
+}
+
 onMounted(() => {
   fetch('/data/events.json')
     .then(r => r.json())
     .then(events => {
       allEvents.value = events
       loading.value = false
+      nextTick(setFocusedEvent)
     })
 
   if (window.location.search) {
@@ -247,6 +280,8 @@ onMounted(() => {
       dateToInput
     )
   }
+
+  window.document.addEventListener('scroll', setFocusedEvent)
 })
 </script>
 
@@ -280,7 +315,7 @@ onMounted(() => {
         <Chart
           aria-hidden="true"
           :columns="chartColumns"
-          :highlightEvent="currentEvent"
+          :highlightEvent="chartCurrentEvent"
           :datasets="[
             {
               id: 'all-data',
@@ -355,6 +390,8 @@ onMounted(() => {
           <article
             v-for="event in currentPageEvents"
             :key="event.id"
+            ref="events"
+            :data-id="event.id"
             class="flex flex-col gap-4 items-start"
           >
             <EventSummary
