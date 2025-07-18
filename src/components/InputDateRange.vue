@@ -26,7 +26,7 @@ const dateTo = defineModel('date-to', {required: true})
     <div class="relative flex flex-col">
       <label :for="`${name}-from`" class="absolute top-2 font-mono font-light text-xs uppercase">From</label>
       <input
-        class="mt-2 -mb-2 w-22 h-12 focus-visible:outline-none"
+        class="mt-2 -mb-2 w-22 h-12 placeholder:opacity-60 focus-visible:outline-none"
         :name="`${name}-from`"
         :id="`${name}-from`"
         maxlength="10"
@@ -38,7 +38,7 @@ const dateTo = defineModel('date-to', {required: true})
     <div class="relative flex flex-col">
       <label :for="`${name}-to`" class="absolute top-2 font-mono font-light text-xs uppercase">To</label>
       <input
-        class="mt-2 -mb-2 w-22 h-12 focus-visible:outline-none"
+        class="mt-2 -mb-2 w-22 h-12 placeholder:opacity-60 focus-visible:outline-none"
         :name="`${name}-to`"
         :id="`${name}-to`"
         maxlength="10"
