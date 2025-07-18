@@ -373,6 +373,9 @@ onMounted(() => {
           flex-col
           gap-16
           xl:max-w-160
+          3xl:p-12
+          3xl:max-w-200
+          3xl:gap-20
         "
       >
         <div v-if="loading" class="min-h-[35vh] flex items-center justify-center gap-4 text-lg font-semibold uppercase" role="alert">
@@ -392,7 +395,7 @@ onMounted(() => {
             :key="event.id"
             ref="events"
             :data-id="event.id"
-            class="flex flex-col gap-4 items-start"
+            class="flex flex-col gap-4 items-start 3xl:gap-6"
           >
             <EventSummary
               :event="event"
@@ -493,6 +496,8 @@ onMounted(() => {
         transition-transform
         duration-300
         md:top-65
+        md:left-4
+        md:right-4
         xl:sticky
         xl:top-(--header-height)
         xl:max-h-[calc(100vh-var(--header-height))]
@@ -510,9 +515,9 @@ onMounted(() => {
       ]"
     >
       <h2 class="sr-only">Search, filter, and sort</h2>
-      <div class="sticky top-0 flex items-center justify-between gap-2 z-50 bg-white xl:p-2 xl:bg-yellow">
+      <div class="sticky top-0 flex items-center justify-between gap-2 z-50 bg-white xl:bg-yellow 3xl:px-4">
         <div class="flex items-center gap-4">
-          <div class="p-2 flex items-center gap-2">
+          <div class="p-2 flex items-center gap-2 md:p-4">
             <IconFilters class="w-8 h-8" aria-hidden="true" />
             <span class="text-xl font-bold">
               Filters
@@ -528,7 +533,7 @@ onMounted(() => {
         </div>
         <div class="flex items-center gap-2">
           <button
-            class="hidden xl:block xl:p-2"
+            class="hidden xl:block xl:p-4"
             @click="toggleSort"
           >
             <span class="sr-only">Sort by: {{ sortBy ? 'oldest' : 'recent' }}</span>
@@ -538,7 +543,7 @@ onMounted(() => {
             />
           </button>
           <button
-            class="flex justify-center items-center xl:hidden"
+            class="flex justify-center items-center md:p-2 xl:hidden"
             @click="showFilters = !showFilters"
           >
             <span class="sr-only">Close Filters</span>
@@ -546,8 +551,8 @@ onMounted(() => {
           </button>
         </div>
       </div>
-      <div class="flex flex-col gap-6 p-2 xl:p-4">
-        <Filter>
+      <div class="flex flex-col gap-6 p-2 md:p-4 3xl:p-8 3xl:grid 3xl:grid-cols-2 3xl:gap-8">
+        <Filter class="3xl:col-span-2">
           <template #title>
             <h3>Search</h3>
           </template>
@@ -556,7 +561,7 @@ onMounted(() => {
             <input name="search" id="search" v-model.trim="searchInput" />
           </InputWrapper>
         </Filter>
-        <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-6 3xl:order-2">
           <Filter>
             <template #title>
               <h3>Sector</h3>
@@ -578,7 +583,7 @@ onMounted(() => {
             />
           </Filter>
         </div>
-        <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-6 3xl:order-1">
           <Filter class="items-start">
             <template #title>
               <h3>Date Range</h3>
@@ -630,7 +635,7 @@ onMounted(() => {
             </Autocomplete>
           </Filter>
         </div>
-        <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-6 3xl:col-span-2 3xl:order-3">
           <Filter>
             <template #title>
               <h3>Region</h3>

@@ -38,12 +38,14 @@ const country = computed(() => {
         flex
         flex-col
         gap-1
+        3xl:gap-2
       "
     >
       <div
         class="
           font-semibold
           uppercase
+          3xl:text-lg
         "
       >
         {{ event.dateFormatted }}
@@ -54,11 +56,13 @@ const country = computed(() => {
           text-xl
           leading-tight
           font-bold
+          3xl:text-2xl
+          3xl:leading-[1.1]
         "
       >
         {{ event.headline }}
       </component>
-      <div v-if="country.length">
+      <div v-if="country.length" class="3xl:text-lg">
         <span v-if="event.city">
           {{ event.city }},
         </span>
@@ -67,7 +71,7 @@ const country = computed(() => {
         </span>
       </div>
     </div>
-    <div class="text-lg">
+    <div class="text-lg 3xl:text-xl 3xl:leading-normal">
       {{ event.summary }}
     </div>
   </div>
