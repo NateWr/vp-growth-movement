@@ -160,6 +160,7 @@ const toggleFilter = (type: string, value: string) => {
 const setSearch = debounce((val: string, oldVal: string) => {
   selectedFilters.value.search = val
   currentPage.value = 1
+  resetEventsView()
   changeUrl(selectedFilters, currentPage)
 }, DEBOUNCE_DELAY)
 watch(searchInput, setSearch)
