@@ -157,12 +157,10 @@ const toggleFilter = (type: string, value: string) => {
   changeUrl(selectedFilters, currentPage)
 }
 
-const setSearch = debounce(val => {
-  if (val.length > 2) {
-    selectedFilters.value.search = val
-    currentPage.value = 1
-    changeUrl(selectedFilters, currentPage)
-  }
+const setSearch = debounce((val: string, oldVal: string) => {
+  selectedFilters.value.search = val
+  currentPage.value = 1
+  changeUrl(selectedFilters, currentPage)
 }, DEBOUNCE_DELAY)
 watch(searchInput, setSearch)
 
