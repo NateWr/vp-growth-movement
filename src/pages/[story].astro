@@ -78,8 +78,7 @@ const conclusion = await marked.parse(story.data.conclusion)
 	bgColor="black"
 >
 	<div class="
-      h-screen
-      h-svh
+      story-root
       flex
       flex-col
       bg-black
@@ -149,3 +148,10 @@ const conclusion = await marked.parse(story.data.conclusion)
     />
 	</div>
 </Layout>
+
+<style>
+.story-root {
+  height: calc(100vh - var(--header-height));
+  height: calc(100svh - var(--header-height));
+}
+</style>
