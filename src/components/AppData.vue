@@ -10,7 +10,6 @@ import NavPage from './NavPage.vue';
 import FilterHeader from './FilterHeader.vue';
 import IconFilters from './IconFilters.vue';
 import IconClose from './IconClose.vue';
-import EventSummary from './EventSummary.vue';
 import Filter from './Filter.vue';
 import InputWrapper from './InputWrapper.vue';
 import IconSearch from './IconSearch.vue';
@@ -24,7 +23,6 @@ import Button from './Button.vue';
 import Autocomplete from './Autocomplete.vue';
 import InputDateRange from './InputDateRange.vue';
 import { useUrlParams } from '../utilities/useUrlParams.ts';
-import IconArrowUpRight from './IconArrowUpRight.vue';
 import EventDetails from './EventDetails.vue';
 import { useViewportSize } from '../utilities/useViewportSize.ts';
 
@@ -71,7 +69,6 @@ const searchInput = ref<string>('')
 const dateFromInput = ref<string>('')
 const dateToInput = ref<string>('')
 const invalidDateRange = ref<boolean>(false)
-const currentEvent = ref<Event|null>(null)
 const $events = useTemplateRef('events')
 
 const chartCoords = computed(() => allEvents.value.map(({x, y}) => ({x, y})))
@@ -104,7 +101,6 @@ const resetFilters = () => {
 }
 
 const resetEventsView = () => {
-  currentEvent.value = null
   window.scrollTo(0, 0)
   nextTick(() => setFocusedEvent())
 }
@@ -216,13 +212,7 @@ const chartDateRangeTo = computed(() => {
   return Math.min(100, ((timestamp - firstDateTimestamp.value) / total) * 100)
 })
 
-const disableBodyOverflow = computed(() => {
-  if (width.value >= BREAKPOINTS.LAPTOP_SM) {
-    return currentEvent.value
-  }
-  return showFilters.value || currentEvent.value
-})
-watch(disableBodyOverflow, (newValue) => {
+watch(showFilters, (newValue) => {
   const hasClass = document.body.className.includes('overflow-hidden')
   if (newValue && !hasClass) {
     document.body.className += ' overflow-hidden'
@@ -243,22 +233,18 @@ const storyPointsScale = computed(() => {
 })
 
 const focusedEvent = ref<Event|null>(null)
-const chartCurrentEvent = computed(() => {
-  return currentEvent.value ?? focusedEvent.value
-})
-
 const setFocusedEvent = () => {
-    if (!$events.value) {
-      return
-    }
-    const $event = $events.value?.find(e => {
-      const pos = e.offsetTop - window.scrollY
-      return pos > -200 && pos < 200
-    })
+  if (!$events.value) {
+    return
+  }
+  const $event = $events.value?.find(({$el}) => {
+    const pos = $el.offsetTop - window.scrollY
+    return pos > -200 && pos < 200
+  })
 
-    if ($event) {
-      focusedEvent.value = currentPageEvents.value.find(e => e.id === $event.dataset?.id) ?? null
-    }
+  if ($event) {
+    focusedEvent.value = $event?.$props.event
+  }
 }
 
 onMounted(() => {
@@ -314,7 +300,7 @@ onMounted(() => {
         <Chart
           aria-hidden="true"
           :columns="chartColumns"
-          :highlightEvent="chartCurrentEvent"
+          :highlightEvent="focusedEvent"
           :datasets="[
             {
               id: 'all-data',
@@ -372,8 +358,9 @@ onMounted(() => {
           flex-col
           gap-16
           xl:max-w-160
+          2xl:max-w-none
           3xl:p-12
-          3xl:max-w-200
+          3xl:pb-32
           3xl:gap-20
         "
       >
@@ -389,24 +376,17 @@ onMounted(() => {
         </div>
         <template v-else>
           <h2 class="sr-only">Events</h2>
-          <article
+          <EventDetails
             v-for="event in currentPageEvents"
             :key="event.id"
             ref="events"
             :data-id="event.id"
-            class="flex flex-col gap-4 items-start 3xl:gap-6"
-          >
-            <EventSummary
-              :event="event"
-              :countries="filters.country"
-            />
-            <Button class="scroll-mt-[32rem]" @click="currentEvent = event">
-              <template #icon>
-                <IconArrowUpRight aria-hidden="true" />
-              </template>
-              View Event
-            </Button>
-          </article>
+            :event="event"
+            :areas="filters.area"
+            :campaigns="filters.campaign"
+            :countries="filters.country"
+            :targets="filters.target"
+          />
         </template>
       </div>
       <div
@@ -432,50 +412,6 @@ onMounted(() => {
           :showingEnd="(showingStart + currentPageEvents.length).toLocaleString('en-US')"
           :total="filteredEvents.length"
           @set-page="setPage"
-        />
-      </div>
-      <div
-        class="
-          fixed
-          top-45
-          -bottom-4
-          left-2
-          right-2
-          z-70
-          overflow-scroll
-          pt-4
-          pb-24
-          px-4
-          rounded
-          bg-white
-          shadow-lg/100
-          transition-transform
-          duration-200
-          md:top-65
-          xl:top-58
-          xl:left-[41.667%]
-          xl:ml-4
-          xl:p-8
-          xl:max-w-160
-        "
-        :class="[
-          currentEvent ? 'translate-y-0 ease-out' : 'translate-y-full ease-in',
-        ]"
-      >
-        <button
-          class="absolute top-0 right-0 flex justify-center items-center"
-          @click="currentEvent = null"
-        >
-          <span class="sr-only">Close Event</span>
-          <IconClose aria-hidden="true" />
-        </button>
-        <EventDetails
-          v-if="currentEvent"
-          :event="currentEvent"
-          :areas="filters.area"
-          :campaigns="filters.campaign"
-          :countries="filters.country"
-          :targets="filters.target"
         />
       </div>
     </div>

@@ -2,8 +2,8 @@
 import { computed, type PropType } from 'vue';
 import type { Event } from '../types/Event';
 import type { FilterOption } from '../types/FilterOption';
-import EventSummary from './EventSummary.vue';
 import Button from './Button.vue';
+import { getCountryNames } from '../utilities/getFilterNames';
 
 const props = defineProps({
   areas: {
@@ -32,65 +32,85 @@ const props = defineProps({
   },
 })
 
-const areas = computed(() => {
-  return props.areas
-    .filter((c: FilterOption) => props.event.area.includes(c.value))
-    .map((c: FilterOption) => c.name)
-})
-const campaigns = computed(() => {
-  return props.campaigns
-    .filter((c: FilterOption) => props.event.campaign.includes(c.value))
-    .map((c: FilterOption) => c.name)
-})
-const targets = computed(() => {
-  return props.targets
-    .filter((c: FilterOption) => props.event.target.includes(c.value))
-    .map((c: FilterOption) => c.name)
-})
+const country = computed(() => getCountryNames(props.event.country, props.countries))
+const areas = computed(() => getCountryNames(props.event.area, props.areas))
+const campaigns = computed(() => getCountryNames(props.event.campaign, props.campaigns))
+const targets = computed(() => getCountryNames(props.event.target, props.targets))
 </script>
 
 <template>
-  <article class="flex flex-col gap-8">
-    <EventSummary
-      :heading="heading"
-      :event="event"
-      :countries="countries"
-    />
-    <div v-if="areas.length">
-      <div class="font-bold uppercase">Area</div>
-      <div class="flex flex-wrap gap-4">
+  <article class="
+    flex flex-col gap-4
+    2xl:grid 2xl:grid-cols-5 2xl:items-end 2xl:gap-8
+    3xl:gap-16
+  ">
+    <div class="flex flex-col gap-4">
+      <div class="
+        flex flex-col gap-1
+        3xl:gap-2
+      ">
+        <div class="
+          font-semibold uppercase
+          3xl:text-lg
+        ">
+          {{ event.dateFormatted }}
+        </div>
+        <component
+          :is="heading"
+          class="
+            text-xl leading-tight font-bold
+            3xl:text-2xl
+            3xl:leading-[1.1]
+          "
+        >
+          {{ event.headline }}
+        </component>
+        <div v-if="country.length" class="3xl:text-lg">
+          <span v-if="event.city">
+            {{ event.city }},
+          </span>
+          <span>
+            {{ country.join(', ') }}
+          </span>
+        </div>
+      </div>
+      <div class="
+        text-lg
+        3xl:text-xl
+        3xl:leading-normal
+      ">
+        {{ event.summary }}
+      </div>
+    </div>
+    <div class="
+      flex flex-col gap-4
+      2xl:col-span-2
+    ">
+      <div v-if="event.sources.length" class="flex gap-1">
+        <div class="font-bold uppercase">Details:</div>
+        <div class="flex flex-col">
+          <a
+            v-for="source in event.sources"
+            :key="source.url"
+            :href="source.url"
+            class="underline break-all"
+          >
+            {{ source.domain }}
+          </a>
+        </div>
+      </div>
+      <div class="
+        flex flex-wrap gap-1
+      ">
         <Button v-for="area in areas" :key="area" size="sm">
           {{ area }}
         </Button>
-      </div>
-    </div>
-    <div v-if="campaigns.length">
-      <div class="font-bold uppercase">Campaigns</div>
-      <div class="flex flex-wrap gap-4">
         <Button v-for="campaign in campaigns" :key="campaign" size="sm">
           {{ campaign }}
         </Button>
-      </div>
-    </div>
-    <div v-if="targets.length">
-      <div class="font-bold uppercase">Targets</div>
-      <div class="flex flex-wrap gap-4">
         <Button v-for="target in targets" :key="target" size="sm">
           {{ target }}
         </Button>
-      </div>
-    </div>
-    <div v-if="event.sources.length">
-      <div class="font-bold uppercase">Read more</div>
-      <div class="flex flex-wrap gap-4">
-        <a
-          v-for="source in event.sources"
-          :key="source.url"
-          :href="source.url"
-          class="underline"
-        >
-          {{ source.domain }}
-        </a>
       </div>
     </div>
   </article>
