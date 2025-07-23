@@ -9,21 +9,21 @@ intro: |
 
   After a 13-year BDS campaign, G4S completely exited the Israeli market.
 events:
-  - id: "000000000000154"
-  - id: "000000000000234"
-  - id: "000000000000235"
-  - id: "000000000000254"
-  - id: "000000000000306"
-  - id: "000000000000340"
-  - id: "000000000000360"
-  - id: "000000000000380"
-  - id: "000000000000506"
-  - id: "000000000000523"
-  - id: "000000000000548"
-  - id: "000000000000579"
-  - id: "000000000000605"
-  - id: "000000000000624"
-  - id: "000000000000972"
+  - id: "rehabilitation-and-research-centre-for-t-2010-11-01"
+  - id: "palestinians-launch-stop-g4s-campaign-2012-04-17"
+  - id: "european-union-drops-g4s-2012-04-17"
+  - id: "danish-church-aid-cuts-ties-with-g4s-2012-07-18"
+  - id: "activists-in-11-countries-protest-g4s-2013-04-19"
+  - id: "major-dutch-trade-union-drops-g4s-2013-12-16"
+  - id: "bbc-opts-not-to-contract-g4s-2014-03-20"
+  - id: "presbyterian-church-votes-to-divest-from-2014-06-21"
+  - id: "unhcr-in-jordan-says-it-no-longer-has-co-2015-12-03"
+  - id: "g4s-announces-plans-to-exit-israeli-mark-2016-03-10"
+  - id: "kuwaiti-social-security-fund-divests-fro-2016-06-03"
+  - id: "g4s-confirms-sale-of-most-of-israeli-bus-2016-12-02"
+  - id: "sacramento-transit-drops-g4s-2017-06-20"
+  - id: "un-women-in-jordan-drops-g4s-contract-2017-10-04"
+  - id: "g4s-decides-to-sell-remaining-business-i-2023-06-01"
 conclusion: With its operation and partial ownership of Israel’s National Police Academy and the training it provides to Israeli police, G4S is still deeply complicit in Israel’s illegal and violent repression of Palestinians.
 actions:
   - prefix: Keep Pushing
