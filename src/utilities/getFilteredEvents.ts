@@ -5,6 +5,7 @@ export const getFilteredEvents = (events: Event[], selectedFilters: SelectedFilt
   if (!Object.keys(selectedFilters).length) {
     return events
   }
+  const query = selectedFilters.search?.toLocaleLowerCase()
   return events.filter(event => {
     let matchedFilters = 0
     let expectedMatches = 0
@@ -14,9 +15,11 @@ export const getFilteredEvents = (events: Event[], selectedFilters: SelectedFilt
       } else {
         continue
       }
-      const query = selectedFilters.search.toLocaleLowerCase()
       switch (type) {
         case 'search':
+          if (!query) {
+            break
+          }
           if (event.headline.toLowerCase().includes(query)) {
             matchedFilters++
           } else if (event.summary.toLowerCase().includes(query)) {

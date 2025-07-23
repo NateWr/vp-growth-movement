@@ -17,8 +17,8 @@ events:
   - id: "000000000000614"
   - id: "000000000000750"
   - id: "000000000000982"
-  - id: "000000000001295"
-  - id: "000000000001341"
+  - id: "000000000001163"
+  - id: "000000000001188"
 conclusion: An example sentence that sums up the story and says something about where it’s heading or what next or what the final impact was or something like that.
 actions:
   - prefix: Learn More

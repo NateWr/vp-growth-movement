@@ -1,0 +1,182 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { columns, data, rows, ticks } from '../../data/chart-config.json'
+import filters from '../../data/filters.json'
+import Button from '../../components/Button.vue';
+import Chart from '../../components/Chart.vue';
+import { getCountryNames } from '../../utilities/getFilterNames';
+
+export async function getStaticPaths() {
+  const events = await getCollection('events');
+  return events.map(event => ({
+    params: { id: event.id },
+    props: { event },
+  }));
+}
+
+const { event } = Astro.props;
+
+const country = getCountryNames(event.data.country, filters.country)
+const areas = getCountryNames(event.data.area, filters.area)
+const campaigns = getCountryNames(event.data.campaign, filters.campaign)
+const targets = getCountryNames(event.data.target, filters.target)
+---
+<Layout
+	title={event.data.headline}
+	description={event.data.summary}
+	currentUrl="/data"
+	bgColor="white"
+>
+  <div
+    class={`
+      flex flex-col
+      xl:grid xl:grid-cols-9 xl:gap-4
+    `}
+  >
+
+    <div
+      class={`
+        sticky
+        top-(--header-height)
+        bg-black
+        h-32
+        sm:h-40
+        md:h-48
+        lg:h-64
+        xl:col-span-4
+        xl:h-40
+        2xl:col-span-5
+        2xl:h-60
+        4xl:h-80
+      `}
+    >
+      <Chart
+        client:only="vue"
+        columns={columns}
+        datasets={[
+          {
+            id: 'all-data',
+            hexes: data,
+            style: {
+              fill: 'var(--color-chart-dim)',
+            },
+          },
+        ]}
+        highlightEvent={event.data}
+        rows={rows}
+        showAllYears={false}
+        storyPointsScale={5}
+        ticks={ticks}
+      />
+    </div>
+
+    <article
+      class={`
+        flex flex-col gap-4 p-4
+        md:p-8 md:gap-8
+        xl:col-span-5
+        2xl:col-span-4
+        3xl:p-16
+        3xl:gap-12
+      `}
+    >
+      <div class="
+        flex flex-col gap-4
+        2xl:col-span-3
+        3xl:gap-8
+      ">
+        <div class="
+          flex flex-col
+        ">
+          <div class="
+            font-medium uppercase mb-2
+            md:text-lg
+            3xl:text-xl 3xl:mb-4
+          ">
+            {event.data.dateFormatted}
+          </div>
+          <h1
+            class="
+              text-xl font-bold
+              md:text-2xl
+              3xl:text-3xl
+            "
+          >
+            <a href={`/events/${event.id}.html`}>
+              {event.data.headline}
+            </a>
+          </h1>
+          {country.length && (
+            <div class="md:text-lg 3xl:text-2xl">
+              {event.data.city && (
+                <span>
+                  {event.data.city},
+                </span>
+              )}
+              <span>
+                {country.join(', ')}
+              </span>
+            </div>
+          )}
+        </div>
+        <div class="
+          text-lg
+          md:text-xl
+          3xl:text-2xl
+          3xl:leading-relaxed
+        ">
+          {event.data.summary}
+        </div>
+      </div>
+      {event.data.sources.length && (
+        <div class="flex flex-wrap gap-2 md:text-lg 3xl:text-xl">
+          <div class="font-bold uppercase">Details:</div>
+          {event.data.sources.map(source => (
+            <a href={source.url} class="underline break-all">
+              {source.domain}
+            </a>
+          ))}
+        </div>
+      )}
+      <div class="
+        flex flex-wrap gap-1
+      ">
+        {areas.map(area => (
+          <Button size="sm" class="md:text-lg">{area}</Button>
+        ))}
+        {campaigns.map(campaign => (
+          <Button size="sm" class="md:text-lg">{campaign}</Button>
+        ))}
+        {targets.map(target => (
+          <Button size="sm" class="md:text-lg">{target}</Button>
+        ))}
+      </div>
+    </article>
+
+    <div
+      class={`
+        mt-24
+        flex
+        flex-col
+        gap-1
+        p-4
+        max-w-100
+        md:p-8
+        xl:fixed
+        xl:bottom-4
+        xl:left-4
+      `}
+    >
+      <hr class="mb-4 w-3/5 border-2 border-black" />
+      <h2 class="text-lg font-bold uppercase">What is this?</h2>
+      <p class="leadin-relaxed">This event is part of a database on the growth of the Palestinian-led, global Boycott, Divestment, and Sanctions (BDS) movement for freedom, justice, and equality.</p>
+      <p class="mt-2">
+        <a class="font-semibold underline" href="/">Learn more</a>
+        or
+        <a class="font-semibold underline" href="/data">view all data</a>.
+      </p>
+    </div>
+  </div>
+
+</Layout>

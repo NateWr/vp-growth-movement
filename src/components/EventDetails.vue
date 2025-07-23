@@ -66,7 +66,9 @@ const targets = computed(() => getCountryNames(props.event.target, props.targets
             3xl:leading-[1.1]
           "
         >
-          {{ event.headline }}
+          <a :href="`/events/${event.id}.html`">
+            {{ event.headline }}
+          </a>
         </component>
         <div v-if="country.length" class="3xl:text-lg">
           <span v-if="event.city">

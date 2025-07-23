@@ -23,7 +23,7 @@ const REGEX_DOMAIN = /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)/gi
 const REGEX_DATE = /^[0-9]{4}-[0-1][0-9]-[0-3][0-9]$/
 
 const validateRowData = row => {
-    if (!row[COL_DATE]) {
+    if (!row[COL_DATE] || !row[COL_ID]) {
       throw new Error(`Event missing date column:\n\n${JSON.stringify(row, null, 2)}`)
     }
     const dateMatches = row[COL_DATE].match(REGEX_DATE)
@@ -52,7 +52,7 @@ export const getSpreadsheetData = async (spreadsheetId) => {
     .map(row => {
       validateRowData(row)
       return {
-        id: (i++).toString().padStart(15, '0'),
+        id: row[COL_ID],
         date: new Date(row[COL_DATE]),
         area: getCommaSeparatedList(row[COL_AREA]),
         campaign: getCommaSeparatedList(row[COL_CAMPAIGN]),

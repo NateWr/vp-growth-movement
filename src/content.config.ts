@@ -1,5 +1,5 @@
 import { defineCollection, z } from 'astro:content'
-import { glob } from 'astro/loaders'
+import { file, glob } from 'astro/loaders'
 
 const stories = defineCollection({
   loader: glob({ pattern: "*.md", base: 'src/stories'}),
@@ -39,4 +39,29 @@ const stories = defineCollection({
   })
 })
 
-export const collections = { stories }
+const events = defineCollection({
+  loader: file("src/data/events.json"),
+  schema: z.object({
+    id: z.string(),
+    date: z.string(),
+    dateFormatted: z.string(),
+    headline: z.string(),
+    summary: z.string(),
+    area: z.array(z.string()),
+    campaign: z.array(z.string()),
+    city: z.string(),
+    country: z.array(z.string()),
+    region: z.array(z.string()),
+    target: z.array(z.string()),
+    sources: z.array(
+      z.object({
+        url: z.string(),
+        domain: z.string(),
+      })
+    ),
+    x: z.number(),
+    y: z.number(),
+  })
+})
+
+export const collections = { stories, events }
