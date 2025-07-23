@@ -14,9 +14,14 @@ export const getFilteredEvents = (events: Event[], selectedFilters: SelectedFilt
       } else {
         continue
       }
+      const query = selectedFilters.search.toLocaleLowerCase()
       switch (type) {
         case 'search':
-          if (event.headline.toLowerCase().includes(selectedFilters.search.toLocaleLowerCase())) {
+          if (event.headline.toLowerCase().includes(query)) {
+            matchedFilters++
+          } else if (event.summary.toLowerCase().includes(query)) {
+            matchedFilters++
+          } else if (event.target.join(',').toLowerCase().includes(query)) {
             matchedFilters++
           }
           break
