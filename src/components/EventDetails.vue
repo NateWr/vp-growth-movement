@@ -44,7 +44,10 @@ const targets = computed(() => getCountryNames(props.event.target, props.targets
     2xl:grid 2xl:grid-cols-5 2xl:items-end 2xl:gap-8
     3xl:gap-16
   ">
-    <div class="flex flex-col gap-4">
+    <div class="
+      flex flex-col gap-4
+      2xl:col-span-3
+    ">
       <div class="
         flex flex-col gap-1
         3xl:gap-2
