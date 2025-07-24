@@ -31,12 +31,12 @@ const storyEvents : StoryEvent[] = story.data.events
     }
     const xPercent = event.x / columns
     let position
-    if (xPercent < 0.25) {
+    if (xPercent < 0.15) {
       position = {
         origin: StoryEventPositionOrigin.left,
         offset: xPercent,
       }
-    } else if (xPercent < 0.75) {
+    } else if (xPercent < 0.85) {
       position = {
         origin: StoryEventPositionOrigin.center,
         offset: xPercent,
