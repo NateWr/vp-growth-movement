@@ -1,5 +1,5 @@
 ---
-order: 30
+order: 50
 prefix: The Campaign for
 title: Pension Divestments
 title_short: Pensions
@@ -22,6 +22,10 @@ events:
   - id: "norwegian-government-pension-fund-global-2024-02-28"
   - id: "largest-private-uk-pension-fund-divests-2024-08-08"
 conclusion: An example sentence that sums up the story and says something about where it’s heading or what next or what the final impact was or something like that.
+actions:
+  - prefix: Get Involved
+    title: "Find a BDS campaign near you"
+    url: 'https://bdsmovement.net/join-a-bds-campaign'
 filters:
   search: pension fund
 ---
