@@ -234,8 +234,7 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
             flex
             flex-col
             gap-4
-            font-medium
-            text-md
+            text-lg
             leading-6
             sm:gap-6
             sm:text-xl
