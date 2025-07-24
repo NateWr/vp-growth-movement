@@ -288,6 +288,7 @@ onMounted(() => {
         xl:min-h-auto
         xl:col-span-7
         xl:order-2
+        4xl:col-span-9
       "
     >
       <div
@@ -323,11 +324,7 @@ onMounted(() => {
           :storyPointsScale="storyPointsScale"
           :ticks="chartTicks"
           class="
-            min-h-28
-            md:min-h-48
-            xl:min-h-40
-            2xl:min-h-48
-            3xl:min-h-64
+            py-8
           "
         />
         <div
@@ -380,6 +377,7 @@ onMounted(() => {
             v-for="event in currentPageEvents"
             :key="event.id"
             ref="events"
+            class="max-w-360 m-auto"
             :data-id="event.id"
             :event="event"
             :areas="filters.area"
@@ -444,6 +442,7 @@ onMounted(() => {
         xl:translate-none
         xl:shadow-none
         xl:rounded-none
+        4xl:col-span-3
       "
       :class="[
         showFilters ? 'translate-y-0 ease-out' : 'translate-y-full ease-in',
@@ -486,7 +485,7 @@ onMounted(() => {
           </button>
         </div>
       </div>
-      <div class="flex flex-col gap-6 p-2 md:p-4 3xl:p-8 3xl:grid 3xl:grid-cols-2 3xl:gap-8">
+      <div class="flex flex-col gap-6 p-2 md:p-4 3xl:p-8 3xl:gap-8">
         <Filter class="3xl:col-span-2">
           <template #title>
             <h3>Search</h3>
@@ -496,92 +495,86 @@ onMounted(() => {
             <input name="search" id="search" v-model.trim="searchInput" />
           </InputWrapper>
         </Filter>
-        <div class="flex flex-col gap-6 3xl:order-2">
-          <Filter>
-            <template #title>
-              <h3>Sector</h3>
+        <Filter>
+          <template #title>
+            <h3>Sector</h3>
+          </template>
+          <FilterToggleList
+            :options="filters.area"
+            :selected="selectedFilters?.area ?? []"
+            @toggle="(value) => toggleFilter('area', value)"
+          />
+        </Filter>
+        <Filter>
+          <template #title>
+            <h3>Campaign</h3>
+          </template>
+          <FilterToggleList
+            :options="filters.campaign"
+            :selected="selectedFilters?.campaign ?? []"
+            @toggle="(value) => toggleFilter('campaign', value)"
+          />
+        </Filter>
+        <Filter>
+          <template #title>
+            <h3>Target Organization</h3>
+          </template>
+          <template #description>
+            Find events related to a specific company or organization, like G4S or Elbit Systems.
+          </template>
+          <Autocomplete
+            name="targets"
+            :options="filters.target"
+            :selected="selectedFilters?.target ?? []"
+            @toggle="(value) => toggleFilter('target', value)"
+          >
+            <template #icon>
+              <IconTarget aria-hidden="true" />
             </template>
-            <FilterToggleList
-              :options="filters.area"
-              :selected="selectedFilters?.area ?? []"
-              @toggle="(value) => toggleFilter('area', value)"
-            />
-          </Filter>
-          <Filter>
-            <template #title>
-              <h3>Campaign</h3>
+          </Autocomplete>
+        </Filter>
+        <Filter>
+          <template #title>
+            <h3>Country</h3>
+          </template>
+          <Autocomplete
+            name="targets"
+            :options="filters.country"
+            :selected="selectedFilters?.country ?? []"
+            @toggle="(value) => toggleFilter('country', value)"
+          >
+            <template #icon>
+              <IconLocation aria-hidden="true"/>
             </template>
-            <FilterToggleList
-              :options="filters.campaign"
-              :selected="selectedFilters?.campaign ?? []"
-              @toggle="(value) => toggleFilter('campaign', value)"
-            />
-          </Filter>
-        </div>
-        <div class="flex flex-col gap-6 3xl:order-1">
-          <Filter class="items-start">
-            <template #title>
-              <h3>Date Range</h3>
-            </template>
-            <template #description>
-            </template>
-            <InputDateRange
-              defaultFrom="2005-01-01"
-              :defaultTo="lastDate"
-              name="date-range"
-              v-model:date-from="dateFromInput"
-              v-model:date-to="dateToInput"
-            />
-            <div v-if="invalidDateRange" class="bg-red px-3 py-1">
-              Invalid date range!
-            </div>
-          </Filter>
-          <Filter>
-            <template #title>
-              <h3>Country</h3>
-            </template>
-            <Autocomplete
-              name="targets"
-              :options="filters.country"
-              :selected="selectedFilters?.country ?? []"
-              @toggle="(value) => toggleFilter('country', value)"
-            >
-              <template #icon>
-                <IconLocation aria-hidden="true"/>
-              </template>
-            </Autocomplete>
-          </Filter>
-          <Filter>
-            <template #title>
-              <h3>Campaign Target</h3>
-            </template>
-            <template #description>
-              Find events related to a specific campaign target, like G4S or Elbit Systems.
-            </template>
-            <Autocomplete
-              name="targets"
-              :options="filters.target"
-              :selected="selectedFilters?.target ?? []"
-              @toggle="(value) => toggleFilter('target', value)"
-            >
-              <template #icon>
-                <IconTarget aria-hidden="true" />
-              </template>
-            </Autocomplete>
-          </Filter>
-        </div>
-        <div class="flex flex-col gap-6 3xl:col-span-2 3xl:order-3">
-          <Filter>
-            <template #title>
-              <h3>Region</h3>
-            </template>
-            <FilterToggleList
-              :options="filters.region"
-              :selected="selectedFilters?.region ?? []"
-              @toggle="(value) => toggleFilter('region', value)"
-            />
-          </Filter>
-        </div>
+          </Autocomplete>
+        </Filter>
+        <Filter>
+          <template #title>
+            <h3>Region</h3>
+          </template>
+          <FilterToggleList
+            :options="filters.region"
+            :selected="selectedFilters?.region ?? []"
+            @toggle="(value) => toggleFilter('region', value)"
+          />
+        </Filter>
+        <Filter class="items-start">
+          <template #title>
+            <h3>Date Range</h3>
+          </template>
+          <template #description>
+          </template>
+          <InputDateRange
+            defaultFrom="2005-01-01"
+            :defaultTo="lastDate"
+            name="date-range"
+            v-model:date-from="dateFromInput"
+            v-model:date-to="dateToInput"
+          />
+          <div v-if="invalidDateRange" class="bg-red px-3 py-1">
+            Invalid date range!
+          </div>
+        </Filter>
       </div>
     </div>
   </div>

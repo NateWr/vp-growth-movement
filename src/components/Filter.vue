@@ -4,7 +4,7 @@
       <div class="font-bold uppercase">
         <slot name="title" />
       </div>
-      <div class="text-balance">
+      <div>
         <slot name="description" />
       </div>
     </div>
