@@ -24,11 +24,14 @@ events:
   - id: "sacramento-transit-drops-g4s-2017-06-20"
   - id: "un-women-in-jordan-drops-g4s-contract-2017-10-04"
   - id: "g4s-decides-to-sell-remaining-business-i-2023-06-01"
-conclusion: With its operation and partial ownership of Israel’s National Police Academy and the training it provides to Israeli police, G4S is still deeply complicit in Israel’s illegal and violent repression of Palestinians.
+conclusion: After more than a decade of strategic and collective action, the largest security company in the world was forced to divest from apartheid Israel.
 actions:
+  - prefix: We Have Prevailed
+    title: "Read the BNC's victory announcement"
+    url: "https://bdsmovement.net/BDS-G4S-Victory"
   - prefix: Keep Pushing
-    title: "Why the BNC is still targeting G4S"
-    url: 'https://bdsmovement.net/stop-g4s'
+    title: "See what companies BDS is targeting now"
+    url: "https://bdsmovement.net/campaigns"
 filters:
   target:
     - g4-s
