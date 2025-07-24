@@ -16,7 +16,7 @@ events:
   - id: "activists-in-11-countries-protest-g4s-2013-04-19"
   - id: "major-dutch-trade-union-drops-g4s-2013-12-16"
   - id: "bbc-opts-not-to-contract-g4s-2014-03-20"
-  - id: "presbyterian-church-votes-to-divest-from-2014-06-21"
+  - id: "united-methodist-church-divests-from-g4s-2014-06-06"
   - id: "unhcr-in-jordan-says-it-no-longer-has-co-2015-12-03"
   - id: "g4s-announces-plans-to-exit-israeli-mark-2016-03-10"
   - id: "kuwaiti-social-security-fund-divests-fro-2016-06-03"
@@ -24,7 +24,11 @@ events:
   - id: "sacramento-transit-drops-g4s-2017-06-20"
   - id: "un-women-in-jordan-drops-g4s-contract-2017-10-04"
   - id: "g4s-decides-to-sell-remaining-business-i-2023-06-01"
-conclusion: After more than a decade of strategic and collective action, the largest security company in the world was forced to divest from apartheid Israel.
+    summary: "Allied Universal, which acquired G4S in 2019, says it will sell its remaining stake in Policity, a move that would end G4S’ business in Israel."
+conclusion: |
+  After 13 years of tireless BDS campaigning, the largest security company in the world was forced to divest from apartheid Israel.
+
+  This strategic and collective action cost the company millions in lost and cancelled contracts and forced them to acknowledge "reputational damage."
 actions:
   - prefix: We Have Prevailed
     title: "Read the BNC's victory announcement"
