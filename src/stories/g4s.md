@@ -1,6 +1,6 @@
 ---
 order: 20
-prefix: The campaign against
+prefix: The Campaign Against
 title: G4S
 title_short: G4S
 description: The BDS movement targeted G4S for their role in providing services to Israeli prisons, police, the military, and illegal settlements.

@@ -16,3 +16,11 @@ export const astroGetAdjacentStories = async (storyId: string) => {
     : null
   return { nextStory, lastStory }
 }
+
+export const astroGetStoriesByEvent = async (eventId: string) => {
+  return await astroGetSortedStories()
+    .then(stories => {
+      return stories
+        .filter(story => story.data.events.filter(e => e.id === eventId).length > 0)
+    })
+}

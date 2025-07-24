@@ -7,6 +7,7 @@ import Button from '../../components/Button.vue';
 import Chart from '../../components/Chart.vue';
 import { getCountryNames } from '../../utilities/getFilterNames';
 import IconArrowUpRight from '../../components/IconArrowUpRight.vue';
+import { astroGetStoriesByEvent } from '../../utilities/astro-utilities';
 
 export async function getStaticPaths() {
   const events = await getCollection('events');
@@ -22,6 +23,8 @@ const country = getCountryNames(event.data.country, filters.country)
 const areas = getCountryNames(event.data.area, filters.area)
 const campaigns = getCountryNames(event.data.campaign, filters.campaign)
 const targets = getCountryNames(event.data.target, filters.target)
+
+const stories = await astroGetStoriesByEvent(event.id)
 ---
 <Layout
 	title={event.data.headline}
@@ -145,6 +148,12 @@ const targets = getCountryNames(event.data.target, filters.target)
           {event.data.summary}
         </div>
       </div>
+      {stories.map(story => (
+        <div class="self-start p-4 leading-tight bg-yellow md:text-lg">
+          This event is featured in
+          <a href={`/${story.id}`} class="font-bold underline">{story.data.prefix} {story.data.title}</a>.
+        </div>
+      ))}
       {!!event.data.sources.length && (
         <div class="flex flex-wrap gap-2 md:text-lg 3xl:text-xl">
           <div class="font-bold uppercase">Details:</div>
