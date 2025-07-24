@@ -21,12 +21,12 @@ const props = defineProps({
 const transformOrigin = computed(() => {
   switch (true) {
     case props.event.position.origin === StoryEventPositionOrigin.left:
-      return 'transform-bottom-left';
+      return 'origin-bottom-left';
     case props.event.position.origin === StoryEventPositionOrigin.right:
-      return 'transform-bottom-right';
+      return 'origin-bottom-right';
     case props.event.position.origin === StoryEventPositionOrigin.center:
     default:
-      return 'transform-bottom-center';
+      return 'origin-bottom-center';
   }
 })
 </script>
@@ -39,10 +39,7 @@ const transformOrigin = computed(() => {
       flex-col
       justify-end
     "
-    :class="[
-      isCurrent ? 'story-item-current' : 'sr-only',
-      transformOrigin,
-    ]"
+    :class="isCurrent ? 'story-item-current' : 'sr-only'"
     :style="styleCSS"
   >
     <article
@@ -57,6 +54,7 @@ const transformOrigin = computed(() => {
         md:p-6
         3xl:p-8
       "
+      :class="transformOrigin"
     >
       <h3
         class="
@@ -71,7 +69,6 @@ const transformOrigin = computed(() => {
       <p
         class="
           text-lg
-          font-medium
           leading-5.5
           md:text-xl
           md:leading-6
@@ -87,8 +84,7 @@ const transformOrigin = computed(() => {
 <style>
 .story-item article {
   transform: scale(0);
-  opacity: 0;
-  transition: transform 0.2s 0.25s, opacity 0.5s 0.25s;
+  transition: transform 0.2s 0.25s;
 }
 .story-item-current article {
   transform: scale(1);
