@@ -497,7 +497,7 @@ onMounted(() => {
         </Filter>
         <Filter>
           <template #title>
-            <h3>Strategy</h3>
+            <h3>Category</h3>
           </template>
           <FilterToggleList
             :options="filters.area"
