@@ -311,6 +311,7 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
             <Button
               v-for="action in actions"
               :href="action.url"
+              target="_blank"
             >
               <div class="flex flex-col">
                 <div
