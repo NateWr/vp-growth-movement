@@ -6,6 +6,7 @@ import filters from '../../data/filters.json'
 import Button from '../../components/Button.vue';
 import Chart from '../../components/Chart.vue';
 import { getCountryNames } from '../../utilities/getFilterNames';
+import IconArrowUpRight from '../../components/IconArrowUpRight.vue';
 
 export async function getStaticPaths() {
   const events = await getCollection('events');
@@ -39,36 +40,51 @@ const targets = getCountryNames(event.data.target, filters.target)
       class={`
         sticky
         top-(--header-height)
+        flex
+        flex-col
+        xl:col-span-4
+        2xl:col-span-5
+      `}
+    >
+      <div class={`
         bg-black
         h-32
         sm:h-40
         md:h-48
         lg:h-64
-        xl:col-span-4
         xl:h-40
-        2xl:col-span-5
         2xl:h-60
         4xl:h-80
-      `}
-    >
-      <Chart
-        client:only="vue"
-        columns={columns}
-        datasets={[
-          {
-            id: 'all-data',
-            hexes: data,
-            style: {
-              fill: 'var(--color-chart)',
+      `}>
+        <Chart
+          client:only="vue"
+          columns={columns}
+          datasets={[
+            {
+              id: 'all-data',
+              hexes: data,
+              style: {
+                fill: 'var(--color-chart)',
+              },
             },
-          },
-        ]}
-        highlightEvent={event.data}
-        rows={rows}
-        showAllYears={false}
-        storyPointsScale={5}
-        ticks={ticks}
-      />
+          ]}
+          highlightEvent={event.data}
+          rows={rows}
+          showAllYears={false}
+          storyPointsScale={5}
+          ticks={ticks}
+        />
+      </div>
+      <a
+        href="/data"
+        class={`
+          hidden relative items-center gap-2 px-4 py-2 font-bold uppercase bg-black text-white
+          md:inline-flex md:self-end
+        `}
+      >
+        <IconArrowUpRight aria-hidden="true" />
+        <span class="relative top-[1px]">All Events</span>
+      </a>
     </div>
 
     <article
