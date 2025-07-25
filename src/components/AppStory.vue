@@ -249,7 +249,7 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
         />
       </StoryText>
       <div class="absolute top-0 left-4 right-4 h-full">
-        <h2 class="sr-only">Key Dates</h2>
+        <h2 class="sr-only">Events</h2>
         <StoryEvent
           v-for="(event, i) in events"
           :key="event.id"

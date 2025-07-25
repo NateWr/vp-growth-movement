@@ -23,6 +23,14 @@ const country = getCountryNames(event.data.country, filters.country)
 const areas = getCountryNames(event.data.area, filters.area)
 const campaigns = getCountryNames(event.data.campaign, filters.campaign)
 const targets = getCountryNames(event.data.target, filters.target)
+const date = (new Date(event.data.date)).toLocaleDateString(
+  'en-US',
+  {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }
+)
 
 const stories = await astroGetStoriesByEvent(event.id)
 ---
@@ -113,7 +121,7 @@ const stories = await astroGetStoriesByEvent(event.id)
             md:text-lg
             3xl:text-xl 3xl:mb-4
           ">
-            {event.data.dateFormatted}
+            {date}
           </div>
           <h1
             class="

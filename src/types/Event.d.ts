@@ -3,7 +3,6 @@ import { EventSource } from "./EventSource"
 export type Event = {
   id: string,
   date: string,
-  dateFormatted: string,
   area: string[],
   campaign: string[],
   headline: string,

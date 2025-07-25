@@ -23,40 +23,61 @@ const { story } = Astro.props
 const { nextStory, lastStory } = await astroGetAdjacentStories(story.id)
 const homeTitle = 'All Stories'
 
-const storyEvents : StoryEvent[] = story.data.events
-  .map(storyEvent => {
-    const event = events.find(e => e.id === storyEvent.id)
-    if (!event) {
-      throw new Error(`Could not find event ${storyEvent.id} in story ${story.id}`)
-    }
-    const xPercent = event.x / columns
-    let position
-    if (xPercent < 0.15) {
-      position = {
-        origin: StoryEventPositionOrigin.left,
-        offset: xPercent,
+marked.use({
+  async: false,
+})
+
+const getStoryEvents = () =>  {
+  return story.data.events
+    .map((storyEvent) => {
+      const event = events.find(e => e.id === storyEvent.id)
+      if (!event) {
+        throw new Error(`Could not find event ${storyEvent.id} in story ${story.id}`)
       }
-    } else if (xPercent < 0.85) {
-      position = {
-        origin: StoryEventPositionOrigin.center,
-        offset: xPercent,
+      const xPercent = event.x / columns
+      let position
+      if (xPercent < 0.20) {
+        position = {
+          origin: StoryEventPositionOrigin.left,
+          offset: xPercent,
+        }
+      } else if (xPercent < 0.80) {
+        position = {
+          origin: StoryEventPositionOrigin.center,
+          offset: xPercent,
+        }
+      } else {
+        position = {
+          origin: StoryEventPositionOrigin.right,
+          offset: 1 - xPercent,
+        }
       }
-    } else {
-      position = {
-        origin: StoryEventPositionOrigin.right,
-        offset: 1 - xPercent,
+      const date = (new Date(event.date)).toLocaleDateString(
+        'en-US',
+        {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        }
+      )
+      if (storyEvent?.headline) {
+        storyEvent.headline = marked.parse(storyEvent.headline)
       }
-    }
-    return {
-      date: event.dateFormatted,
-      headline: event.headline,
-      summary: event.summary,
-      x: event.x,
-      y: event.y,
-      position,
-      ...storyEvent,
-    }
-  })
+      if (storyEvent?.summary) {
+        storyEvent.summary = marked.parse(storyEvent.summary)
+      }
+      return {
+        date,
+        headline: marked.parse(event.headline),
+        summary: marked.parse(event.summary),
+        x: event.x,
+        y: event.y,
+        position,
+        ...storyEvent,
+      }
+    })
+}
+const storyEvents = getStoryEvents()
 
 const chartEventCoordsHighlighted = getFilteredEvents(events, story.data.filters)
   .map(({x, y}) => ({x, y}))
@@ -67,8 +88,8 @@ const chartEventCoords = data.filter(coords => {
   return !isHighlighted
 })
 
-const intro = await marked.parse(story.data.intro)
-const conclusion = await marked.parse(story.data.conclusion)
+const intro = marked.parse(story.data.intro)
+const conclusion = marked.parse(story.data.conclusion)
 ---
 
 <Layout

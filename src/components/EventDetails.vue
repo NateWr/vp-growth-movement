@@ -36,6 +36,16 @@ const country = computed(() => getCountryNames(props.event.country, props.countr
 const areas = computed(() => getCountryNames(props.event.area, props.areas))
 const campaigns = computed(() => getCountryNames(props.event.campaign, props.campaigns))
 const targets = computed(() => getCountryNames(props.event.target, props.targets))
+const dateFormatted = computed(() => {
+  return new Date(props.event.date).toLocaleDateString(
+      'en-US',
+      {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }
+    )
+})
 </script>
 
 <template>
@@ -56,7 +66,7 @@ const targets = computed(() => getCountryNames(props.event.target, props.targets
           font-semibold uppercase
           3xl:text-lg
         ">
-          {{ event.dateFormatted }}
+          {{ dateFormatted }}
         </div>
         <component
           :is="heading"

@@ -88,14 +88,6 @@ const finalEvents = eventsWithCoords
    * Convert the Date objects into YYYY-MM-DD strings
    */
   .map(e => {
-    e.dateFormatted = e.date.toLocaleDateString(
-      'en-US',
-      {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      }
-    )
     e.date = [
       e.date.getFullYear(),
       (e.date.getMonth() + 1).toString().padStart(2, '0'),

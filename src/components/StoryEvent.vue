@@ -47,7 +47,7 @@ const transformOrigin = computed(() => {
         overflow-scroll
         flex
         flex-col
-        gap-1
+        gap-2
         p-4
         bg-yellow
         text-black
@@ -57,24 +57,34 @@ const transformOrigin = computed(() => {
       :class="transformOrigin"
     >
       <h3
+        v-if="event.title"
         class="
-          text-base
+          text-lg
           font-black
           uppercase
-          md:text-base
+          md:text-xl
         "
       >
-        {{ event.date }}
+        {{ event.title }}
       </h3>
-      <p
+      <div
         class="
           text-lg
           leading-5.5
           md:text-xl
           md:leading-6
         "
+        v-html="event.summary || event.headline"
+      />
+      <p
+        class="
+          self-end
+          uppercase
+          md:text-base
+          md:text-lg
+        "
       >
-        {{ event.summary || event.headline }}
+        {{ event.date }}
       </p>
     </article>
   </div>

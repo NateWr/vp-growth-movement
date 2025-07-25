@@ -14,6 +14,7 @@ const stories = defineCollection({
       z.object({
         id: z.string(),
         date: z.string().optional(),
+        title: z.string().optional(),
         headline: z.string().optional(),
         summary: z.string().optional(),
       })
@@ -44,7 +45,6 @@ const events = defineCollection({
   schema: z.object({
     id: z.string(),
     date: z.string(),
-    dateFormatted: z.string(),
     headline: z.string(),
     summary: z.string(),
     area: z.array(z.string()),
