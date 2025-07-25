@@ -6,6 +6,10 @@ import IconMinus from './IconMinus.vue';
 import IconPlus from './IconPlus.vue';
 
 const props = defineProps({
+  disabled: {
+    type: Array as PropType<FilterOption[]>,
+    default: [],
+  },
   options: {
     type: Array as PropType<FilterOption[]>,
     required: true,
@@ -26,6 +30,7 @@ const emit = defineEmits<{
     <Button
       v-for="({name, value}) in options"
       :key="value"
+      :disabled="disabled.find((o: FilterOption) => o.value === value)"
       size="sm"
       :variant="selected.includes(value) ? 'black' : ''"
       @click="emit('toggle', value)"

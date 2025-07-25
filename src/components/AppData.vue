@@ -25,6 +25,7 @@ import InputDateRange from './InputDateRange.vue';
 import { useUrlParams } from '../utilities/useUrlParams.ts';
 import EventDetails from './EventDetails.vue';
 import { useViewportSize } from '../utilities/useViewportSize.ts';
+import type { FilterOption } from '../types/FilterOption';
 
 
 const props = defineProps({
@@ -107,6 +108,49 @@ const resetEventsView = () => {
 
 const filteredEvents = computed(() => {
   return getFilteredEvents(allEvents.value, selectedFilters.value)
+})
+
+/*
+ * Disable filters that can not be combined with
+ * the currently selected filters
+ *
+ * This disables filter options when the current set of
+ * filtered events have no events matching those filter
+ * options. This prevents users from going down dead
+ * ends by selecting a filter combination with no events.
+ *
+ * Filter options are only disabled for filter types that
+ * aren't currently selected. For example, when one region
+ * is selected, all other regions remain enabled. This
+ * ensures that users can always add another filter option
+ * to expand the number of filter events.
+ */
+const disabledFilters = computed(() => {
+  const unselectedFilterTypes = Object.keys(props.filters)
+    .filter(type => !selectedFilters.value[type]?.length)
+
+  let validFilters : SelectedFilters = {}
+  filteredEvents.value.reduce(
+    (validFilters: SelectedFilters, event: Event[]) => {
+      unselectedFilterTypes.forEach((type: string) => {
+        if (event[type]?.length) {
+          validFilters[type] = validFilters[type] ?? []
+          validFilters[type].push(...event[type])
+        }
+      })
+      return validFilters
+    },
+    validFilters
+  )
+
+  let disabled : SelectedFilters = {}
+  unselectedFilterTypes.forEach((type: string) => {
+    const validOptions = [...new Set(validFilters[type])]
+    disabled[type] = props.filters[type]
+      .filter((option: FilterOption) => !validOptions.includes(option.value))
+  })
+
+  return disabled
 })
 
 const currentPageEvents = computed(() => {
@@ -502,6 +546,7 @@ onMounted(() => {
             <h3>Category</h3>
           </template>
           <FilterToggleList
+            :disabled="disabledFilters.area"
             :options="filters.area"
             :selected="selectedFilters?.area ?? []"
             @toggle="(value) => toggleFilter('area', value)"
@@ -512,6 +557,7 @@ onMounted(() => {
             <h3>Campaign</h3>
           </template>
           <FilterToggleList
+            :disabled="disabledFilters.campaign"
             :options="filters.campaign"
             :selected="selectedFilters?.campaign ?? []"
             @toggle="(value) => toggleFilter('campaign', value)"
@@ -526,6 +572,7 @@ onMounted(() => {
           </template>
           <Autocomplete
             name="targets"
+            :disabled="disabledFilters.target"
             :options="filters.target"
             :selected="selectedFilters?.target ?? []"
             @toggle="(value) => toggleFilter('target', value)"
@@ -541,6 +588,7 @@ onMounted(() => {
           </template>
           <Autocomplete
             name="targets"
+            :disabled="disabledFilters.country"
             :options="filters.country"
             :selected="selectedFilters?.country ?? []"
             @toggle="(value) => toggleFilter('country', value)"
@@ -555,6 +603,7 @@ onMounted(() => {
             <h3>Region</h3>
           </template>
           <FilterToggleList
+            :disabled="disabledFilters.region"
             :options="filters.region"
             :selected="selectedFilters?.region ?? []"
             @toggle="(value) => toggleFilter('region', value)"

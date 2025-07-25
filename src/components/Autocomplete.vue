@@ -9,6 +9,10 @@ import InputWrapper from './InputWrapper.vue'
 const MAX_OPTIONS = 10
 
 const props = defineProps({
+  disabled: {
+    type: Array as PropType<FilterOption[]>,
+    default: [],
+  },
   name: {
     type: String,
     required: true,
@@ -115,6 +119,7 @@ watch(matchingOptions, () => focusedOption.value = 0)
           v-for="(option, i) in matchingOptions"
           :key="option.value"
           class="autocomplete-option"
+          :disabled="disabled.find((o: FilterOption) => o.value === option.value)"
           role="option"
           tabindex="-1"
           :aria-posinset="i + 1"
