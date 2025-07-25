@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, useTemplateRef, watch, type PropType } from 'vue';
+import { computed, nextTick, ref, useTemplateRef, watch, type PropType } from 'vue';
 import Chart from './Chart.vue';
 import { useViewportSize } from '../utilities/useViewportSize.ts';
 import type { ChartTick } from '../types/ChartTick';
@@ -66,6 +66,8 @@ const props = defineProps({
   },
 })
 
+const CHART_ZOOM_DELAY = 600
+
 const scrollRef = useTemplateRef('scroll-ref')
 const eventRefs = useTemplateRef('event-ref')
 
@@ -126,7 +128,7 @@ const next = () => {
  * being zoomed in/out
  */
 const zoomToEvent = (eventIndex: number) => {
-  const delay = fitChartOnScreen.value ? 0 : 600
+  const delay = fitChartOnScreen.value ? 0 : CHART_ZOOM_DELAY
   setTimeout(() => {
     currentEventIndex.value = eventIndex
   }, delay)
@@ -162,16 +164,30 @@ const eventPositionCSS = computed(() => {
   })
 })
 
-watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
-  if (!newCurrentEventRef?.$el) {
+const scrollIntoView = ($el: HTMLElement|null) => {
+  if (!$el) {
     if (scrollRef.value) {
       scrollRef.value.scrollLeft = 0
     }
-    return
+  } else {
+    $el.scrollIntoView({
+      inline: 'center',
+    })
   }
-  newCurrentEventRef?.$el.scrollIntoView({
-    inline: 'center',
-  })
+}
+
+watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
+  scrollIntoView(newCurrentEventRef?.$el)
+})
+
+watch(width, (value, oldValue) => {
+  setTimeout(() => {
+    nextTick(() => {
+      if (currentEventRef.value?.$el) {
+        scrollIntoView(currentEventRef.value.$el)
+      }
+    })
+  }, CHART_ZOOM_DELAY)
 })
 </script>
 
