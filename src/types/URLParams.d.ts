@@ -4,6 +4,7 @@ export type URLParams = {
   c?: string,
   from?: string,
   to?: string,
+  o?: string,
   p?: string,
   r?: string,
   s?: string,

@@ -26,6 +26,7 @@ import { useUrlParams } from '../utilities/useUrlParams.ts';
 import EventDetails from './EventDetails.vue';
 import { useViewportSize } from '../utilities/useViewportSize.ts';
 import type { FilterOption } from '../types/FilterOption';
+import { watchIgnorable } from '@vueuse/core';
 
 
 const props = defineProps({
@@ -56,8 +57,8 @@ const props = defineProps({
 })
 
 const EVENTS_PER_PAGE = 100
-const SORT_BY_RECENT = false
-const SORT_BY_OLDEST = true
+const SORT_BY_RECENT = true
+const SORT_BY_OLDEST = false
 const DEBOUNCE_DELAY = 250
 
 const allEvents = ref<Event[]>([])
@@ -65,7 +66,7 @@ const currentPage = ref<number>(1)
 const loading = ref<boolean>(true)
 const selectedFilters = ref<SelectedFilters>({})
 const showFilters = ref<boolean>(false)
-const sortBy = ref<boolean>(SORT_BY_RECENT)
+const sortBy = ref<boolean>(SORT_BY_OLDEST)
 const searchInput = ref<string>('')
 const dateFromInput = ref<string>('')
 const dateToInput = ref<string>('')
@@ -83,22 +84,15 @@ const hasActiveFilters = computed(() => {
     .length > 0
 })
 
-const { changeUrl, setFiltersFromParams } = useUrlParams(
-  selectedFilters,
-  currentPage,
-  searchInput,
-  dateFromInput,
-  dateToInput,
-)
-
 const resetFilters = () => {
   selectedFilters.value = {}
   searchInput.value = ''
   dateFromInput.value = ''
   dateToInput.value = ''
   currentPage.value = 1
+  sortBy.value = SORT_BY_OLDEST,
   resetEventsView()
-  changeUrl(selectedFilters, currentPage)
+  changeUrl()
 }
 
 const resetEventsView = () => {
@@ -154,7 +148,7 @@ const disabledFilters = computed(() => {
 })
 
 const currentPageEvents = computed(() => {
-  const newEvents = sortBy.value === SORT_BY_OLDEST
+  const newEvents = sortBy.value === SORT_BY_RECENT
     ? filteredEvents.value.slice().reverse()
     : filteredEvents.value
   const end = EVENTS_PER_PAGE * currentPage.value
@@ -174,15 +168,14 @@ const setPage = (newPage: number) => {
   }
   currentPage.value = newPage
   resetEventsView()
-  changeUrl(selectedFilters, currentPage)
+  changeUrl()
 }
-
-watch(currentPage, () => window.scrollTo(0, 0))
 
 const toggleSort = () => {
   sortBy.value = !sortBy.value
   currentPage.value = 1
   resetEventsView()
+  changeUrl()
 }
 
 const toggleFilter = (type: string, value: string) => {
@@ -195,16 +188,16 @@ const toggleFilter = (type: string, value: string) => {
   selectedFilters.value[type] = selected
   currentPage.value = 1
   resetEventsView()
-  changeUrl(selectedFilters, currentPage)
+  changeUrl()
 }
 
 const setSearch = debounce((val: string, oldVal: string) => {
   selectedFilters.value.search = val
   currentPage.value = 1
   resetEventsView()
-  changeUrl(selectedFilters, currentPage)
+  changeUrl()
 }, DEBOUNCE_DELAY)
-watch(searchInput, setSearch)
+const { ignoreUpdates: ignoreSearchInputUpdates } = watchIgnorable(searchInput, setSearch)
 
 
 const isDateValid = (date: string) => {
@@ -229,10 +222,10 @@ const setDateRange = debounce(() => {
   selectedFilters.value.dateTo = dateToInput.value
   currentPage.value = 1
   resetEventsView()
-  changeUrl(selectedFilters, currentPage)
+  changeUrl()
 }, DEBOUNCE_DELAY)
-watch(dateFromInput, setDateRange)
-watch(dateToInput, setDateRange)
+const { ignoreUpdates: ignoreDateFromInputUpdates } = watchIgnorable(dateFromInput, setDateRange)
+const { ignoreUpdates: ignoreDateToInputUpdates } = watchIgnorable(dateToInput, setDateRange)
 
 const firstDateTimestamp = computed(() => (new Date(props.firstDate)).getTime())
 const lastDateTimestamp = computed(() => (new Date(props.lastDate)).getTime())
@@ -294,6 +287,18 @@ const setFocusedEvent = () => {
   }
 }
 
+const { changeUrl } = useUrlParams(
+  selectedFilters,
+  currentPage,
+  searchInput,
+  ignoreSearchInputUpdates,
+  dateFromInput,
+  ignoreDateFromInputUpdates,
+  dateToInput,
+  ignoreDateToInputUpdates,
+  sortBy
+)
+
 onMounted(() => {
   fetch('/data/events.json')
     .then(r => r.json())
@@ -302,16 +307,6 @@ onMounted(() => {
       loading.value = false
       nextTick(setFocusedEvent)
     })
-
-  if (window.location.search) {
-    setFiltersFromParams(
-      selectedFilters,
-      currentPage,
-      searchInput,
-      dateFromInput,
-      dateToInput
-    )
-  }
 
   window.document.addEventListener('scroll', setFocusedEvent)
 })
