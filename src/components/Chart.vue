@@ -318,7 +318,7 @@ const highlightEventCoords = computed(() => {
 .chart-hex-group-story {
   fill: var(--color-chart-story);
   stroke: var(--color-chart-story);
-  stroke-width: 4px;
+  stroke-width: 2px;
 }
 .chart-hex-group-story-current {
   fill: var(--color-chart-story-current);
@@ -363,6 +363,11 @@ const highlightEventCoords = computed(() => {
 @media (min-width: 1536px) {
   .chart-hex-group-highlight-event {
     stroke-width: 4px;
+  }
+}
+@media (min-width: 2560px) {
+  .chart-hex-group-highlight-event {
+    stroke-width: 3px;
   }
 }
 </style>

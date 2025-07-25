@@ -134,14 +134,10 @@ const zoomToEvent = (eventIndex: number) => {
 
 const storyPointsScale = computed(() => {
   switch (true) {
-    case (width.value >= BREAKPOINTS.LAPTOP):
-      return 1.5
-    case (width.value >= BREAKPOINTS.LAPTOP_SM):
-      return 1.75
-    case (width.value >= BREAKPOINTS.TABLET):
-      return 2
+    case (width.value >= BREAKPOINTS.LAPTOP_LG):
+      return 1.25
     default:
-      return 3
+      return 1.5
   }
 })
 
@@ -370,7 +366,7 @@ watch(currentEventRef, (newCurrentEventRef, oldCurrentEventRef) => {
   transition: all 0.5s;
 }
 .app-story-enlarged {
-  --chart-width: 300vw;
+  --chart-width: 400vw;
 }
 .app-story .chart-wrapper {
   align-items: flex-end;

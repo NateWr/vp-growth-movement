@@ -223,12 +223,14 @@ watch(showFilters, (newValue) => {
 
 const storyPointsScale = computed(() => {
   switch (true) {
+    case (width.value >= BREAKPOINTS.LAPTOP_XL):
+      return 1.5
     case (width.value >= BREAKPOINTS.LAPTOP):
       return 2
     case (width.value >= BREAKPOINTS.TABLET):
       return 3
     default:
-      return 6
+      return 4
   }
 })
 

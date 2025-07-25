@@ -7,6 +7,7 @@ export const useViewportSize = () => {
     LAPTOP_SM: 1280,
     LAPTOP: 1536,
     LAPTOP_LG: 1920,
+    LAPTOP_XL: 2560,
   }
 
   const width = ref<number>(0)
