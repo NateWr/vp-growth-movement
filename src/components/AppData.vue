@@ -182,6 +182,7 @@ watch(currentPage, () => window.scrollTo(0, 0))
 const toggleSort = () => {
   sortBy.value = !sortBy.value
   currentPage.value = 1
+  resetEventsView()
 }
 
 const toggleFilter = (type: string, value: string) => {
