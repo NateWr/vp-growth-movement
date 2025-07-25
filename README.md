@@ -16,3 +16,15 @@ Run the following command to download the data.
 ```
 npm run get-data
 ```
+
+Run the following command to test on a local dev server.
+
+```
+npm run dev -- --host
+```
+
+Run the following command to build for production.
+
+```
+npm run build
+```
