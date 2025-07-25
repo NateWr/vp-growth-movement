@@ -149,21 +149,15 @@ const storyPointCurrent = computed(() => {
 
 const eventPositionCSS = computed(() => {
   return props.events.map((event: StoryEventType) => {
-    if (event.position.origin === StoryEventPositionOrigin.left) {
-      return {
-        left: `max(1rem, ${event.position.offset * 100}%)`,
-        transform: 'translateX(-1rem)',
-      }
-    } else if (event.position.origin === StoryEventPositionOrigin.center) {
-      return {
-        left: `max(1rem, ${event.position.offset * 100}%)`,
-        transform: 'translateX(-50%)',
-      }
-    } else if (event.position.origin === StoryEventPositionOrigin.right) {
+    if (event.position.origin === StoryEventPositionOrigin.right) {
       return {
         right: `max(1rem, ${event.position.offset * 100}%)`,
-        transform: 'translateX(1rem)',
+        transform: `translateX(max(1rem, ${event.position.offset * 100}%))`,
       }
+    }
+    return {
+      left: `max(1rem, ${event.position.offset * 100}%)`,
+      transform: `translateX(min(-1rem, ${event.position.offset * -100}%)`,
     }
   })
 })
