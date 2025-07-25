@@ -24,6 +24,7 @@
   border: 2px solid;
   border-radius: 2px;
 }
+.input-wrapper:focus-within input,
 .input-wrapper input:focus-visible {
   outline: 2px solid;
 }
