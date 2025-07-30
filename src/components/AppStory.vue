@@ -378,7 +378,7 @@ watch(width, (value, oldValue) => {
       ">
         <Button
           class="
-            gap-4
+            gap-3
             md:w-full md:px-6 md:py-4 md:text-lg
             xl:px-4 xl:py-3
           "
@@ -391,12 +391,12 @@ watch(width, (value, oldValue) => {
           </template>
           <div class="flex flex-col uppercase leading-tight md:leading-4">
             <div>Back</div>
-            <div class="font-normal text-sm">{{ backText }}</div>
+            <div class="font-normal text-sm whitespace-nowrap">{{ backText }}</div>
           </div>
         </Button>
         <Button
           class="
-            gap-4
+            gap-3
             md:w-full md:px-6 md:py-4 md:text-lg
             xl:px-4 xl:py-3
           "
@@ -406,7 +406,7 @@ watch(width, (value, oldValue) => {
         >
           <div class="flex flex-col uppercase leading-tight text-right md:leading-4">
             <div>Next</div>
-            <div class="font-normal text-sm">{{ nextText }}</div>
+            <div class="font-normal text-sm whitespace-nowrap">{{ nextText }}</div>
           </div>
           <template #icon-after>
             <IconArrowRight aria-hidden="true" />
