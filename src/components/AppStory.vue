@@ -10,6 +10,8 @@ import type { StoryAction } from '../types/StoryAction';
 import Button from './Button.vue';
 import StoryText from './StoryText.vue';
 import StoryEvent from './StoryEvent.vue';
+import IconArrowLeft from './IconArrowLeft.vue';
+import IconArrowRight from './IconArrowRight.vue';
 
 const props = defineProps({
   chartColumns: {
@@ -121,6 +123,32 @@ const next = () => {
     currentEventIndex.value++
   }
 }
+
+const backText = computed(() => {
+  if (finished.value) {
+    return `${props.events.length}/${props.events.length}`
+  }
+  if (currentEventIndex.value < 0) {
+    return props.lastStoryTitle
+  }
+  if (currentEventIndex.value === 0) {
+    return 'Intro'
+  }
+  return `${currentEventIndex.value}/${props.events.length}`
+})
+
+const nextText = computed(() => {
+  if (finished.value) {
+    return props.nextStoryTitle
+  }
+  if (currentEventIndex.value < 0) {
+    return 'Start'
+  }
+  if (currentEventIndex.value === props.events.length - 1) {
+    return 'Conclusion'
+  }
+  return `${currentEventIndex.value + 2}/${props.events.length}`
+})
 
 /**
  * Add a short delay before setting the
@@ -343,24 +371,46 @@ watch(width, (value, oldValue) => {
           </div>
         </div>
       </StoryText>
-      <div class="story-buttons">
+      <div class="
+        fixed bottom-8 left-4 right-4 grid grid-cols-2 items-center gap-4
+        md:left-auto md:w-96
+        lg:right-8
+      ">
         <Button
+          class="
+            gap-4
+            md:w-full md:px-6 md:py-4 md:text-lg
+            xl:px-4 xl:py-3
+          "
           :href="!started ? lastStoryUrl : ''"
-          class="story-button story-button-back"
           variant="white"
           @click="started ? back() : null"
         >
-          <div>Prev</div>
-          <div>{{ !started ? lastStoryTitle : currentEventIndex }}</div>
+          <template #icon>
+            <IconArrowLeft aria-hidden="true" />
+          </template>
+          <div class="flex flex-col uppercase leading-tight md:leading-4">
+            <div>Back</div>
+            <div class="font-normal text-sm">{{ backText }}</div>
+          </div>
         </Button>
         <Button
-          class="story-button story-button-next"
+          class="
+            gap-4
+            md:w-full md:px-6 md:py-4 md:text-lg
+            xl:px-4 xl:py-3
+          "
           :href="finished ? nextStoryUrl : ''"
           variant="white"
           @click="finished ? null : next()"
         >
-          <div>Next</div>
-          <div>{{ finished ? nextStoryTitle : currentEventIndex }}</div>
+          <div class="flex flex-col uppercase leading-tight text-right md:leading-4">
+            <div>Next</div>
+            <div class="font-normal text-sm">{{ nextText }}</div>
+          </div>
+          <template #icon-after>
+            <IconArrowRight aria-hidden="true" />
+          </template>
         </Button>
       </div>
     </div>
@@ -404,47 +454,6 @@ watch(width, (value, oldValue) => {
 @media (min-width: 1024px) and (orientation: landscape) {
   .app-story-enlarged {
     --chart-width: 100vw;
-  }
-}
-
-/**
- * Next/Back buttons
- */
-.story-buttons {
-  --offset-bottom: 3rem;
-  --offset-inline: 1rem;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 0;
-}
-.story-button {
-  position: fixed;
-  bottom: var(--offset-bottom);
-}
-.story-button-back {
-  left: var(--offset-inline);
-}
-.story-button-next {
-  right: var(--offset-inline);
-}
-@media (min-width: 1280px) {
-  .story-buttons {
-    --offset-inline: 3rem;
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    bottom: var(--offset-bottom);
-    right: var(--offset-inline);
-    left: auto;
-    width: auto;
-  }
-  .story-buttons .story-button-back,
-  .story-buttons .story-button-next {
-    position: relative;
-    left: auto;
-    right: auto;
-    bottom: auto;
   }
 }
 </style>

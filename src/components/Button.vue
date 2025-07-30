@@ -46,8 +46,9 @@ const props = defineProps({
     ]"
   >
     <slot name="icon" />
-    <span class="relative top-px">
+    <span class="relative top-px grow">
       <slot />
     </span>
+    <slot name="icon-after" />
   </component>
 </template>
