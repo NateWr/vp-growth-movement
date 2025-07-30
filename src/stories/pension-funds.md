@@ -1,5 +1,5 @@
 ---
-order: 50
+order: 100
 prefix: The Campaign for
 title: Pension Divestments
 title_short: Pensions
