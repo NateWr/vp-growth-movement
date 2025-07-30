@@ -539,6 +539,39 @@ onMounted(() => {
         </Filter>
         <Filter>
           <template #title>
+            <h3>Country</h3>
+          </template>
+          <Autocomplete
+            name="targets"
+            :disabled="disabledFilters.country"
+            :options="filters.country"
+            :selected="selectedFilters?.country ?? []"
+            @toggle="(value) => toggleFilter('country', value)"
+          >
+            <template #icon>
+              <IconLocation aria-hidden="true"/>
+            </template>
+          </Autocomplete>
+        </Filter>
+        <Filter class="items-start">
+          <template #title>
+            <h3>Date Range</h3>
+          </template>
+          <template #description>
+          </template>
+          <InputDateRange
+            defaultFrom="2005-01-01"
+            :defaultTo="lastDate"
+            name="date-range"
+            v-model:date-from="dateFromInput"
+            v-model:date-to="dateToInput"
+          />
+          <div v-if="invalidDateRange" class="bg-red px-3 py-1">
+            Invalid date range!
+          </div>
+        </Filter>
+        <Filter>
+          <template #title>
             <h3>Category</h3>
           </template>
           <FilterToggleList
@@ -561,41 +594,6 @@ onMounted(() => {
         </Filter>
         <Filter>
           <template #title>
-            <h3>Target Organization</h3>
-          </template>
-          <template #description>
-            Find events related to a specific company or organization, like G4S or Elbit Systems.
-          </template>
-          <Autocomplete
-            name="targets"
-            :disabled="disabledFilters.target"
-            :options="filters.target"
-            :selected="selectedFilters?.target ?? []"
-            @toggle="(value) => toggleFilter('target', value)"
-          >
-            <template #icon>
-              <IconTarget aria-hidden="true" />
-            </template>
-          </Autocomplete>
-        </Filter>
-        <Filter>
-          <template #title>
-            <h3>Country</h3>
-          </template>
-          <Autocomplete
-            name="targets"
-            :disabled="disabledFilters.country"
-            :options="filters.country"
-            :selected="selectedFilters?.country ?? []"
-            @toggle="(value) => toggleFilter('country', value)"
-          >
-            <template #icon>
-              <IconLocation aria-hidden="true"/>
-            </template>
-          </Autocomplete>
-        </Filter>
-        <Filter>
-          <template #title>
             <h3>Region</h3>
           </template>
           <FilterToggleList
@@ -605,22 +603,16 @@ onMounted(() => {
             @toggle="(value) => toggleFilter('region', value)"
           />
         </Filter>
-        <Filter class="items-start">
+        <Filter>
           <template #title>
-            <h3>Date Range</h3>
+            <h3>Target Organization</h3>
           </template>
-          <template #description>
-          </template>
-          <InputDateRange
-            defaultFrom="2005-01-01"
-            :defaultTo="lastDate"
-            name="date-range"
-            v-model:date-from="dateFromInput"
-            v-model:date-to="dateToInput"
+          <FilterToggleList
+            :disabled="disabledFilters.target"
+            :options="filters.target"
+            :selected="selectedFilters?.target ?? []"
+            @toggle="(value) => toggleFilter('target', value)"
           />
-          <div v-if="invalidDateRange" class="bg-red px-3 py-1">
-            Invalid date range!
-          </div>
         </Filter>
       </div>
     </div>
