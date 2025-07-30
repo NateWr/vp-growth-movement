@@ -265,20 +265,10 @@ watch(width, (value, oldValue) => {
         <h2 class="sr-only">Introduction</h2>
         <div
           class="
-            p-4
-            flex
-            flex-col
-            gap-4
-            text-lg
-            leading-6
-            sm:gap-6
-            sm:text-xl
-            sm:leading-7
+            p-4 flex flex-col gap-4 text-lg leading-6
+            sm:gap-6 sm:text-xl sm:leading-7
             xl:w-xl
-            3xl:w-2xl
-            3xl:gap-8
-            3xl:text-2xl
-            3xl:leading-8
+            3xl:w-2xl 3xl:gap-8 3xl:text-2xl 3xl:leading-8
           "
           v-html="intro"
         />
@@ -307,30 +297,16 @@ watch(width, (value, oldValue) => {
         <h2 class="sr-only">Conclusion</h2>
         <div
           class="
-            flex
-            flex-col
-            gap-4
-            p-4
-            xl:grid
-            xl:grid-cols-2
-            xl:gap-16
+            flex flex-col gap-4 p-4
+            xl:grid xl:grid-cols-2 xl:gap-16
             3xl:gap-16
           "
         >
           <div
             class="
-              flex
-              flex-col
-              gap-4
-              font-medium
-              text-md
-              leading-6
-              sm:gap-6
-              sm:text-xl
-              sm:leading-7
-              3xl:gap-8
-              3xl:text-2xl
-              3xl:leading-8
+              flex flex-col gap-4 font-medium text-md leading-6
+              sm:gap-6 sm:text-xl sm:leading-7
+              3xl:gap-8 3xl:text-2xl 3xl:leading-8
             "
             v-html="conclusion"
           />
@@ -358,11 +334,8 @@ watch(width, (value, oldValue) => {
                 </div>
                 <div
                   class="
-                    font-normal
-                    normal-case
-                    leading-4
-                    3xl:text-xl
-                    3xl:leading-5
+                    font-normal normal-case leading-4
+                    3xl:text-xl 3xl:leading-5
                   "
                 >
                   {{ action.title }}
