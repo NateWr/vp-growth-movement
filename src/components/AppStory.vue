@@ -12,6 +12,7 @@ import StoryText from './StoryText.vue';
 import StoryEvent from './StoryEvent.vue';
 import IconArrowLeft from './IconArrowLeft.vue';
 import IconArrowRight from './IconArrowRight.vue';
+import StoryButtons from './StoryButtons.vue';
 
 const props = defineProps({
   chartColumns: {
@@ -371,48 +372,14 @@ watch(width, (value, oldValue) => {
           </div>
         </div>
       </StoryText>
-      <div class="
-        fixed bottom-8 left-4 right-4 grid grid-cols-2 items-center gap-4
-        md:left-auto md:w-96
-        lg:right-8
-      ">
-        <Button
-          class="
-            gap-3
-            md:w-full md:px-6 md:py-4 md:text-lg
-            xl:px-4 xl:py-3
-          "
-          :href="!started ? lastStoryUrl : ''"
-          variant="white"
-          @click="started ? back() : null"
-        >
-          <template #icon>
-            <IconArrowLeft aria-hidden="true" />
-          </template>
-          <div class="flex flex-col uppercase leading-tight md:leading-4">
-            <div>Back</div>
-            <div class="font-normal text-sm whitespace-nowrap">{{ backText }}</div>
-          </div>
-        </Button>
-        <Button
-          class="
-            gap-3
-            md:w-full md:px-6 md:py-4 md:text-lg
-            xl:px-4 xl:py-3
-          "
-          :href="finished ? nextStoryUrl : ''"
-          variant="white"
-          @click="finished ? null : next()"
-        >
-          <div class="flex flex-col uppercase leading-tight text-right md:leading-4">
-            <div>Next</div>
-            <div class="font-normal text-sm whitespace-nowrap">{{ nextText }}</div>
-          </div>
-          <template #icon-after>
-            <IconArrowRight aria-hidden="true" />
-          </template>
-        </Button>
-      </div>
+      <StoryButtons
+        :backUrl="!started ? lastStoryUrl : ''"
+        :backText="backText"
+        :nextUrl="finished ? nextStoryUrl : ''"
+        :nextText="nextText"
+        @back="back"
+        @next="next"
+      />
     </div>
   </div>
 </template>
