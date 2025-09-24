@@ -56,8 +56,5 @@ actions:
   - prefix: Get Involved
     title: Find a BDS campaign near you
     url: 'https://bdsmovement.net/join-a-bds-campaign'
-filters:
-  target:
-    - g4-s
 ---
 
