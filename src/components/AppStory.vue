@@ -10,8 +10,6 @@ import type { StoryAction } from '../types/StoryAction';
 import Button from './Button.vue';
 import StoryText from './StoryText.vue';
 import StoryEvent from './StoryEvent.vue';
-import IconArrowLeft from './IconArrowLeft.vue';
-import IconArrowRight from './IconArrowRight.vue';
 import StoryButtons from './StoryButtons.vue';
 
 const props = defineProps({

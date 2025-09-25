@@ -2,11 +2,13 @@
 import SvgUnderlineLg from '../images/underline-lg.svg'
 
 interface Props {
+  lineClass?: string;
+  hoverEffect?: boolean;
   rotateDir?: boolean;
   underlineOnHover?: boolean;
 }
 
-const { rotateDir = false, underlineOnHover = false } = Astro.props
+const { lineClass, hoverEffect = true, rotateDir = false, underlineOnHover = false } = Astro.props
 ---
 
 <div
@@ -17,8 +19,11 @@ const { rotateDir = false, underlineOnHover = false } = Astro.props
     flex-col
     items-center
     transition-all
-    hover:-translate-y-1
-    ${rotateDir ? 'hover:rotate-2' : 'hover:-rotate-2'}
+    ${
+      hoverEffect
+        ? `hover:-translate-y-1 ${rotateDir ? 'hover:rotate-2' : 'hover:-rotate-2'}`
+        : ''
+    }
     focus-visible:outline-2
     focus-visible:outline-current
   `}
@@ -33,6 +38,7 @@ const { rotateDir = false, underlineOnHover = false } = Astro.props
       w-full
       h-0.5
       ${underlineOnHover ? 'opacity-0 group-hover:opacity-100' : ''}
+      ${lineClass}
     `}
     aria-hidden="true"
   />
