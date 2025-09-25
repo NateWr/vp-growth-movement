@@ -14,6 +14,10 @@ const props = defineProps({
       return ['', 'black', 'white'].includes(value)
     },
   },
+  rounded: {
+    type: Boolean,
+    default: false,
+  },
   href: {
     type: String,
     default: '',
@@ -36,13 +40,19 @@ const props = defineProps({
     :class="[
       size === 'sm'
         ? 'text-sm gap-1 py-1 px-2 font-medium'
-        : 'gap-2 py-2 px-4 font-bold uppercase',
+        : 'gap-2 py-3 px-4 font-bold uppercase',
       variant === 'black'
         ? 'bg-black text-white border-black'
         : '',
-      variant === 'white'
-        ? 'bg-white text-black border-white'
+      variant === 'yellow'
+        ? 'bg-yellow text-black border-yellow hover:bg-white hover:border-white'
         : '',
+      variant === 'yellow-outline'
+        ? 'bg-black text-white border-yellow hover:bg-white hover:text-black hover:border-white'
+        : '',
+      rounded
+        ? 'rounded-full'
+        : ''
     ]"
   >
     <slot name="icon" />
