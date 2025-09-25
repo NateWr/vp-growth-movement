@@ -263,8 +263,8 @@ const highlightEventCoords = computed(() => {
   right: var(--padding-x);
   top: 0;
   bottom: 0;
-  color: var(--color-white);
-  opacity: 0.5;
+  color: var(--color-chart-ticks);
+  opacity: 0.75;
 }
 
 .chart-tick {
@@ -279,7 +279,7 @@ const highlightEventCoords = computed(() => {
 .chart-tick-line {
   flex-grow: 1;
   border-left: 1px dashed;
-  opacity: 0.25;
+  opacity: 0.35;
 }
 
 .chart-tick-major .chart-tick-line {

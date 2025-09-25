@@ -79,8 +79,10 @@ const getStoryEvents = () =>  {
 }
 const storyEvents = getStoryEvents()
 
-const chartEventCoordsHighlighted = getFilteredEvents(events, story.data.filters)
-  .map(({x, y}) => ({x, y}))
+const chartEventCoordsHighlighted = story.data?.filters
+  ? getFilteredEvents(events, story.data?.filters ?? {})
+    .map(({x, y}) => ({x, y}))
+  : []
 
 const chartEventCoords = data.filter(coords => {
   const isHighlighted = chartEventCoordsHighlighted
@@ -109,7 +111,8 @@ const conclusion = marked.parse(story.data.conclusion)
     <h1
       class="
         p-4
-        bg-grey-dark
+        bg-blue
+        text-white
         sm:py-6
         xl:px-16
         xl:grid

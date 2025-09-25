@@ -241,14 +241,14 @@ watch(width, (value, oldValue) => {
             id: 'all-data',
             hexes: chartEventCoords,
             style: {
-              fill: 'var(--color-chart-dim)',
+              fill: 'var(--color-chart)',
             }
           },
           {
             id: 'highlights',
             hexes: chartEventCoordsHighlighted,
             style: {
-              fill: 'var(--color-chart)',
+              fill: 'var(--color-chart-highlight)',
             }
           },
         ]"

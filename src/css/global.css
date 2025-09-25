@@ -5,12 +5,10 @@
   --color-*: initial;
   --color-black: #000;
   --color-white: #fff;
-  --color-grey-dark: #222;
-  --color-red-light: #FFE9E9;
-  --color-red: #FF7474;
-  --color-red-bright: #FF1E1E;
-  --color-red-dark: #4E2929;
-  --color-yellow: #FFCC00;
+  --color-red: #F82F4A;
+  --color-yellow: #E7D001;
+  --color-blue-light: #819ADE;
+  --color-blue: #3F63C2;
   --color-white-alpha-100: rgba(255, 255, 255, 0.1);
   --color-white-alpha-200: rgba(255, 255, 255, 0.2);
   --color-white-alpha-300: rgba(255, 255, 255, 0.3);
@@ -30,17 +28,26 @@
 }
 
 :root {
-  --color-chart: var(--color-red);
-  --color-chart-dim: var(--color-red-dark);
+  --color-chart: var(--color-blue);
+  --color-chart-highlight: var(--color-blue-light);
   --color-chart-story: var(--color-yellow);
   --color-chart-story-current: var(--color-black);
+  --color-chart-ticks: var(--color-yellow);
 
   --header-height: 4rem;
 }
 
+@media (min-width: 96rem) {
+
+  :root {
+    --header-height: 5.5rem;
+  }
+}
+
+
 @media (min-width: 120rem) {
 
   :root {
-    --header-height: 5rem;
+    --header-height: 6rem;
   }
 }

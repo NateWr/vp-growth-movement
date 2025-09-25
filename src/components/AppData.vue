@@ -349,14 +349,14 @@ onMounted(() => {
               id: 'all-data',
               hexes: chartCoords,
               style: {
-                fill: 'var(--color-chart-dim)',
+                fill: 'var(--color-chart)',
               }
             },
             {
               id: 'highlights',
               hexes: chartHighlightCoords,
               style: {
-                fill: 'var(--color-chart)',
+                fill: 'var(--color-chart-highlight)',
               }
             },
           ]"
@@ -373,7 +373,6 @@ onMounted(() => {
           class="
             relative
             p-2
-            bg-yellow
             xl:hidden
           "
         >
@@ -407,7 +406,7 @@ onMounted(() => {
           <Spinner />
           Loading
         </div>
-        <div v-else-if="!currentPageEvents.length" class="flex flex-col items-start gap-4 p-8 min-h-32 bg-red-light" role="alert">
+        <div v-else-if="!currentPageEvents.length" class="flex flex-col items-start gap-4 p-8 min-h-32 bg-yellow" role="alert">
           <div class="text-lg leading-tight">
             No events were found matching your request.
           </div>
@@ -491,7 +490,7 @@ onMounted(() => {
       ]"
     >
       <h2 class="sr-only">Search, filter, and sort</h2>
-      <div class="sticky top-0 flex items-center justify-between gap-2 z-50 bg-white xl:bg-yellow 3xl:px-4">
+      <div class="sticky top-0 flex items-center justify-between gap-2 z-50 bg-white 3xl:px-4">
         <div class="flex items-center gap-4">
           <div class="p-2 flex items-center gap-2 md:p-4">
             <IconFilters class="w-8 h-8" aria-hidden="true" />

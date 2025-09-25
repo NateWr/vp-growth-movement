@@ -3,6 +3,7 @@ order: 60
 prefix: The Campaign Against
 title: Veolia
 title_short: Veolia
+illustration: /story-illustration.png
 description: The BDS movement targeted G4S for their role in providing services to Israeli prisons, police, the military, and illegal settlements.
 intro: |
   Veolia, a French multinational transportation company involved in developing infrastructure to expand illegal Israeli settlements, completely exited the Israeli market after almost a decade of BDS campaigns cost the company an estimated $21 billion in contracts.

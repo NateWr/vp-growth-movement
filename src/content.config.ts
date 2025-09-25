@@ -8,6 +8,7 @@ const stories = defineCollection({
     prefix: z.string(),
     title: z.string(),
     title_short: z.string(),
+    illustration: z.string(),
     description: z.string(),
     intro: z.string(),
     events: z.array(
@@ -36,7 +37,7 @@ const stories = defineCollection({
       region: z.array(z.string()).optional(),
       search: z.string().optional(),
       target: z.array(z.string()).optional(),
-    }),
+    }).optional(),
   })
 })
 
