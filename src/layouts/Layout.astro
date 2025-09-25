@@ -1,4 +1,5 @@
 ---
+import UnderlinedText from "../components/UnderlinedText.astro";
 import "../css/global.css";
 import Logo from "../images/logo.svg";
 import SvgUnderlineSm from '../images/underline-sm.svg'
@@ -137,25 +138,16 @@ const nav = [
 						<a
 							href={url}
 							class={`
-								relative
-								transition-all
-								hover:-translate-y-1 ${i % 2 ? 'hover:-rotate-2' : 'hover:rotate-2'}
 								focus-visible:outline-2
 								focus-visible:outline-current
 								${currentUrl === url ? 'text-yellow' : ''}
 							`}
 						>
-							<span class="text-sm uppercase font-semibold xl:text-base 2xl:text-lg 3xl:text-xl">{label}</span>
-							<SvgUnderlineSm
-								class={`
-									absolute
-									top-full
-									left-0
-									right-0
-									${currentUrl === url ? 'w-full' : 'w-0'}
-								`}
-								aria-hidden="true"
-							/>
+							<UnderlinedText rotateDir={!!(i % 2)} underlineOnHover={currentUrl !== url}>
+								<span class="text-sm uppercase font-semibold xl:text-base 2xl:text-lg 3xl:text-xl">
+									{label}
+								</span>
+							</UnderlinedText>
 						</a>
 					))}
 				</div>

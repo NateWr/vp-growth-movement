@@ -1,0 +1,39 @@
+---
+import SvgUnderlineLg from '../images/underline-lg.svg'
+
+interface Props {
+  rotateDir?: boolean;
+  underlineOnHover?: boolean;
+}
+
+const { rotateDir = false, underlineOnHover = false } = Astro.props
+---
+
+<div
+  class={`
+    group
+    relative
+    inline-flex
+    flex-col
+    items-center
+    transition-all
+    hover:-translate-y-1
+    ${rotateDir ? 'hover:rotate-2' : 'hover:-rotate-2'}
+    focus-visible:outline-2
+    focus-visible:outline-current
+  `}
+>
+  <slot />
+  <SvgUnderlineLg
+    class={`
+      absolute
+      top-full
+      left-0
+      right-0
+      w-full
+      h-0.5
+      ${underlineOnHover ? 'opacity-0 group-hover:opacity-100' : ''}
+    `}
+    aria-hidden="true"
+  />
+</div>

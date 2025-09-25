@@ -8,6 +8,8 @@ import SvgArrowRight from '../images/arrow-right.svg'
 import SvgHomeTitle from '../images/home-title.svg'
 import SvgUnderlineLg from '../images/underline-lg.svg'
 import SvgVPLogo from '../images/vp-logo.svg'
+import HomeQuickLinks from '../components/HomeQuickLinks.astro'
+import UnderlinedText from '../components/UnderlinedText.astro'
 
 const stories = await astroGetSortedStories()
 ---
@@ -62,16 +64,28 @@ const stories = await astroGetSortedStories()
 					<p class="text-lg text-center max-w-lg md:text-xl 3xl:max-w-2xl 3xl:text-2xl">
 						Explore the actions that have shaped the Palestinian-led, global <strong>Boycott, Divestment, and Sanctions (BDS)</strong> movement for freedom, justice, and equality.
 					</p>
+					<HomeQuickLinks class="portrait:hidden" />
 				</div>
 			</div>
-			<div class="relative p-6 flex justify-center items-end">
+			<div class="
+				relative
+				p-6
+				flex
+				portrait:flex-col
+				portrait:justify-between
+				portrait:items-center
+				landscape:justify-center
+				landscape:items-end
+			">
+				<HomeQuickLinks class="landscape:hidden h-1/2" />
 				<img src="/story-illustration.png" class="w-2/3 lg:w-auto lg:h-3/4" />
 			</div>
 		</div>
 		<section
+			id="stories"
 			class="
-				my-32
-				p-4
+				py-32
+				px-4
 				flex
 				flex-col
 				gap-4
@@ -79,7 +93,7 @@ const stories = await astroGetSortedStories()
 				mx-auto
 			"
 		>
-			<h2 class="sr-only" id="stories">Stories</h2>
+			<h2 class="sr-only">Stories</h2>
 			<div
 				class="
 					flex
@@ -191,34 +205,12 @@ const stories = await astroGetSortedStories()
 			max-w-xl
 			mx-auto
 		`}>
-			<a
-				href="/about"
-				class={`
-					relative
-					flex
-					flex-col
-					items-center
-					transition-all
-					hover:-translate-y-1
-					hover:-rotate-2
-					focus-visible:outline-2
-					focus-visible:outline-current
-				`}
-			>
-				<span class="text-sm uppercase font-semibold xl:text-base 2xl:text-lg 3xl:text-xl">
-					About This Site
-				</span>
-				<SvgUnderlineLg
-					class={`
-						absolute
-						top-full
-						left-0
-						right-0
-						w-full
-						h-0.5
-					`}
-					aria-hidden="true"
-				/>
+			<a href="/about" class="focus-visible:outline-2 focus-visible:outline-current">
+				<UnderlinedText>
+					<span class="text-sm uppercase font-semibold xl:text-base 2xl:text-lg 3xl:text-xl">
+						About This Site
+					</span>
+				</UnderlinedText>
 			</a>
 			<div class={`
 				flex

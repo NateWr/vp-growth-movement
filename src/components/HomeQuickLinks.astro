@@ -1,0 +1,31 @@
+---
+import UnderlinedText from './UnderlinedText.astro'
+
+interface Props {
+  class: string,
+}
+
+const { class: className } = Astro.props
+---
+
+<nav class={`
+  flex
+  items-center
+  gap-8
+  ${className}
+`}>
+  <a href="#stories" class="focus-visible:outline-2 focus-visible:outline-current">
+    <UnderlinedText>
+      <span class="uppercase font-semibold 2xl:text-lg 3xl:text-xl">
+        View Stories
+      </span>
+    </UnderlinedText>
+  </a>
+  <a href="/data" class="focus-visible:outline-2 focus-visible:outline-current">
+    <UnderlinedText rotateDir={true}>
+      <span class="uppercase font-semibold 2xl:text-lg 3xl:text-xl">
+        View Data
+      </span>
+    </UnderlinedText>
+  </a>
+</nav>
