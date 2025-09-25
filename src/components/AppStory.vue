@@ -286,6 +286,7 @@ watch(width, (value, oldValue) => {
           "
           :event="event"
           :isCurrent="i === currentEventIndex"
+          :background-clip-path-id="`panel-bg-${i % 2 + 1}`"
           :styleCSS="eventPositionCSS[i]"
         />
       </div>
