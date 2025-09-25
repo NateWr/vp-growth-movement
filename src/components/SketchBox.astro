@@ -1,0 +1,15 @@
+---
+interface Props {
+	backgroundPathId: string;
+  class: string;
+}
+
+const { class: className, backgroundPathId = 'panel-bg-1' } = Astro.props;
+---
+
+<div
+  class={`overflow-hidden ${className}`}
+  style={`clip-path: url(#${backgroundPathId}`}
+>
+  <slot />
+</div>

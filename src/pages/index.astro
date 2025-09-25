@@ -3,8 +3,9 @@ import Layout from '../layouts/Layout.astro'
 import HomeChart from '../components/HomeChart.vue'
 import { columns, data, rows, ticks } from '../data/chart-config.json'
 import { astroGetSortedStories } from "../utilities/astro-utilities"
+import SketchBox from '../components/SketchBox.astro'
+import SvgArrowRight from '../images/arrow-right.svg'
 import SvgHomeTitle from '../images/home-title.svg'
-import SvgUnderline from '../images/underline.svg'
 import SvgUnderlineLg from '../images/underline-lg.svg'
 import SvgVPLogo from '../images/vp-logo.svg'
 
@@ -91,56 +92,93 @@ const stories = await astroGetSortedStories()
 				{stories.map((story, i) => (
 					<a
 						href={`/${story.id}`}
+						class="relative focus-visible:outline-2 focus-visible:outline-current"
+					>
+						<SketchBox
+							backgroundPathId={`panel-bg-${i % 2 + 1}`}
+							class={`
+								flex
+								items-center
+								gap-4
+								aspect-[3.2/1]
+								transition-all
+								bg-blue
+								hover:bg-red
+								hover:-translate-y-1
+								${i % 2 ? 'hover:-rotate-1' : 'hover:rotate-1'}
+								md:gap-6
+								xl:aspect-[4/1]
+								xl:gap-8
+							`}
+						>
+							<img
+								src={story.data.illustration}
+								class={`
+									w-2/5
+									self-end
+									-ms-4
+									xl:w-1/3
+									xl:ms-4
+								`}
+							/>
+							<div class="relative top-1 flex flex-col items-start">
+								<span class="text-sm leading-tight uppercase md:text-lg">
+									{story.data.prefix}
+								</span>
+								<span class="relative text-xl leading-tight font-black md:text-3xl">
+									{story.data.title}
+									<SvgUnderlineLg
+										class={`
+											absolute
+											top-full
+											left-0
+											w-full
+											h-0.5
+											text-yellow
+											md:h-1
+										`}
+										aria-hidden="true"
+									/>
+								</span>
+							</div>
+						</SketchBox>
+					</a>
+				))}
+				<a
+					href="/data"
+					class="relative focus-visible:outline-2 focus-visible:outline-current"
+				>
+					<SketchBox
+						backgroundPathId={`panel-bg-${stories.length % 2 + 1}`}
 						class={`
-							group
-							relative
 							flex
 							items-center
 							gap-4
 							aspect-[3.2/1]
-							overflow-hidden
 							transition-all
-							bg-blue
-							hover:bg-red
+							bg-yellow
+							text-black
+							hover:bg-white
 							hover:-translate-y-1
-							hover:${i % 2 ? '-' : ''}rotate-1
+							${stories.length % 2 ? 'hover:-rotate-1' : 'hover:rotate-1'}
 							md:gap-6
 							xl:aspect-[4/1]
 							xl:gap-8
 						`}
-						style={`clip-path: url(#panel-bg-${i % 2 + 1})`}
 					>
-						<img
-							src={story.data.illustration}
-							class={`
-								w-2/5
-								self-end
-								-ms-4
-								xl:w-1/3
-								xl:ms-4
-							`}
-						/>
-						<div class="relative top-1 flex flex-col items-start">
-							<span class="text-sm leading-tight uppercase md:text-lg">
-								{story.data.prefix}
-							</span>
-							<span class="relative text-xl leading-tight font-black md:text-3xl">
-								{story.data.title}
-								<SvgUnderlineLg
-									class={`
-										absolute
-										top-full
-										left-0
-										w-full
-										h-0.5
-										text-yellow
-									`}
-									aria-hidden="true"
-								/>
-							</span>
+						<div class="p-8 flex justify-between items-center w-full xl:px-16">
+							<div class="relative top-1 flex flex-col items-start">
+								<span class="text-sm leading-tight uppercase md:text-lg">
+									Explore the full
+								</span>
+								<span class="relative text-xl leading-tight font-black md:text-3xl">
+									Dataset & Timeline
+								</span>
+							</div>
+							<SvgArrowRight class="xl:w-10 h-auto" aria-hidden="true" />
 						</div>
-					</a>
-				))}
+					</SketchBox>
+				</a>
 			</div>
 		</section>
 		<footer class={`
