@@ -11,7 +11,7 @@ const props = defineProps({
     type: String,
     default: '',
     validator(value: string) {
-      return ['', 'black', 'yellow', 'yellow-outline'].includes(value)
+      return ['', 'black', 'yellow', 'yellow-outline', 'blue'].includes(value)
     },
   },
   rounded: {
@@ -49,6 +49,12 @@ const props = defineProps({
         : '',
       variant === 'yellow-outline'
         ? 'bg-black text-white border-yellow hover:bg-white hover:text-black hover:border-white'
+        : '',
+      variant === 'blue'
+        ? 'bg-blue text-white border-blue'
+        : '',
+      variant === 'white-outline'
+        ? 'text-white border-white hover:bg-white hover:text-black focus-visible:border-yellow focus-visible:outline-0'
         : '',
       rounded
         ? 'rounded-full'

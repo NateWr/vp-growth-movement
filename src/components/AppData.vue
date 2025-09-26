@@ -533,7 +533,7 @@ onMounted(() => {
           </button>
         </div>
       </div>
-      <div class="flex flex-col gap-6 p-2 md:p-4 3xl:p-8 3xl:gap-8">
+      <div class="relative -z-1 flex flex-col gap-6 p-2 md:p-4 3xl:p-8 3xl:gap-8">
         <Filter class="3xl:col-span-2">
           <template #title>
             <h3>Search</h3>

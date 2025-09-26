@@ -32,7 +32,7 @@ const emit = defineEmits<{
       :key="value"
       :disabled="disabled.find((o: FilterOption) => o.value === value)"
       size="sm"
-      :variant="selected.includes(value) ? 'black' : ''"
+      :variant="selected.includes(value) ? 'blue' : ''"
       @click="emit('toggle', value)"
     >
       <template #icon>

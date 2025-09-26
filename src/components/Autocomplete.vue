@@ -87,7 +87,7 @@ watch(matchingOptions, () => focusedOption.value = 0)
 </script>
 
 <template>
-  <div @keyup.down="keyDown" @keyup.up="keyUp">
+  <div @keyup.down.prevent="keyDown" @keyup.up.prevent="keyUp">
     <div class="sr-only" role="status" aria-atomic="true" aria-live="polite">
       Type 3 or more characters to view results
     </div>
@@ -126,7 +126,7 @@ watch(matchingOptions, () => focusedOption.value = 0)
           :aria-setsize="matchingOptions.length"
           :aria-selected="focusedOption === i ? true : null"
           size="sm"
-          variant="white"
+          variant="white-outline"
           @click="toggle(option)"
         >
           <template #icon>
@@ -147,7 +147,7 @@ watch(matchingOptions, () => focusedOption.value = 0)
         <Button
           :selected="true"
           size="sm"
-          variant="black"
+          variant="blue"
           @click="toggle(option)"
         >
           <template #icon>
