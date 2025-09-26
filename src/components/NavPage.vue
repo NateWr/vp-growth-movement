@@ -41,16 +41,19 @@ const emit = defineEmits(['set-page'])
       justify-between
       h-16
       min-w-80
-      bg-black
+      bg-blue
       text-white
+      overflow-hidden
     "
+    style="clip-path: url(#panel-bg-1)"
   >
     <NavPageButton
       :disabled="currentPage <= 1"
+      :rotate-dir="false"
       @click="emit('set-page', currentPage - 1)"
     >
       <span class="sr-only">Last page</span>
-      <IconChevronLeft class="w-8 h-8" aria-hidden="true" />
+      <IconChevronLeft class="w-4 h-4" aria-hidden="true" />
     </NavPageButton>
     <div class="flex flex-col justify-center py-2 whitespace-nowrap">
       <span class="text-xs uppercase leading-tight">
@@ -62,10 +65,11 @@ const emit = defineEmits(['set-page'])
     </div>
     <NavPageButton
       :disabled="currentPage >= lastPage"
+      :rotate-dir="true"
       @click="emit('set-page', currentPage + 1)"
     >
       <span class="sr-only">Last page</span>
-      <IconChevronRight class="w-8 h-8" aria-hidden="true" />
+      <IconChevronRight class="w-4 h-4" aria-hidden="true" />
     </NavPageButton>
   </div>
 </template>
