@@ -16,7 +16,6 @@ import IconSearch from './IconSearch.vue';
 import FilterToggleList from './FilterToggleList.vue';
 import type { FilterOptions } from '../types/FilterOptions';
 import IconLocation from './IconLocation.vue';
-import IconTarget from './IconTarget.vue';
 import debounce from 'debounce';
 import IconSort from './IconSort.vue';
 import Button from './Button.vue';
@@ -73,7 +72,13 @@ const dateToInput = ref<string>('')
 const invalidDateRange = ref<boolean>(false)
 const $events = useTemplateRef('events')
 
-const chartCoords = computed(() => allEvents.value.map(({x, y}) => ({x, y})))
+const chartCoords = computed(() => {
+  return allEvents.value.length === filteredEvents.value.length
+    ? []
+    : allEvents.value
+      .filter(event => !filteredEvents.value.find(e => e.id === event.id))
+      .map(({x, y}) => ({x, y}))
+})
 const chartHighlightCoords = computed(() => filteredEvents.value.map(({x, y}) => ({x, y})))
 
 const { width, BREAKPOINTS } = useViewportSize()
@@ -299,6 +304,27 @@ const { changeUrl } = useUrlParams(
   sortBy
 )
 
+const chartDatasets = computed(() => {
+  return [
+    {
+      id: 'all-data',
+      hexes: chartCoords.value,
+      style: {
+        fill: 'var(--color-chart)',
+      }
+    },
+    {
+      id: 'highlights',
+      hexes: chartHighlightCoords.value,
+      style: {
+        fill: allEvents.value.length === filteredEvents.value.length
+          ? 'var(--color-chart)'
+          : 'var(--color-yellow)',
+      }
+    },
+  ]
+})
+
 onMounted(() => {
   fetch('/data/events.json')
     .then(r => r.json())
@@ -344,22 +370,7 @@ onMounted(() => {
           aria-hidden="true"
           :columns="chartColumns"
           :highlightEvent="focusedEvent"
-          :datasets="[
-            {
-              id: 'all-data',
-              hexes: chartCoords,
-              style: {
-                fill: 'var(--color-chart)',
-              }
-            },
-            {
-              id: 'highlights',
-              hexes: chartHighlightCoords,
-              style: {
-                fill: 'var(--color-chart-highlight)',
-              }
-            },
-          ]"
+          :datasets="chartDatasets"
           :dateRangeFrom="chartDateRangeFrom"
           :dateRangeTo="chartDateRangeTo"
           :rows="chartRows"
