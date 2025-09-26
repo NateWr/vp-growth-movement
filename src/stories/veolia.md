@@ -20,11 +20,8 @@ events:
   - id: veolia-loses-out-on-426-billion-boston-c-2014-01-09
     summary: The Massachusetts Bay Transportation Authority ends a ten year partnership with Veolia, choosing another company for a $4.26 billion deal to operate and maintain its commuter rail trains.
   - id: veolia-withdraws-from-jerusalem-light-ra-2015-09-01
-conclusion: ...
-actions:
-  - prefix: Keep Pushing
-    title: "See what companies BDS is targeting now"
-    url: "https://bdsmovement.net/campaigns"
+conclusion: Strategic and dedicated campaigning by the BDS movement forced one of Europe’s biggest companies to abandon the Israeli market. Veolia's withdrawal from Israel sets an example to all companies that are complicit in Israel’s human rights violations.
+actions: []
 filters:
   target:
     - veolia

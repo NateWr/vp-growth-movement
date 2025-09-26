@@ -11,7 +11,7 @@ const props = defineProps({
     type: String,
     default: '',
     validator(value: string) {
-      return ['', 'black', 'white'].includes(value)
+      return ['', 'black', 'yellow', 'yellow-outline'].includes(value)
     },
   },
   rounded: {

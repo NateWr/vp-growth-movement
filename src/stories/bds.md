@@ -57,5 +57,8 @@ actions:
   - prefix: Get Involved
     title: Find a BDS campaign near you
     url: 'https://bdsmovement.net/join-a-bds-campaign'
+  - prefix: Learn More
+    title: "The strategy of targeted and priority boycotts"
+    url: 'https://bdsmovement.net/Guide-to-BDS-Boycott'
 ---
 

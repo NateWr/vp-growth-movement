@@ -28,9 +28,12 @@ events:
   - id: "76-spanish-universities-suspend-ties-wit-2024-05-09"
 conclusion: An example sentence that sums up the story and says something about where it’s heading or what next or what the final impact was or something like that.
 actions:
-  - prefix: Get Involved
-    title: "Find a BDS campaign near you"
-    url: 'https://bdsmovement.net/join-a-bds-campaign'
+  - prefix: A Unified Call for Justice
+    title: "Statement from Palestinian Higher Education institutions"
+    url: 'https://www.birzeit.edu/en/news/unified-call-justice-and-freedom-palestine'
+  - prefix: Take Action
+    title: "Join the Academic Boycott"
+    url: 'https://bdsmovement.net/academic-boycott'
 filters:
   search: pension fund
 ---

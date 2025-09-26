@@ -30,13 +30,7 @@ conclusion: |
   After 13 years of tireless BDS campaigning, the largest security company in the world was forced to divest from apartheid Israel.
 
   This strategic and collective action cost the company millions in lost and cancelled contracts and forced them to acknowledge "reputational damage."
-actions:
-  - prefix: We Have Prevailed
-    title: "Read the BNC's victory announcement"
-    url: "https://bdsmovement.net/BDS-G4S-Victory"
-  - prefix: Keep Pushing
-    title: "See what companies BDS is targeting now"
-    url: "https://bdsmovement.net/campaigns"
+actions: []
 filters:
   target:
     - g4-s

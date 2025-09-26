@@ -23,14 +23,11 @@ events:
 conclusion: An example sentence that sums up the story and says something about where it’s heading or what next or what the final impact was or something like that.
 actions:
   - prefix: Learn More
-    title: "BNC: On student solidarity"
-    url: '/'
-  - prefix: Learn More
-    title: "Palestinian Youth Movement: a bold new voice on and off campuses"
-    url: '/'
-  - prefix: Learn More
-    title: "BNC: On the strategy of targeted and priority boycotts"
-    url: '/'
+    title: "The BNC on student solidarity"
+    url: 'https://bdsmovement.net/student-solidarity'
+  - prefix: Follow on Instagram
+    title: "The Palestinian Youth Movement on and off campus"
+    url: 'https://www.instagram.com/palestinianyouthmovement'
 filters:
   campaign:
     - student-solidarity

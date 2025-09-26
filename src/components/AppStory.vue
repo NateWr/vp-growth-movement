@@ -7,10 +7,10 @@ import type { ChartHex } from '../types/ChartHex';
 import type { StoryEvent as StoryEventType } from '../types/StoryEvent';
 import { StoryEventPositionOrigin } from '../types/StoryEventPositionOrigin.ts';
 import type { StoryAction } from '../types/StoryAction';
-import Button from './Button.vue';
 import StoryText from './StoryText.vue';
 import StoryEvent from './StoryEvent.vue';
 import StoryButtons from './StoryButtons.vue';
+import IconArrowRight from './IconArrowRight.vue';
 
 const props = defineProps({
   chartColumns: {
@@ -296,15 +296,17 @@ watch(width, (value, oldValue) => {
         <h2 class="sr-only">Conclusion</h2>
         <div
           class="
-            flex flex-col gap-4 p-4
-            xl:grid xl:grid-cols-2 xl:gap-16
-            3xl:gap-16
+            flex flex-col gap-4 p-4 max-w-5xl mx-auto
+            xl:grid xl:grid-cols-5 xl:gap-16
+            2xl:gap-24
+            3xl:max-w-6xl
           "
         >
           <div
             class="
               flex flex-col gap-4 font-medium text-md leading-6
               sm:gap-6 sm:text-xl sm:leading-7
+              xl:col-span-3
               3xl:gap-8 3xl:text-2xl 3xl:leading-8
             "
             v-html="conclusion"
@@ -312,35 +314,62 @@ watch(width, (value, oldValue) => {
           <div
             v-if="actions.length"
             class="
-              flex
-              flex-col
-              gap-2
+              flex flex-col gap-2
+              xl:col-span-2
             "
           >
-            <Button
-              v-for="action in actions"
+            <a
+              v-for="(action, i) in actions"
               :href="action.url"
-              target="_blank"
+              :target="action.url.startsWith('http') ? '_blank' : ''"
+              :class="`
+                group
+                relative
+                transition-all
+                hover:-translate-y-1
+                ${i % 2 ? 'hover:rotate-1' : 'hover:-rotate-1'}
+              `"
             >
-              <div class="flex flex-col">
-                <div
-                  class="
-                    text-sm
-                    3xl:text-base
-                  "
-                >
-                  {{ action.prefix }}
+              <div
+                class="
+                  p-4
+                  flex
+                  justify-between
+                  items-center
+                  gap-4
+                  overflow-hidden
+                  bg-yellow
+                  text-black
+                  group-hover:bg-white
+                  md:px-6
+                "
+                :style="`clip-path: url(#panel-bg-${i % 2 + 1})`"
+              >
+                <div class="flex flex-col gap-0.5">
+                  <div
+                    class="
+                      text-sm
+                      uppercase
+                      3xl:text-base
+                    "
+                  >
+                    {{ action.prefix }}
+                  </div>
+                  <div
+                    class="
+                      text-lg
+                      font-bold
+                      leading-5
+                      3xl:text-xl
+                      3xl:leading-6
+                    "
+                  >
+                    {{ action.title }}
+                  </div>
                 </div>
-                <div
-                  class="
-                    font-normal normal-case leading-4
-                    3xl:text-xl 3xl:leading-5
-                  "
-                >
-                  {{ action.title }}
-                </div>
+                <IconArrowRight class="shrink-0 w-8 h-auto" aria-hidden="true" />
               </div>
-            </Button>
+            </a>
           </div>
         </div>
       </StoryText>
