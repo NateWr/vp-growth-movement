@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Button from './Button.vue';
 import IconFilters from './IconFilters.vue';
-import IconSort from './IconSort.vue';
+import SortByButton from './SortByButton.vue';
 
 const props = defineProps({
   showResetFilters: {
@@ -43,16 +43,10 @@ const emit = defineEmits(['toggle-filters-panel', 'reset-filters', 'toggle-sort'
         Reset
       </Button>
     </div>
-    <div class="flex items-center gap-2">
-      <button
-        @click="emit('toggle-sort')"
-      >
-        <span class="sr-only">Sort by: {{ sortBy ? 'oldest' : 'recent' }}</span>
-        <IconSort
-          class="w-10 h-10"
-          aria-hidden="true"
-        />
-      </button>
-    </div>
+    <SortByButton
+      class="flex items-center px-2"
+      :sort-by="sortBy"
+      @click="emit('toggle-sort')"
+    />
   </div>
 </template>

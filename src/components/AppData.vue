@@ -17,7 +17,6 @@ import FilterToggleList from './FilterToggleList.vue';
 import type { FilterOptions } from '../types/FilterOptions';
 import IconLocation from './IconLocation.vue';
 import debounce from 'debounce';
-import IconSort from './IconSort.vue';
 import Button from './Button.vue';
 import Autocomplete from './Autocomplete.vue';
 import InputDateRange from './InputDateRange.vue';
@@ -26,6 +25,7 @@ import EventDetails from './EventDetails.vue';
 import { useViewportSize } from '../utilities/useViewportSize.ts';
 import type { FilterOption } from '../types/FilterOption';
 import { watchIgnorable } from '@vueuse/core';
+import SortByButton from './SortByButton.vue';
 
 
 const props = defineProps({
@@ -384,6 +384,7 @@ onMounted(() => {
           class="
             relative
             p-2
+            bg-yellow
             xl:hidden
           "
         >
@@ -421,7 +422,7 @@ onMounted(() => {
           <div class="text-lg leading-tight">
             No events were found matching your request.
           </div>
-          <Button @click="resetFilters">Reset Filters</Button>
+          <Button :rounded="true" @click="resetFilters">Reset Filters</Button>
         </div>
         <template v-else>
           <h2 class="sr-only">Events</h2>
@@ -501,7 +502,7 @@ onMounted(() => {
       ]"
     >
       <h2 class="sr-only">Search, filter, and sort</h2>
-      <div class="sticky top-0 flex items-center justify-between gap-2 z-50 bg-white 3xl:px-4">
+      <div class="sticky top-0 flex items-center justify-between gap-2 z-50 bg-yellow 3xl:px-4">
         <div class="flex items-center gap-4">
           <div class="p-2 flex items-center gap-2 md:p-4">
             <IconFilters class="w-8 h-8" aria-hidden="true" />
@@ -518,16 +519,11 @@ onMounted(() => {
           </Button>
         </div>
         <div class="flex items-center gap-2">
-          <button
-            class="hidden xl:block xl:p-4"
+          <SortByButton
+            class="hidden xl:flex xl:p-4"
+            :sort-by="sortBy"
             @click="toggleSort"
-          >
-            <span class="sr-only">Sort by: {{ sortBy ? 'oldest' : 'recent' }}</span>
-            <IconSort
-              class="w-8 h-8"
-              aria-hidden="true"
-            />
-          </button>
+          />
           <button
             class="flex justify-center items-center md:p-2 xl:hidden"
             @click="showFilters = !showFilters"
