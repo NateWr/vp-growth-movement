@@ -196,22 +196,16 @@ const stories = await astroGetSortedStories()
 			</div>
 		</section>
 		<footer class={`
-			my-32
+			mt-32
+			mb-16
 			p-4
 			flex
 			flex-col
 			items-center
-			gap-32
+			gap-8
 			max-w-xl
 			mx-auto
 		`}>
-			<a href="/about" class="focus-visible:outline-2 focus-visible:outline-current">
-				<UnderlinedText>
-					<span class="text-sm uppercase font-semibold xl:text-base 2xl:text-lg 3xl:text-xl">
-						About This Site
-					</span>
-				</UnderlinedText>
-			</a>
 			<div class={`
 				flex
 				flex-col
@@ -227,6 +221,13 @@ const stories = await astroGetSortedStories()
 					<SvgVPLogo class="w-full" aria-hidden="true" />
 				</a>
 			</div>
+			<a href="/about" class="focus-visible:outline-2 focus-visible:outline-current">
+				<UnderlinedText>
+					<span class="text-sm uppercase font-semibold xl:text-base 2xl:text-lg 3xl:text-xl">
+						About This Site
+					</span>
+				</UnderlinedText>
+			</a>
 		</footer>
 	</div>
 </Layout>
