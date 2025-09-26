@@ -2,14 +2,13 @@
 import UnderlinedText from "../components/UnderlinedText.astro";
 import "../css/global.css";
 import Logo from "../images/logo.svg";
-import SvgUnderlineSm from '../images/underline-sm.svg'
 
 interface Props {
 	title: string;
 	description: string;
 	currentUrl: string,
 	bgColor: string;
-	showHeader: boolean;
+	showHeader?: boolean;
 }
 
 const { title, description, currentUrl, bgColor, showHeader = true } = Astro.props;
