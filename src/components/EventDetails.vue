@@ -59,11 +59,11 @@ const dateFormatted = computed(() => {
       2xl:col-span-3
     ">
       <div class="
-        flex flex-col gap-1
+        flex flex-col items-start gap-1
         3xl:gap-2
       ">
         <div class="
-          font-semibold uppercase
+          font-semibold uppercase text-blue
           3xl:text-lg
         ">
           {{ dateFormatted }}
@@ -80,7 +80,7 @@ const dateFormatted = computed(() => {
             {{ event.headline }}
           </a>
         </component>
-        <div v-if="country.length" class="3xl:text-lg">
+        <div v-if="country.length" class="px-2 bg-yellow 3xl:text-lg">
           <span v-if="event.city">
             {{ event.city }},
           </span>
