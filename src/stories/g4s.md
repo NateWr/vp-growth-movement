@@ -15,7 +15,7 @@ events:
   - id: "european-union-drops-g4s-2012-04-17"
   - id: "danish-church-aid-cuts-ties-with-g4s-2012-07-18"
   - id: "activists-in-11-countries-protest-g4s-2013-04-19"
-  - id: "major-dutch-trade-union-drops-g4s-2013-12-16"
+  - id: "dutch-trade-union-cuts-ties-with-g4s-2013-12-16"
   - id: "bbc-opts-not-to-contract-g4s-2014-03-20"
   - id: "united-methodist-church-divests-from-g4s-2014-06-06"
   - id: "unhcr-in-jordan-says-it-no-longer-has-co-2015-12-03"
