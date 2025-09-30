@@ -109,7 +109,7 @@ const stories = await astroGetSortedStories()
 						class="relative focus-visible:outline-2 focus-visible:outline-current"
 					>
 						<SketchBox
-							backgroundPathId={`panel-bg-${i % 2 + 1}`}
+							backgroundPathId={`panel-bg-${i % 6 + 1}`}
 							class={`
 								flex
 								items-center
@@ -164,7 +164,7 @@ const stories = await astroGetSortedStories()
 					class="relative focus-visible:outline-2 focus-visible:outline-current"
 				>
 					<SketchBox
-						backgroundPathId={`panel-bg-${stories.length % 2 + 1}`}
+						backgroundPathId={`panel-bg-${stories.length % 6 + 1}`}
 						class={`
 							flex
 							items-center

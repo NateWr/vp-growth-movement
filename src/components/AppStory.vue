@@ -286,7 +286,7 @@ watch(width, (value, oldValue) => {
           "
           :event="event"
           :isCurrent="i === currentEventIndex"
-          :background-clip-path-id="`panel-bg-${i % 2 + 1}`"
+          :background-clip-path-id="`panel-bg-${i % 6 + 1}`"
           :styleCSS="eventPositionCSS[i]"
         />
       </div>
@@ -343,7 +343,7 @@ watch(width, (value, oldValue) => {
                   group-hover:bg-white
                   md:px-6
                 "
-                :style="`clip-path: url(#panel-bg-${i % 2 + 1})`"
+                :style="`clip-path: url(#panel-bg-${i % 6 + 1})`"
               >
                 <div class="flex flex-col gap-0.5">
                   <div
