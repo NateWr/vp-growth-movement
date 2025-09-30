@@ -9,6 +9,7 @@ const stories = defineCollection({
     title: z.string(),
     title_short: z.string(),
     illustration: z.string(),
+    opengraphImage: z.string().optional(),
     description: z.string(),
     intro: z.string(),
     events: z.array(
