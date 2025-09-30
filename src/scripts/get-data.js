@@ -1,5 +1,6 @@
 import fs from 'fs'
 import 'dotenv/config'
+import YAML from 'yaml'
 import { getSpreadsheetData } from './helpers/get-from-spreadsheet.js'
 import { getEventsByMonth } from './helpers/get-events-by-month.js'
 import { getFilters } from './helpers/get-filters.js'
@@ -111,6 +112,22 @@ const finalEvents = eventsWithCoords
       }
     })
     return e
+  })
+
+/**
+ * Check that all story events exist
+ */
+fs.readdirSync('./src/stories')
+  .filter(file => file.includes('.md'))
+  .forEach(md => {
+    const frontmatter = fs
+      .readFileSync(`./src/stories/${md}`, 'utf-8')
+      .match(/(?<=---)([\.\s\S]*)(?=---)/m)
+    const story = YAML.parse(frontmatter ? frontmatter[0] : '')
+    const missingEvents = story.events.filter(event => !finalEvents.find(e => e.id === event.id))
+    if (missingEvents.length) {
+      throw new Error(`Couldn't find event(s) ${missingEvents.map(e => e.id)} for story ${story.title}`)
+    }
   })
 
 try {
