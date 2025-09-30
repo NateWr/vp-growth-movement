@@ -84,23 +84,45 @@ const stories = await astroGetSortedStories()
 		<section
 			id="stories"
 			class="
-				py-32
+				my-32
 				px-4
-				flex
-				flex-col
-				gap-4
 				max-w-xl
 				mx-auto
+				flex
+				flex-col
+				gap-12
+				xl:max-w-5xl
+				xl:px-0
+				xl:grid
+				xl:grid-cols-5
 			"
 		>
-			<h2 class="sr-only">Stories</h2>
+			<div class="
+				max-w-lg
+				flex
+				flex-col
+				gap-6
+				text-center
+				xl:col-span-2
+				xl:text-left
+				xl:gap-4
+			">
+				<h2 class="text-2xl font-black xl:text-4xl">
+					A Global Movement
+				</h2>
+				<p class="text-lg md:text-xl">
+					The Palestinian call to boycott, divest from, and sanction Israel has inspired a global movement of activists, workers, students, and community groups. They run <a href="https://bdsmovement.net/Guide-to-BDS-Boycott" class="underline" target="_blank">targeted campaigns</a> that seek to pressure Israel to comply with international law.
+				</p>
+				<p class="text-xl md:text-xl">
+					These are their stories.
+				</p>
+			</div>
 			<div
 				class="
 					flex
 					flex-col
-					gap-8
-					lg:col-span-6
-					xl:col-span-7
+					gap-6
+					xl:col-span-3
 				"
 			>
 				{stories.map((story, i) => (
@@ -167,6 +189,7 @@ const stories = await astroGetSortedStories()
 						backgroundPathId={`panel-bg-${stories.length % 6 + 1}`}
 						class={`
 							flex
+							justify-center
 							items-center
 							gap-4
 							aspect-[3.2/1]
@@ -182,7 +205,6 @@ const stories = await astroGetSortedStories()
 							xl:gap-8
 						`}
 					>
-						<div class="p-8 flex justify-between items-center w-full xl:px-16">
 							<div class="relative top-1 flex flex-col items-start">
 								<span class="text-sm leading-tight uppercase md:text-lg">
 									Explore the full
@@ -198,8 +220,7 @@ const stories = await astroGetSortedStories()
 			</div>
 		</section>
 		<footer class={`
-			mt-32
-			mb-16
+			my-32
 			p-4
 			flex
 			flex-col
@@ -207,6 +228,7 @@ const stories = await astroGetSortedStories()
 			gap-8
 			max-w-xl
 			mx-auto
+			text-white
 		`}>
 			<div class={`
 				flex
