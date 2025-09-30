@@ -33,10 +33,16 @@ const nav = [
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="generator" content={Astro.generator} />
+    <link rel="icon" href="/site-icon-32w.png" type="image/png">
+    <link rel="apple-touch-icon" href="/site-icon-180w.png">
 		<title>{title}</title>
+		<meta name="og:title" content={title} />
+		<meta name="description" content={description} />
+		<meta name="og:description" content={description} />
+    <meta property="twitter:description" content={description}>
+    <meta property="og:type" content="website">
+		<meta name="generator" content={Astro.generator} />
 		<link rel="preconnect" href="https://use.typekit.net">
 		<link href="https://use.typekit.net/sre8kmx.css" rel="stylesheet">
 
