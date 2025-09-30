@@ -3,7 +3,7 @@ import { computed, type PropType } from 'vue';
 import type { Event } from '../types/Event';
 import type { FilterOption } from '../types/FilterOption';
 import Button from './Button.vue';
-import { getCountryNames } from '../utilities/getFilterNames';
+import { getFilterNames } from '../utilities/getFilterNames';
 
 const props = defineProps({
   areas: {
@@ -32,10 +32,10 @@ const props = defineProps({
   },
 })
 
-const country = computed(() => getCountryNames(props.event.country, props.countries))
-const areas = computed(() => getCountryNames(props.event.area, props.areas))
-const campaigns = computed(() => getCountryNames(props.event.campaign, props.campaigns))
-const targets = computed(() => getCountryNames(props.event.target, props.targets))
+const country = computed(() => getFilterNames(props.event.country, props.countries))
+const areas = computed(() => getFilterNames(props.event.area, props.areas))
+const campaigns = computed(() => getFilterNames(props.event.campaign, props.campaigns))
+const targets = computed(() => getFilterNames(props.event.target, props.targets))
 const dateFormatted = computed(() => {
   return new Date(props.event.date).toLocaleDateString(
       'en-US',
@@ -76,7 +76,7 @@ const dateFormatted = computed(() => {
             3xl:leading-[1.1]
           "
         >
-          <a :href="`/events/${event.id}.html`">
+          <a :href="`/data/${event.id}.html`">
             {{ event.headline }}
           </a>
         </component>

@@ -4,23 +4,12 @@
  */
 import type { FilterOption } from "../types/FilterOption"
 
-export const getCountryNames = (values: string[], options: FilterOption[]) => {
+export const getFilterOptions = (values: string[], options: FilterOption[]) => {
   return options
     .filter((o: FilterOption) => values.includes(o.value))
-    .map((o: FilterOption) => o.name)
 }
-export const getAreaNames = (values: string[], options: FilterOption[]) => {
-  return options
-    .filter((o: FilterOption) => values.includes(o.value))
-    .map((o: FilterOption) => o.name)
-}
-export const getCampaignNames = (values: string[], options: FilterOption[]) => {
-  return options
-    .filter((o: FilterOption) => values.includes(o.value))
-    .map((o: FilterOption) => o.name)
-}
-export const getTargetNames = (values: string[], options: FilterOption[]) => {
-  return options
-    .filter((o: FilterOption) => values.includes(o.value))
+
+export const getFilterNames = (values: string[], options: FilterOption[]) => {
+  return getFilterOptions(values, options)
     .map((o: FilterOption) => o.name)
 }

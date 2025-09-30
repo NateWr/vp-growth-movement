@@ -5,7 +5,8 @@ import { columns, data, rows, ticks } from '../../data/chart-config.json'
 import filters from '../../data/filters.json'
 import Button from '../../components/Button.vue';
 import Chart from '../../components/Chart.vue';
-import { getCountryNames } from '../../utilities/getFilterNames';
+import SketchBox from '../../components/SketchBox.astro'
+import { getFilterOptions, getFilterNames } from '../../utilities/getFilterNames';
 import IconArrowUpRight from '../../components/IconArrowUpRight.vue';
 import { astroGetStoriesByEvent } from '../../utilities/astro-utilities';
 
@@ -19,10 +20,10 @@ export async function getStaticPaths() {
 
 const { event } = Astro.props;
 
-const country = getCountryNames(event.data.country, filters.country)
-const areas = getCountryNames(event.data.area, filters.area)
-const campaigns = getCountryNames(event.data.campaign, filters.campaign)
-const targets = getCountryNames(event.data.target, filters.target)
+const country = getFilterOptions(event.data.country, filters.country)
+const areas = getFilterOptions(event.data.area, filters.area)
+const campaigns = getFilterOptions(event.data.campaign, filters.campaign)
+const targets = getFilterOptions(event.data.target, filters.target)
 const date = (new Date(event.data.date)).toLocaleDateString(
   'en-US',
   {
@@ -53,6 +54,7 @@ const stories = await astroGetStoriesByEvent(event.id)
         top-(--header-height)
         flex
         flex-col
+        z-10
         xl:col-span-4
         2xl:col-span-5
       `}
@@ -114,10 +116,10 @@ const stories = await astroGetStoriesByEvent(event.id)
         3xl:gap-8
       ">
         <div class="
-          flex flex-col
+          flex flex-col items-start
         ">
           <div class="
-            font-medium uppercase mb-2
+            font-semibold uppercase mb-2 text-blue
             md:text-lg
             3xl:text-xl 3xl:mb-4
           ">
@@ -130,19 +132,17 @@ const stories = await astroGetStoriesByEvent(event.id)
               3xl:text-3xl
             "
           >
-            <a href={`/events/${event.id}.html`}>
-              {event.data.headline}
-            </a>
+            {event.data.headline}
           </h1>
           {!!country.length && (
-            <div class="md:text-lg 3xl:text-2xl">
+            <div class="px-2 bg-yellow md:text-lg 3xl:text-2xl">
               {event.data.city && (
                 <span>
                   {event.data.city},
                 </span>
               )}
               <span>
-                {country.join(', ')}
+                {country.map(country => country.name).join(', ')}
               </span>
             </div>
           )}
@@ -157,7 +157,22 @@ const stories = await astroGetStoriesByEvent(event.id)
         </div>
       </div>
       {stories.map(story => (
-        <div class="self-start p-4 leading-tight bg-yellow md:text-lg">
+        <div class="self-start leading-tight md:text-lg">
+          <SketchBox
+            backgroundPathId="panel-bg-2"
+            class={`
+              p-4
+              transition-all
+              bg-blue
+              text-white
+              hover:bg-red
+              hover:-translate-y-1
+              hover:scale-105
+              hover:-rotate-1
+              md:gap-6
+              xl:gap-8
+            `}
+          >
           This event is featured in
           <a href={`/${story.id}`} class="font-bold underline">{story.data.prefix} {story.data.title}</a>.
         </div>
@@ -166,7 +181,7 @@ const stories = await astroGetStoriesByEvent(event.id)
         <div class="flex flex-wrap gap-2 md:text-lg 3xl:text-xl">
           <div class="font-bold uppercase">Details:</div>
           {event.data.sources.map(source => (
-            <a href={source.url} class="underline break-all">
+            <a href={source.url} class="underline break-all" target="_blank">
               {source.domain}
             </a>
           ))}
@@ -176,13 +191,13 @@ const stories = await astroGetStoriesByEvent(event.id)
         flex flex-wrap gap-1
       ">
         {areas.map(area => (
-          <Button size="sm" class="md:text-lg">{area}</Button>
+          <Button href={`/data?a=${area.value}`} size="sm" class="md:text-lg">{area.name}</Button>
         ))}
         {campaigns.map(campaign => (
-          <Button size="sm" class="md:text-lg">{campaign}</Button>
+          <Button href={`/data?cmp=${campaign.value}`} size="sm" class="md:text-lg">{campaign.name}</Button>
         ))}
         {targets.map(target => (
-          <Button size="sm" class="md:text-lg">{target}</Button>
+          <Button href={`/data?t=${target.value}`} size="sm" class="md:text-lg">{target.name}</Button>
         ))}
       </div>
     </article>
@@ -195,6 +210,7 @@ const stories = await astroGetStoriesByEvent(event.id)
         gap-1
         p-4
         max-w-100
+        z-10
         md:p-8
         xl:fixed
         xl:bottom-4
