@@ -38,8 +38,6 @@ export const getSpreadsheetData = async (spreadsheetId) => {
   const URL = 'https://docs.google.com/spreadsheets/d/{{ID}}/gviz/tq?tqx=out:csv'
     .replace('{{ID}}', spreadsheetId)
 
-
-
   const rows = await fetch(URL)
     .then(r => r.text())
     .then(csv => parse(csv, {columns: true, skip_empty_lines: true, trim: true}))

@@ -6,14 +6,10 @@ import { getEventsByMonth } from './helpers/get-events-by-month.js'
 import { getFilters } from './helpers/get-filters.js'
 
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID
+const DATE_END = new Date('2024-12-31')
 
 const events = await getSpreadsheetData(SPREADSHEET_ID)
-
-const dateStart = new Date(events[0].date)
-dateStart.setMonth(0)
-const dateEnd = events[events.length - 1].date
-
-const months = getEventsByMonth(events, dateStart, dateEnd)
+const months = getEventsByMonth(events, DATE_END)
 
 /**
  * Get the chart data

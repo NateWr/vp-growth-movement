@@ -2,7 +2,11 @@
  * Get an array of months with all events
  * in that month
  */
-export const getEventsByMonth = (events, dateStart, dateEnd) => {
+export const getEventsByMonth = (events, dateEnd) => {
+  const dateStart = new Date(events[0].date)
+  dateStart.setMonth(0)
+  dateStart.setDate(1)
+
   let i = 0
   let iDate = new Date(dateStart)
   const months = []
