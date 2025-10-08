@@ -3,7 +3,7 @@ order: 0
 prefix: Growth of the
 title: BDS Movement
 title_short: BDS
-illustration: /story-illustration.png
+illustration: /illustrations/bds.png
 description: The BDS movement strategically builds people power to end corporate, state, and institutional complicity in Israel’s system of oppression.
 intro: |
   The BDS movement strategically **builds people power** to end corporate, state, and institutional complicity in Israel’s system of oppression.

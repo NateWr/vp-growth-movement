@@ -3,7 +3,7 @@ order: 10
 prefix: Growth of a
 title: Student Movement
 title_short: Students
-illustration: /story-illustration.png
+illustration: /illustrations/student-movement.png
 description: Student unions and student governments around the world have organized BDS campaigns in solidarity with Palestinians, building the legacy of student movements in igniting progressive change.
 opengraphImage: 'opengraph-student.png'
 intro: |
@@ -33,4 +33,3 @@ filters:
   campaign:
     - student-solidarity
 ---
-
