@@ -15,6 +15,7 @@ events:
   - id: "more-than-200-swedish-scholars-call-for-2011-10-02"
   - id: "the-association-for-asian-american-studi-2013-04-24"
   - id: "stephen-hawking-joins-academic-boycott-o-2013-05-07"
+    summary: Physicist Stephen Hawking pulls out of a conference hosted by former Israeli president Shimon Peres in Jerusalem. A statement published with Hawking's approval said it is "his independent decision to respect the boycott, based upon his knowledge of Palestine, and on the unanimous advice of his own academic contacts there."
   - id: "peace-and-justice-studies-association-en-2014-11-05"
   - id: "national-womens-studies-association-adop-2015-11-29"
   - id: "more-than-2500-academics-and-intellectua-2016-07-01"
@@ -26,7 +27,7 @@ events:
     summary: "80% of Middle East Studies Association participating members vote in favor of a resolution endorsing the Palestinian call for BDS."
   - id: "american-anthropological-association-end-2023-07-24"
   - id: "76-spanish-universities-suspend-ties-wit-2024-05-09"
-conclusion: An example sentence that sums up the story and says something about where it’s heading or what next or what the final impact was or something like that.
+conclusion: The heads of fifteen Palestinian universities reiterated the call for academic boycott of Israeli universities in November 2023, as Israeli forces carried out scholasticide in Gaza by destroying every university, damaging or destroying 89% of schools, and killing thousands of scholars, intellectuals, and students.
 actions:
   - prefix: A Unified Call for Justice
     title: "Statement from Palestinian Higher Education institutions"
