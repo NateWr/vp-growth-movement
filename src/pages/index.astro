@@ -25,18 +25,28 @@ const stories = await astroGetSortedStories()
 		<div class={`
 				relative
 				h-svh
-				grid
-				grid-rows-2
+				flex
+				flex-col
 			`}
 		>
-			<div
-				class={`
-					absolute
-					top-0
-					bottom-0
-					w-full
-				`}
-			>
+			<div class="flex grow items-center justify-center">
+				<div class="relative px-6 flex flex-col items-center justify-center gap-2 max-w-lg 2xl:gap-3 2xl:max-w-2xl 3xl:max-w-4xl">
+					<img src="/illustrations/movement.png" class="w-full h-auto" />
+					<div class="flex flex-col items-center gap-6 px-1 md:gap-8 md:px-2">
+						<h1>
+							<span class="sr-only">
+								Growth of a Movement
+							</span>
+							<SvgHomeTitle class="w-full h-auto" aria-hidden="true" />
+						</h1>
+						<p class="text-lg text-center max-w-lg md:text-xl 3xl:max-w-2xl 3xl:text-2xl">
+							Explore the actions that have shaped the Palestinian-led, global <strong>Boycott, Divestment, and Sanctions (BDS)</strong> movement for freedom, justice, and equality.
+						</p>
+						<HomeQuickLinks class="" />
+					</div>
+				</div>
+			</div>
+			<div class="h-1/4 xl:h-1/3">
 				<HomeChart
 					client:only="vue"
 					columns={columns}
@@ -44,41 +54,14 @@ const stories = await astroGetSortedStories()
 						{
 							id: 'all-data',
 							hexes: data,
-              style: {
-                fill: 'var(--color-chart)',
-              }
+							style: {
+								fill: 'var(--color-chart)',
+							}
 						},
 					]}
 					rows={rows}
 					ticks={ticks}
 				/>
-			</div>
-			<div class="relative px-6 flex flex-col items-center justify-center">
-				<div class="max-w-lg flex flex-col items-center gap-6 md:gap-8 2xl:max-w-2xl 3xl:max-w-4xl">
-					<h1>
-						<span class="sr-only">
-							Growth of a Movement
-						</span>
-						<SvgHomeTitle class="w-full h-auto" aria-hidden="true" />
-					</h1>
-					<p class="text-lg text-center max-w-lg md:text-xl 3xl:max-w-2xl 3xl:text-2xl">
-						Explore the actions that have shaped the Palestinian-led, global <strong>Boycott, Divestment, and Sanctions (BDS)</strong> movement for freedom, justice, and equality.
-					</p>
-					<HomeQuickLinks class="portrait:hidden" />
-				</div>
-			</div>
-			<div class="
-				relative
-				p-6
-				flex
-				portrait:flex-col
-				portrait:justify-between
-				portrait:items-center
-				landscape:justify-center
-				landscape:items-end
-			">
-				<HomeQuickLinks class="landscape:hidden h-1/2" />
-				<img src="/illustrations/movement.png" class="w-2/3 lg:w-auto lg:h-3/4" />
 			</div>
 		</div>
 		<section
