@@ -21,14 +21,14 @@ events:
   - id: "the-largest-university-in-europe-divests-2020-07-23"
   - id: "students-at-columbia-university-kick-off-2024-04-17"
   - id: "san-francisco-university-becomes-first-p-2024-08-29"
-conclusion: An example sentence that sums up the story and says something about where it’s heading or what next or what the final impact was or something like that.
+conclusion: Students around the world continue to organize BDS campaigns in solidarity with Palestinians, building awareness among a generation of young people.
 actions:
   - prefix: Learn More
     title: "The BNC on student solidarity"
     url: 'https://bdsmovement.net/student-solidarity'
-  - prefix: Follow on Instagram
-    title: "The Palestinian Youth Movement on and off campus"
-    url: 'https://www.instagram.com/palestinianyouthmovement'
+  - prefix: A Unified Call for Justice
+    title: "Statement from Palestinian Higher Education institutions"
+    url: 'https://www.birzeit.edu/en/news/unified-call-justice-and-freedom-palestine'
 filters:
   campaign:
     - student-solidarity

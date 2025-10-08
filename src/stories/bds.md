@@ -8,14 +8,14 @@ description: The BDS movement strategically builds people power to end corporate
 intro: |
   The BDS movement strategically **builds people power** to end corporate, state, and institutional complicity in Israel’s system of oppression.
 
-  Over 20 years, boycott, divestment, and sanctions (BDS) campaigns have grown to include community activists, workers and unions, student groups, religious leaders and cultural icons worldwide.
+  Over twenty years, boycott, divestment, and sanctions (BDS) campaigns have grown to include community activists, workers and unions, student groups, religious leaders and cultural icons worldwide.
 events:
   - id: palestinian-civil-society-calls-for-boyc-2005-07-09
     title: The BDS call
     summary: More than 170 Palestinian civil society organizations call for boycott, divestment, and sanctions (BDS) against Israel until it complies with international law.
   - id: archbishop-desmond-tutu-endorses-bds-2005-09-01
     title: Inspiration
-    summary: The BDS call is inspired by the South African anti-apartheid movement. Anti-apartheid icon Archbishop Desmond Tutu was one of the first **high profile supporters** of the BDS movement, endorsing the call months after its release and regularly supporting BDS campaigns.
+    summary: The BDS call is inspired by the South African anti-apartheid movement. Anti-apartheid icon Archbishop Desmond Tutu was one of the first high profile supporters of the BDS movement, endorsing the call months after its release and regularly supporting BDS campaigns.
   - id: canadian-union-of-postal-workers-votes-t-2008-04-17
     title: Solidarity Forever
     summary: The Canadian Union of Postal Workers, representing over 50,000 postal workers across Canada, becomes the first national union in North America to adopt a BDS resolution. Scores of trade unions across the world have endorsed BDS in solidarity with Palestinian workers, who often bear the brunt of Israel’s systematic destruction of the Palestinian economy.
@@ -24,7 +24,7 @@ events:
     summary: Adrienne Rich, hailed as “one of the most widely read and influential poets of the second half of the 20th century,” writes a letter explaining her decision to join the cultural boycott of Israel as an American Jew and feminist. Thousands of cultural workers and organizations have endorsed the cultural boycott of Israel, recognizing how the government uses cultural programs to bolster its image.
   - id: palestinian-christians-launch-kairos-pal-2009-12-15
     title: Faith-based Solidarity
-    summary: Palestinian Christians launch the Kairos Palestine document, calling on churches and Christians worldwide to work toward justice for Palestinians, including through BDS campaigns. Since then, numerous churches have passed divestment resolutions or taken other actions.
+    summary: Palestinian Christians launch the Kairos Palestine document, calling on churches and Christians worldwide to work toward justice for Palestinians, including through BDS campaigns. Since then, numerous churches have passed divestment resolutions or taken other BDS actions.
   - id: angela-davis-and-other-feminists-endorse-2011-07-12
     title: Internationalism
     summary: Civil rights icon Angela Davis endorses the BDS movement after participating in a feminist delegation to Palestine. Davis writes, “each and every one of us—including those members of our delegation who grew up in the Jim Crow South, in apartheid South Africa, and on Indian reservations in the U.S.—was shocked by what we saw.” The BDS movement builds on Palestinian internationalism and solidarity with other struggles for justice.
@@ -33,7 +33,7 @@ events:
     summary: Veolia, a French multinational transportation company, confirms that it has completely exited the Israeli market after almost a decade of BDS campaigns cost the company an estimated $21 billion. Economic boycott campaigns put strategic pressure on companies that participate in and profit from Israel’s system of oppression.
   - id: valencia-city-council-votes-unanimously-2016-12-29
     title: Local Governments
-    summary: Valencia, the third largest city in Spain, declares itself an “Apartheid Free Zone,” adopting new ethical standards related to uphold human rights and international law in city contracts and grants. Hundreds of local governments around the world have taken action within the framework of BDS.
+    summary: Valencia, the third largest city in Spain, declares itself an “Apartheid Free Zone,” adopting new ethical standards related to upholding human rights and international law in city contracts and grants. Hundreds of local governments around the world have taken action within the framework of BDS.
   - id: 240-jewish-and-israeli-scholars-sign-ope-2019-06-12
     title: Right to Boycott
     summary: 240 Jewish and Israeli scholars sign an open letter affirming the right to boycott as “a legitimate and non-violent tool of resistance” and condemning anti-boycott motions under consideration by the German government. Around the world, activists have overcome various efforts to repress BDS campaigns.
