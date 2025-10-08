@@ -1,5 +1,5 @@
 ---
-order: 60
+order: 20
 prefix: The Campaign Against
 title: Veolia
 title_short: Veolia
