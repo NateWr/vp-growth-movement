@@ -25,28 +25,9 @@ const stories = await astroGetSortedStories()
 		<div class={`
 				relative
 				h-svh
-				flex
-				flex-col
 			`}
 		>
-			<div class="flex grow items-center justify-center">
-				<div class="relative px-6 flex flex-col items-center justify-center gap-2 max-w-lg 2xl:gap-3 2xl:max-w-2xl 3xl:max-w-4xl">
-					<img src="/illustrations/movement.png" class="w-full h-auto" />
-					<div class="flex flex-col items-center gap-6 px-1 md:gap-8 md:px-2">
-						<h1>
-							<span class="sr-only">
-								Growth of a Movement
-							</span>
-							<SvgHomeTitle class="w-full h-auto" aria-hidden="true" />
-						</h1>
-						<p class="text-lg text-center max-w-lg md:text-xl 3xl:max-w-2xl 3xl:text-2xl">
-							Explore the actions that have shaped the Palestinian-led, global <strong>Boycott, Divestment, and Sanctions (BDS)</strong> movement for freedom, justice, and equality.
-						</p>
-						<HomeQuickLinks class="" />
-					</div>
-				</div>
-			</div>
-			<div class="h-1/4 xl:h-1/3">
+			<div class="absolute top-0 bottom-0 w-full">
 				<HomeChart
 					client:only="vue"
 					columns={columns}
@@ -62,6 +43,23 @@ const stories = await astroGetSortedStories()
 					rows={rows}
 					ticks={ticks}
 				/>
+			</div>
+			<div class="h-3/4 flex items-center justify-center xl:h-2/3">
+				<div class="relative px-6 flex flex-col items-center justify-center gap-2 max-w-lg 2xl:gap-3 2xl:max-w-2xl 3xl:max-w-4xl">
+					<img src="/illustrations/movement.png" class="w-full h-auto" />
+					<div class="flex flex-col items-center gap-6 px-1 md:gap-8 md:px-2">
+						<h1>
+							<span class="sr-only">
+								Growth of a Movement
+							</span>
+							<SvgHomeTitle class="w-full h-auto" aria-hidden="true" />
+						</h1>
+						<p class="text-lg text-center max-w-lg md:text-xl 3xl:max-w-2xl 3xl:text-2xl">
+							Explore the actions that have shaped the Palestinian-led, global <strong>Boycott, Divestment, and Sanctions (BDS)</strong> movement for freedom, justice, and equality.
+						</p>
+						<HomeQuickLinks class="" />
+					</div>
+				</div>
 			</div>
 		</div>
 		<section
