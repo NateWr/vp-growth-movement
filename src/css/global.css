@@ -29,7 +29,7 @@
 
 :root {
   --color-chart: var(--color-blue);
-  --color-chart-highlight: var(--color-blue-light);
+  --color-chart-highlight: var(--color-white);
   --color-chart-story: var(--color-yellow);
   --color-chart-story-current: var(--color-black);
   --color-chart-ticks: var(--color-yellow);
