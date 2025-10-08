@@ -6,7 +6,7 @@ import { getEventsByMonth } from './helpers/get-events-by-month.js'
 import { getFilters } from './helpers/get-filters.js'
 
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID
-const DATE_END = new Date('2024-12-31')
+const DATE_END = new Date('2025-01-02') // First days of 2025 to include 2025 in chart's year "ticks"
 
 const events = await getSpreadsheetData(SPREADSHEET_ID)
 const months = getEventsByMonth(events, DATE_END)

@@ -19,6 +19,7 @@ export const getEventsByMonth = (events, dateEnd) => {
         .filter(event => {
           return event.date.getFullYear() === iDate.getFullYear()
             && event.date.getMonth() === iDate.getMonth()
+            && event.date.getTime() <= dateEnd.getTime()
         }),
     })
     if (iDate.getMonth() === 11) {
