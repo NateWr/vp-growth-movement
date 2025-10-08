@@ -21,7 +21,10 @@ events:
     summary: The Massachusetts Bay Transportation Authority ends a ten year partnership with Veolia, choosing another company for a $4.26 billion deal to operate and maintain its commuter rail trains.
   - id: veolia-withdraws-from-jerusalem-light-ra-2015-09-01
 conclusion: Strategic and dedicated BDS campaigns forced one of Europe’s largest companies to abandon the Israeli market, building the movement’s momentum to hold other companies accountable for complicity in Israeli human rights violations.
-actions: []
+actions:
+  - prefix: View More
+    title: See all events related to the Veolia campaign
+    url: '/data?t=veolia'
 filters:
   target:
     - veolia
