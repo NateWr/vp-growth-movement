@@ -21,8 +21,8 @@ const buttonClasses = `
 
 <template>
   <div class="
-    fixed bottom-16 left-4 right-4 grid grid-cols-2 items-center gap-4
-    md:left-auto md:right-8 md:w-96
+    fixed bottom-8 left-4 right-4 grid grid-cols-2 items-center gap-4 z-100
+    md:bottom-16 md:left-auto md:right-8 md:w-96
     lg:right-12
     xl:right-16
     2xl:right-24

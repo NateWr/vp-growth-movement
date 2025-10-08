@@ -338,8 +338,8 @@ watch(width, (value, oldValue) => {
                   items-center
                   gap-4
                   overflow-hidden
-                  bg-yellow
-                  text-black
+                  bg-blue
+                  text-white
                   group-hover:bg-white
                   md:px-6
                 "
@@ -348,8 +348,10 @@ watch(width, (value, oldValue) => {
                 <div class="flex flex-col gap-0.5">
                   <div
                     class="
+                      sr-only
                       text-sm
                       uppercase
+                      sm:not-sr-only
                       3xl:text-base
                     "
                   >
