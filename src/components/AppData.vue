@@ -474,7 +474,7 @@ onMounted(() => {
         left-2
         right-2
         z-70
-        overflow-scroll
+        overflow-auto
         pb-24
         rounded
         bg-white

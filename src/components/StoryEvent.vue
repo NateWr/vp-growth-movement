@@ -49,7 +49,7 @@ const transformOrigin = computed(() => {
   >
     <article
       class="
-        overflow-scroll
+        overflow-auto
         flex
         flex-col
         items-start

@@ -221,7 +221,7 @@ watch(width, (value, oldValue) => {
 <template>
   <div
     ref="scroll-ref"
-    class="grow overflow-scroll scroll-smooth"
+    class="grow overflow-auto scroll-smooth"
   >
     <div
       :class="`
