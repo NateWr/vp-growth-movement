@@ -341,6 +341,7 @@ watch(width, (value, oldValue) => {
                   bg-blue
                   text-white
                   group-hover:bg-white
+                  group-hover:text-black
                   md:px-6
                 "
                 :style="`clip-path: url(#panel-bg-${i % 6 + 1})`"
