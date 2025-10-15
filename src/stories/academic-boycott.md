@@ -5,6 +5,7 @@ title: Academic Boycott
 title_short: Academia
 illustration: /illustrations/academic-boycott.png
 description: Academic boycott campaigns advocate for a boycott of complicit Israeli academic and cultural institutions.
+opengraphImage: 'opengraph-academic-boycott.png'
 intro: |
   Academic boycott campaigns advocate for a boycott of complicit Israeli academic and cultural institutions, who are major, willing and persistent accomplices in Israel’s regime of military occupation, settler-colonialism, apartheid, and genocide.
 events:
