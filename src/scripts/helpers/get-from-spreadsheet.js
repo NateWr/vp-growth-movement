@@ -23,7 +23,10 @@ const REGEX_DOMAIN = /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)/gi
 const REGEX_DATE = /^[0-9]{4}-[0-1][0-9]-[0-3][0-9]$/
 
 const validateRowData = row => {
-    if (!row[COL_DATE] || !row[COL_ID]) {
+    if (!row[COL_ID]) {
+      throw new Error(`Event missing id column:\n\n${JSON.stringify(row, null, 2)}`)
+    }
+    if (!row[COL_DATE]) {
       throw new Error(`Event missing date column:\n\n${JSON.stringify(row, null, 2)}`)
     }
     const dateMatches = row[COL_DATE].match(REGEX_DATE)
