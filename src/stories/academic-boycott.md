@@ -37,6 +37,7 @@ actions:
     title: "Join the Academic Boycott"
     url: 'https://bdsmovement.net/academic-boycott'
 filters:
-  search: pension fund
+  area:
+    - academic-boycott
 ---
 
