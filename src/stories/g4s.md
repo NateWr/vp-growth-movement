@@ -12,7 +12,6 @@ intro: |
 events:
   - id: "rehabilitation-and-research-centre-for-t-2010-11-01"
   - id: "palestinians-launch-stop-g4s-campaign-2012-04-17"
-    summary: Palestinian organizations formally launch the Stop G4S campaign as Palestinian political prisoners begin a historic hunger strike. In 2005, G4S signed a contract with the Israeli Prison Service to provide services and supply and maintain equipment at Israeli prisons, where Palestinians are held without charge, tried in military courts, and tortured. G4S also provides services to the Israeli military and illegal Israeli settlements.
   - id: "european-union-drops-g4s-2012-04-17"
   - id: "danish-church-aid-cuts-ties-with-g4s-2012-07-18"
   - id: "activists-in-11-countries-protest-g4s-2013-04-19"
@@ -31,7 +30,13 @@ conclusion: |
   After 13 years of tireless BDS campaigning, the largest security company in the world was forced to divest from apartheid Israel.
 
   This strategic and collective action cost the company millions in lost and cancelled contracts and forced them to acknowledge "reputational damage."
-actions: []
+actions:
+  - prefix: Global Campaigns
+    title: "Be a part of the next big BDS win"
+    url: 'https://bdsmovement.net/campaigns'
+  - prefix: Historic Win
+    title: "View all events in the BDS campaign against G4S"
+    url: '/data?t=g4-s'
 filters:
   target:
     - g4-s
