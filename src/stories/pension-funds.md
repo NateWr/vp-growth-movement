@@ -23,6 +23,9 @@ actions:
   - prefix: A Global Target
     title: "Join the #BOYCOTTAXA campaign"
     url: 'https://bdsmovement.net/axa-divest'
+  - prefix: Economic Impact
+    title: "View all data on BDS pension fund campaigns"
+    url: '/data?s=pension+fund'
 filters:
   search: pension fund
 ---
