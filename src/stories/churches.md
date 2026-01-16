@@ -6,7 +6,7 @@ title_short: Churches
 illustration: /illustrations/g4s.png
 description: The BDS movement targeted G4S for their role in providing services to Israeli prisons, police, the military, and illegal settlements.
 intro: |
-  Church communities have responded to the Palestinian call for BDS by organizing boycotts and divesting from companies that support Israel’s regime of illegal occupation, apartheid, and ethnic cleansing.
+  Church communities have responded to the Palestinian call for BDS by organizing boycotts and divesting from companies that support Israel’s regime of illegal occupation, apartheid, and genocide.
 events:
   - id: "palestinian-christians-launch-kairos-pal-2009-12-15"
   - id: "the-church-of-england-divests-34-million-2010-02-07"
@@ -28,8 +28,8 @@ conclusion: |
   Meanwhile, millions of Christians are taking action alongside other faith-based and secular activists in their communities to resist Israel's unjust policies and practices.
 actions:
   - prefix: A Moment of Truth
-    title: "Read the Kairos Palestine document"
-    url: 'https://www.kairospalestine.ps/index.php/about-kairos/kairos-palestine-document'
+    title: "Read Kairos Palestine II"
+    url: 'https://www.kairospalestine.ps/index.php/resources/publication/kairos-palestine-ii-a-moment-of-truth-faith-in-a-time-of-genocide'
   - prefix: Learn more
     title: "View all faith-based events"
     url: '/data?cmp=faith-based-solidarity'
