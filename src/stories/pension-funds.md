@@ -5,6 +5,7 @@ title: Pension Divestments
 title_short: Pensions
 illustration: /illustrations/pension-funds.png
 description: Some of the world’s largest pension funds have divested from corporations based on their role in violations of international law and Palestinian human rights.
+opengraphImage: 'opengraph-g4s.png'
 intro: |
   BDS divestment campaigns undermine the financial incentives for companies that provide equipment, services, and infrastructure to Israel’s regime of apartheid and settler colonialism.
 

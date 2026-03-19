@@ -3,8 +3,9 @@ order: 40
 prefix: The Campaign In
 title: Churches
 title_short: Churches
-illustration: /illustrations/g4s.png
+illustration: /illustrations/churches.png
 description: The BDS movement targeted G4S for their role in providing services to Israeli prisons, police, the military, and illegal settlements.
+opengraphImage: 'opengraph-churches.png'
 intro: |
   Church communities have responded to the Palestinian call for BDS by organizing boycotts and divesting from companies that support Israel’s regime of illegal occupation, apartheid, and genocide.
 events:
