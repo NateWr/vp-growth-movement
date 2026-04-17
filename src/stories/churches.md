@@ -30,7 +30,7 @@ conclusion: |
 actions:
   - prefix: A Moment of Truth
     title: "Read Kairos Palestine II"
-    url: 'https://www.kairospalestine.ps/index.php/resources/publication/kairos-palestine-ii-a-moment-of-truth-faith-in-a-time-of-genocide'
+    url: 'https://www.kairospalestine.ps/index.php/about-kairos/kairos-palestine-ii'
   - prefix: Learn more
     title: "View all faith-based events"
     url: '/data?cmp=faith-based-solidarity'
